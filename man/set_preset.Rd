@@ -2,7 +2,7 @@
 \alias{set_preset}
 \title{Apply a Reusable Presentation Preset}
 \description{Choose compact or presentation styling for the browser viewer
-and static area figures, without altering data or classification.}
+and static figures, without altering data or classification.}
 \usage{
 set_preset(x, preset = c("compact", "presentation"))
 }

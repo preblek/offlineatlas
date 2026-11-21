@@ -1,4 +1,4 @@
-**offlineatlas 0.0.9 prototype**
+**offlineatlas 0.0.10 prototype**
 
 This R package builds independent HTML visualizations from data frames. The
 aid network, Florence network, World Bank GDP map, national FDI map, and
@@ -65,7 +65,7 @@ Pandoc available, then build and install the source archive:
 
 ```sh
 R CMD build .
-R CMD INSTALL offlineatlas_0.0.9.tar.gz
+R CMD INSTALL offlineatlas_0.0.10.tar.gz
 ```
 
 Building the vignette executes all tutorial sections using the required sf
@@ -96,8 +96,9 @@ are escaped with an apostrophe; JSON preserves the original strings.
 
 **Static figures with ggplot2**
 
-as_ggplot returns a regular ggplot object for a single variable and period.
-The atlas must have been built with sf polygon input in version 0.0.7 or later.
+as_ggplot returns a regular ggplot object for an area map or a network.
+Area maps and geographic network boundaries must use sf polygon input.
+Schematic networks retain their supplied node positions.
 ggplot2 and sf are required authoring dependencies installed with offlineatlas. The saved figures and
 interactive HTML need neither R nor these packages to view.
 
@@ -122,11 +123,44 @@ status, time, fill classes, and sf geometry for further annotation.
 If time is omitted, the configured initial time is used, otherwise the latest
 supplied period. If variable is omitted, the first variable is used. A static
 map has no browser selection or camera state. Regional set_view bounds carry
-over. Configured visible insets produce a warning and are omitted. Network
-plots and SVG-path-only area inputs are unsupported in this first adapter.
+over. Configured visible insets produce a warning and are omitted.
+SVG-path-only area inputs are unsupported in static output.
 Rebuild older objects with sf input; saveRDS preserves the retained geometry.
 The original sf attribute table is not retained, and authoring geometry is
 excluded from HTML/JSON payloads. The HTML stays independent and compact.
+
+Networks support a selected year, relationship layers and an optional source
+filter for directed links. For example, after running the Florence example:
+
+```r
+source(system.file("examples", "florence.R", package = "offlineatlas"))
+p <- as_ggplot(florence_atlas, layers = "Marriage", node_size = 3) +
+  labs(title = "Marriage alliances in Florence") +
+  theme(legend.position = "bottom")
+ggsave("florence-marriages.png", p, width = 9, height = 7, dpi = 300)
+```
+
+The Florence illustration is omitted with a warning, while the node positions
+and ties are retained. Circles have equal size; they do not encode degree or
+flow. Use `labels = FALSE` to hide labels. All nodes, including isolates, stay
+visible. Labels do not yet avoid overlaps automatically.
+
+For geographic networks, supply boundaries as sf polygons to `add_areas()`.
+The installed aid and bilateral FDI examples use this input. For example,
+`as_ggplot(aid_atlas, time = 2024, source = "CAN")` shows Canada's outgoing
+ties. `source = NULL` includes all sources, independently of HTML controls.
+Colors identify layers; weighted line widths show absolute values on a fixed
+scale across all supplied years. Arrows preserve direction, and negative
+weights use dashed lines. Zero and missing rows do not create lines. Inspect
+the original filtered rows with `attr(p, "offlineatlas_edges")`; `p$data`
+contains the nodes. Reciprocal ties use separate curves, and geographic paths
+split at the dateline. Paths are schematic connections, not travel routes.
+
+Run `examples/static_networks.R` from the installed package for Florence and
+geographic aid figures in PNG, PDF and SVG. Network styling can be changed
+with normal ggplot2 color, linewidth, linetype and theme settings. Automatic
+network layouts, label repulsion and node styling by attributes or network
+measures are candidates for a later version.
 
 Run examples/static.R from the installed package to build FDI, GDP, and EU
 examples as PNG, PDF, and SVG in a static folder. The standard nine
@@ -395,7 +429,7 @@ Maintainer contact is preblek25@ecu.edu. Report reproducible problems or suggest
 improvements through [GitHub issues](https://github.com/preblek/offlineatlas/issues).
 
 R validation tests are in tests/. Run `R CMD build .`, then
-`R CMD check --no-manual offlineatlas_0.0.9.tar.gz` to run the package examples,
+`R CMD check --no-manual offlineatlas_0.0.10.tar.gz` to run the package examples,
 tests and vignette checks. A PDF manual can be built separately with
 `R CMD Rd2pdf .` when a working TeX installation is available.
 

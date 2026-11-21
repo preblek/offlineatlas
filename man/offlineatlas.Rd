@@ -14,7 +14,7 @@ Finish with \code{\link{export_html}}.
 
 The API is experimental. sf and ggplot2 are required authoring dependencies.
 The installer includes them automatically when missing. sf handles
-polygon and point inputs; ggplot2 creates editable static area maps through
+polygon and point inputs; ggplot2 creates editable static area maps and networks through
 \code{\link{as_ggplot}}. Saved HTML and image files require neither package.
 Installing authoring dependencies may need internet access. Preparing the
 bundled examples and viewing their exports use local resources.
@@ -51,8 +51,10 @@ HTML maps use one equirectangular display projection, with longitude -180 to
 One rectangular geographic inset is supported. Schematic layouts must be
 supplied. Self-links, automatic graph layout, changing historical boundaries
 and synchronized map/network panels are not implemented. Large-data
-performance is unmeasured. Static ggplot output supports sf area maps, without
-networks or insets. Read source notes and preserve dataset attribution.
+performance is unmeasured. Static ggplot output supports sf area maps and
+networks, without insets or SVG illustrations. Static network circles have
+equal size and labels do not automatically avoid overlaps. Read source notes
+and preserve dataset attribution.
 }
 \seealso{\code{\link{atlas}}, \code{\link{export_html}},
 \code{\link{as_ggplot}}}

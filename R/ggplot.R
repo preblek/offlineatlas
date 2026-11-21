@@ -1,10 +1,15 @@
 # Static authoring adapter. No ggplot2 or sf code is needed by exported viewers.
-as_ggplot <- function(x, variable = NULL, time = NULL) {
+as_ggplot <- function(x, variable = NULL, time = NULL, layers = NULL,
+                      source = NULL, labels = TRUE, node_size = 3) {
   check_atlas(x)
   if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("sf", quietly = TRUE))
     stop("Required dependencies ggplot2 and sf could not be loaded; reinstall offlineatlas with its dependencies", call. = FALSE)
-  if (is.null(x$areas) || !is.null(x$nodes) || !length(x$variables))
-    stop("as_ggplot supports area maps with variables; network plots are not yet supported", call. = FALSE)
+  if (!is.null(x$nodes))
+    return(network_ggplot(x, variable, time, layers, source, labels, node_size))
+  if (!is.null(layers) || !is.null(source))
+    stop("layers and source are only available for network plots", call. = FALSE)
+  if (is.null(x$areas) || !length(x$variables))
+    stop("Add nodes or areas with variables before creating a static plot", call. = FALSE)
   retained <- attr(x, "area_geometry", exact = TRUE)
   if (is.null(retained)) stop("Rebuild this atlas with sf input to add_areas; static maps need retained sf geometry", call. = FALSE)
   if (!is.null(x$inset) && isTRUE(x$inset$visible))

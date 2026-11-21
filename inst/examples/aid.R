@@ -9,7 +9,7 @@ aid_atlas <- atlas(
   sources = c("Fictional aid teaching example. Boundaries from Natural Earth (public domain).",
     "Present-day boundaries, simplified equirectangular projection. Lines are schematic relationships, not delivery routes.",
     "Natural Earth source and terms: https://www.naturalearthdata.com/about/terms-of-use/")) |>
-  add_areas(example_data("world_paths")) |>
+  add_areas(sf::st_read(example_file("world_sf.geojson"), quiet = TRUE)) |>
   add_nodes(example_data("aid_nodes"), id = "country_id", label = "country_name",
     longitude = "longitude", latitude = "latitude") |>
   add_edges(example_data("aid"), from = "donor_id", to = "recipient_id",

@@ -1,3 +1,16 @@
+# offlineatlas 0.0.10
+
+* Added editable ggplot2 output for schematic and geographic networks, with
+  relationship layer, year and directed source filters, optional labels and
+  adjustable fixed node size. Isolates and original positions are retained.
+* Added arrows, stable layer colors, separate parallel and reciprocal paths,
+  and dateline splitting. Line width uses absolute weight on a fixed scale;
+  dashed negative flows retain their direction. Zero and missing rows are
+  preserved in plot metadata without drawing lines.
+* Added Florence and geographic aid static examples and tutorial coverage.
+  Geographic network boundaries use sf input. Illustrations and visible
+  insets are omitted with warnings. HTML exports remain standalone and offline.
+
 # offlineatlas 0.0.9
 
 * Moved sf and ggplot2 from Suggests to Imports so standard GitHub and local

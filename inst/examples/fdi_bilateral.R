@@ -15,7 +15,7 @@ fdi <- atlas("Bilateral FDI in a nine-country sample",
     paste("Derived source SHA-256", meta$bilateral_source_sha256),
     "United Nations Trade and Development (UNCTAD) Data Hub source and reuse terms: https://unctadstat.unctad.org/EN/About.html. See bundled FDI-NOTICE.txt.",
     "License reference: https://creativecommons.org/licenses/by/3.0/igo/")) |>
-  add_areas(example_data("world_paths")) |>
+  add_areas(sf::st_read(example_file("world_sf.geojson"), quiet = TRUE)) |>
   add_nodes(locations, id = "id", label = "label") |>
   add_edges(example_data("fdi_bilateral"), from = "from_id", to = "to_id",
     weight = "value", time = "year", directed = TRUE, coverage = "complete_panel",

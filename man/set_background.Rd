@@ -14,6 +14,8 @@ Add schematic nodes before setting a background. The illustration is
 embedded in the HTML and requires no external file when viewed. The browser
 can toggle its visibility, and visible artwork is included in SVG and PNG
 exports. An illustration does not imply geographic node positions.
+The ggplot2 adapter omits this illustration with a warning and retains the
+supplied schematic node positions.
 
 Supported SVG elements are svg, g, defs, path, rect, circle, ellipse, line,
 polyline, polygon, use, text, tspan, title and desc. References must be local

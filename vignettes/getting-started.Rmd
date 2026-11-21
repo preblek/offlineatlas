@@ -465,10 +465,54 @@ static figure without changing the interactive atlas.
 An interval labeled `0 to <1,000` includes zero and values such as 999.5,
 but excludes 1,000. The highest interval uses the greater-than-or-equal symbol.
 
-Static output supports area maps. It does not reproduce network plots,
-browser selection, history charts or the browser's current zoom. Visible
-insets are omitted with a warning. Build the atlas from `sf` input if you want
-static output; prepared SVG path tables do not retain the required geometry.
+Static output also supports schematic and geographic networks. It does not
+reproduce browser selection, history charts or the browser's current zoom.
+Visible insets and illustrated SVG backgrounds are omitted with a warning.
+Area maps and geographic network boundaries require `sf` input; prepared SVG
+path tables do not retain the required geometry.
+
+### Make a static network figure
+
+Use the Florence atlas built earlier. The supplied schematic positions and
+all families, including isolates, are retained. Circles have equal size, so
+their area does not encode a network measure.
+
+```{r static-network, fig.width=9, fig.height=6.5}
+marriage_figure <- as_ggplot(set_preset(marriage_map, "compact"),
+                           layers = "Marriage", node_size = 3) +
+  ggplot2::labs(title = "Marriage alliances in Florence")
+marriage_figure
+ggplot2::ggsave(file.path(output_dir, "florence-marriages.png"),
+               marriage_figure, width = 9, height = 6.5, dpi = 200)
+```
+
+For a network containing several relationship layers, `layers = "Marriage"`
+shows one layer and `layers = c("Marriage", "Business")` shows both. Colors
+remain stable as you change the selected layers. `labels = FALSE` hides node
+labels; automatic label repulsion is not yet implemented. You can change
+titles, legends, colors and themes using ordinary ggplot2 functions.
+
+Geographic networks use the same function. Supply any background boundaries
+as `sf` polygons. For a directed network, choose a year and optionally a source:
+
+```{r geographic-network-static, eval=FALSE}
+source(system.file("examples", "aid.R", package = "offlineatlas"))
+aid_figure <- as_ggplot(aid_atlas, time = 2024, source = "CAN")
+ggplot2::ggsave("canada-aid-2024.png", aid_figure,
+                width = 9, height = 7, dpi = 200)
+```
+
+With `source = NULL`, every source is included, independently of the HTML
+initial-source setting. Directed ties have arrows along their paths. Line
+width shows absolute weight on a fixed scale across all supplied periods and
+layers; negative values use dashed lines without reversing their direction.
+Zero and unavailable rows produce no lines and remain distinct in
+`attr(aid_figure, "offlineatlas_edges")`. All nodes stay visible after filters.
+Geographic lines are schematic connections, with dateline splitting, not
+travel routes. The returned plot's `data` contains the node table.
+
+The installed `examples/static_networks.R` script saves both schematic and
+geographic network figures as PNG, PDF and SVG.
 
 ## Share and inspect the results
 
