@@ -1,0 +1,269 @@
+{
+  "national_source_sha256": "990dd29ac59389d678b992a8763316cc9b5f934dfe6cd1cf97da64ddc60e617d",
+  "bilateral_source_sha256": "c5a6ecd159decc33158375f27a2ce2ec46241e710c54ab0faa1a0e26203bc286",
+  "source_rows": 36950,
+  "inward_flow_rows": 10111,
+  "country_rows": 7487,
+  "economy_count": 220,
+  "excluded_aggregate_rows": 2624,
+  "aggregate_count": 73,
+  "years": [
+    1990,
+    2025
+  ],
+  "latest_year": 2025,
+  "crosswalk": "countrycode 1.9.0 iso3n to iso3c snapshot; explicit 412 Kosovo to KOS; historical codes retained without successor reassignment",
+  "latest_counts": {
+    "positive": 186,
+    "negative": 16,
+    "missing": 8
+  },
+  "latest_map_coverage": 166,
+  "bilateral_sample_countries": [
+    "BRA",
+    "CHN",
+    "DEU",
+    "FRA",
+    "GBR",
+    "IND",
+    "JPN",
+    "SGP",
+    "USA"
+  ],
+  "bilateral_years": [
+    2020,
+    2024
+  ],
+  "bilateral_rows": 360,
+  "bilateral_status_counts": {
+    "positive": 231,
+    "negative": 49,
+    "zero": 40,
+    "unavailable": 40
+  },
+  "bilateral_policy": "Host reporting perspective, direct first then existing mirror; no reciprocal substitutions and no replacement of direct zeroes",
+  "national_footnotes": [
+    {
+      "id": "ATG",
+      "label": "Antigua and Barbuda",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "BRN",
+      "label": "Brunei Darussalam",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "LKA",
+      "label": "Sri Lanka",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "TWN",
+      "label": "China, Taiwan Province of",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "DMA",
+      "label": "Dominica",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "KIR",
+      "label": "Kiribati",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "GRD",
+      "label": "Grenada",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "MDV",
+      "label": "Maldives",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "MSR",
+      "label": "Montserrat",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "PHL",
+      "label": "Philippines",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "KNA",
+      "label": "Saint Kitts and Nevis",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "AIA",
+      "label": "Anguilla",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "LCA",
+      "label": "Saint Lucia",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "VCT",
+      "label": "Saint Vincent and the Grenadines",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "VNM",
+      "label": "Viet Nam",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "ZAF",
+      "label": "South Africa",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "TJK",
+      "label": "Tajikistan",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "UZB",
+      "label": "Uzbekistan",
+      "year": 2024,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "ATG",
+      "label": "Antigua and Barbuda",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "BRN",
+      "label": "Brunei Darussalam",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "LKA",
+      "label": "Sri Lanka",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "TWN",
+      "label": "China, Taiwan Province of",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "DMA",
+      "label": "Dominica",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "KIR",
+      "label": "Kiribati",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "GRD",
+      "label": "Grenada",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "MDV",
+      "label": "Maldives",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "MSR",
+      "label": "Montserrat",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "PRY",
+      "label": "Paraguay",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "PHL",
+      "label": "Philippines",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "KNA",
+      "label": "Saint Kitts and Nevis",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "AIA",
+      "label": "Anguilla",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "LCA",
+      "label": "Saint Lucia",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "VCT",
+      "label": "Saint Vincent and the Grenadines",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "VNM",
+      "label": "Viet Nam",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "ZAF",
+      "label": "South Africa",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "TJK",
+      "label": "Tajikistan",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    },
+    {
+      "id": "UZB",
+      "label": "Uzbekistan",
+      "year": 2025,
+      "note": "Asset/liability basis."
+    }
+  ]
+}

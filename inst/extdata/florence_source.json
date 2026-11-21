@@ -1,0 +1,293 @@
+{
+  "nodes": [
+    {
+      "id": 0,
+      "name": "Acciaiuoli",
+      "x": 177.1,
+      "y": 129.0
+    },
+    {
+      "id": 1,
+      "name": "Albizzi",
+      "x": 466.8,
+      "y": 229.8
+    },
+    {
+      "id": 2,
+      "name": "Barbadori",
+      "x": 645.5,
+      "y": 241.3
+    },
+    {
+      "id": 3,
+      "name": "Bischeri",
+      "x": 740.6,
+      "y": 471.7
+    },
+    {
+      "id": 4,
+      "name": "Castellani",
+      "x": 864.6,
+      "y": 277.9
+    },
+    {
+      "id": 5,
+      "name": "Ginori",
+      "x": 481.8,
+      "y": 116.0
+    },
+    {
+      "id": 6,
+      "name": "Guadagni",
+      "x": 582.0,
+      "y": 394.9
+    },
+    {
+      "id": 7,
+      "name": "Lamberteschi",
+      "x": 738.2,
+      "y": 356.4
+    },
+    {
+      "id": 8,
+      "name": "Medici",
+      "x": 360.2,
+      "y": 304.4
+    },
+    {
+      "id": 9,
+      "name": "Pazzi",
+      "x": 94.8,
+      "y": 403.4
+    },
+    {
+      "id": 10,
+      "name": "Peruzzi",
+      "x": 889.7,
+      "y": 381.0
+    },
+    {
+      "id": 11,
+      "name": "Pucci",
+      "x": 805,
+      "y": 65
+    },
+    {
+      "id": 12,
+      "name": "Ridolfi",
+      "x": 533.6,
+      "y": 520.7
+    },
+    {
+      "id": 13,
+      "name": "Salviati",
+      "x": 151.8,
+      "y": 287.9
+    },
+    {
+      "id": 14,
+      "name": "Strozzi",
+      "x": 869.4,
+      "y": 507.6
+    },
+    {
+      "id": 15,
+      "name": "Tornabuoni",
+      "x": 371.9,
+      "y": 448.8
+    }
+  ],
+  "edges": [
+    {
+      "s": 0,
+      "t": 8,
+      "layer": 1
+    },
+    {
+      "s": 1,
+      "t": 5,
+      "layer": 1
+    },
+    {
+      "s": 1,
+      "t": 6,
+      "layer": 1
+    },
+    {
+      "s": 1,
+      "t": 8,
+      "layer": 1
+    },
+    {
+      "s": 2,
+      "t": 4,
+      "layer": 1
+    },
+    {
+      "s": 2,
+      "t": 8,
+      "layer": 1
+    },
+    {
+      "s": 2,
+      "t": 4,
+      "layer": 2
+    },
+    {
+      "s": 2,
+      "t": 5,
+      "layer": 2
+    },
+    {
+      "s": 2,
+      "t": 8,
+      "layer": 2
+    },
+    {
+      "s": 2,
+      "t": 10,
+      "layer": 2
+    },
+    {
+      "s": 3,
+      "t": 6,
+      "layer": 1
+    },
+    {
+      "s": 3,
+      "t": 10,
+      "layer": 1
+    },
+    {
+      "s": 3,
+      "t": 14,
+      "layer": 1
+    },
+    {
+      "s": 3,
+      "t": 6,
+      "layer": 2
+    },
+    {
+      "s": 3,
+      "t": 7,
+      "layer": 2
+    },
+    {
+      "s": 3,
+      "t": 10,
+      "layer": 2
+    },
+    {
+      "s": 4,
+      "t": 10,
+      "layer": 1
+    },
+    {
+      "s": 4,
+      "t": 14,
+      "layer": 1
+    },
+    {
+      "s": 4,
+      "t": 7,
+      "layer": 2
+    },
+    {
+      "s": 4,
+      "t": 10,
+      "layer": 2
+    },
+    {
+      "s": 5,
+      "t": 8,
+      "layer": 2
+    },
+    {
+      "s": 6,
+      "t": 7,
+      "layer": 1
+    },
+    {
+      "s": 6,
+      "t": 15,
+      "layer": 1
+    },
+    {
+      "s": 6,
+      "t": 7,
+      "layer": 2
+    },
+    {
+      "s": 7,
+      "t": 10,
+      "layer": 2
+    },
+    {
+      "s": 8,
+      "t": 12,
+      "layer": 1
+    },
+    {
+      "s": 8,
+      "t": 13,
+      "layer": 1
+    },
+    {
+      "s": 8,
+      "t": 15,
+      "layer": 1
+    },
+    {
+      "s": 8,
+      "t": 9,
+      "layer": 2
+    },
+    {
+      "s": 8,
+      "t": 13,
+      "layer": 2
+    },
+    {
+      "s": 8,
+      "t": 15,
+      "layer": 2
+    },
+    {
+      "s": 9,
+      "t": 13,
+      "layer": 1
+    },
+    {
+      "s": 10,
+      "t": 14,
+      "layer": 1
+    },
+    {
+      "s": 12,
+      "t": 14,
+      "layer": 1
+    },
+    {
+      "s": 12,
+      "t": 15,
+      "layer": 1
+    }
+  ],
+  "provenance": {
+    "research_citation": "Padgett, John F., and Christopher K. Ansell (1993). Robust Action and the Rise of the Medici, 1400–1434. American Journal of Sociology 98(6), 1259–1319.",
+    "research_doi": "https://doi.org/10.1086/230190",
+    "data_provider": "CoMuNe Lab / Manlio De Domenico",
+    "dataset": "Padgett-Florentine-Families Multiplex Network",
+    "source": "https://github.com/CoMuNeLab/Padgett-Florentine-Families",
+    "database_license": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "contents_license": "https://opendatacommons.org/licenses/dbcl/1-0/",
+    "adapted_data_license": "ODbL 1.0; individual contents DbCL 1.0",
+    "changes": [
+      "Expanded abbreviated family names",
+      "Rescaled graph coordinates",
+      "Repositioned isolated Pucci node"
+    ],
+    "scope": "16-family teaching network. Not the complete dataset analyzed in the 1993 article. Coordinates are display positions, not historical residences."
+  }
+}

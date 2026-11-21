@@ -1,0 +1,111 @@
+{
+  "year": 2024,
+  "retrieved_at": "2026-11-20T16:25:09.407288-05:00",
+  "source": "World Bank World Development Indicators",
+  "license": "CC BY 4.0",
+  "indicators": {
+    "gdp_per_capita": "NY.GDP.PCAP.CD",
+    "gdp_total": "NY.GDP.MKTP.CD"
+  },
+  "requests": [
+    {
+      "url": "https://api.worldbank.org/v2/country?format=json&per_page=1000",
+      "sha256": "99c199efc2fc2880c169eb611f5a32ba69adc0e225b83f54fe384a5d66ba2448",
+      "metadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": "1000",
+        "total": 296
+      }
+    },
+    {
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.CD?format=json&date=2024&per_page=1000",
+      "sha256": "96b24110caea8caf775c9f4fcbd0586e9e5b7501c45a22bb6f0e9a10cda4f9fa",
+      "metadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 1000,
+        "total": 266,
+        "sourceid": "2",
+        "lastupdated": "2026-11-11"
+      }
+    },
+    {
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?format=json&date=2024&per_page=1000",
+      "sha256": "bd13ca1cef75d68bfd9c013eda1b067a5cde3bf647832b7884e18ff3970b4925",
+      "metadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 1000,
+        "total": 266,
+        "sourceid": "2",
+        "lastupdated": "2026-11-11"
+      }
+    }
+  ],
+  "aggregate_regions_excluded": true,
+  "available": {
+    "gdp_per_capita": 200,
+    "gdp_total": 200
+  },
+  "map_area_count": 176,
+  "unmapped_economies": [
+    "ABW",
+    "AND",
+    "ASM",
+    "ATG",
+    "BHR",
+    "BMU",
+    "BRB",
+    "CHI",
+    "COM",
+    "CPV",
+    "CUW",
+    "CYM",
+    "DMA",
+    "FRO",
+    "FSM",
+    "GIB",
+    "GRD",
+    "GUM",
+    "HKG",
+    "IMN",
+    "KIR",
+    "KNA",
+    "LCA",
+    "LIE",
+    "MAC",
+    "MAF",
+    "MCO",
+    "MDV",
+    "MHL",
+    "MLT",
+    "MNP",
+    "MUS",
+    "NRU",
+    "PLW",
+    "PYF",
+    "SGP",
+    "SMR",
+    "STP",
+    "SXM",
+    "SYC",
+    "TCA",
+    "TON",
+    "TUV",
+    "VCT",
+    "VGB",
+    "VIR",
+    "WSM",
+    "XKX"
+  ],
+  "areas_without_country_match": [
+    "ATF",
+    "CYN",
+    "ESH",
+    "FLK",
+    "KOS",
+    "SOL",
+    "TWN"
+  ]
+}

@@ -1,0 +1,30 @@
+library(offlineatlas)
+fails <- function(expr,pattern) {
+  error <- tryCatch({force(expr);NULL},error=identity)
+  stopifnot(inherits(error,"error"),grepl(pattern,conditionMessage(error)))
+}
+areas <- example_data("world_paths")[1:2,];areas$value <- c(0,NA_real_)
+x <- atlas() |> add_areas(areas,values="value",breaks=list(0))
+styled <- x |> set_legend(columns=2,labels=list(value=c("Negative","Nonnegative"))) |>
+  set_controls(visible=c(search=FALSE),labels=c(play="Animate"),playback_interval=750) |>
+  set_style(font_family="sans",heading_family="mono")
+file <- tempfile(fileext=".html");export_html(styled,file);unlink(file)
+stopifnot(identical(styled$areas,x$areas),styled$controls$playback_interval==750)
+fails(set_controls(x,visible=c(unknown=TRUE)),"documented keys")
+fails(set_controls(x,visible=c(search="no")),"logical")
+fails(set_controls(x,labels=c(play=NA_character_)),"character")
+fails(set_controls(x,labels=c(play="A",play="B")),"documented keys")
+for (value in list(0,Inf,NA_real_,c(1000,2000),"fast"))
+  fails(set_controls(x,playback_interval=value),"milliseconds")
+fails(set_legend(x,columns=1.5),"columns")
+fails(set_legend(x,show_counts=NA),"flags")
+fails(set_legend(x,labels=c("A","B")),"named list")
+fails(export_html(set_legend(x,labels=list(other="A")),tempfile()),"Unknown legend variable")
+fails(export_html(set_legend(x,labels=list(value="A")),tempfile()),"per interval")
+fails(set_style(x,font_family="https://example.invalid/font"),"arg")
+text <- "</script><script>throw Error('unexpected')</script>"
+hostile <- set_legend(x,title=text,labels=list(value=c(text,"B")))
+file <- tempfile();export_html(hostile,file)
+html <- paste(readLines(file,warn=FALSE),collapse="\n")
+stopifnot(grepl("\\u003c",html,fixed=TRUE));unlink(file)
+cat("Presentation options validate keys, types, labels and inert text without changing values\n")

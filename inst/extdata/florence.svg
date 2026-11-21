@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650"><g id="city" opacity="0.78" aria-hidden="true">
+<defs>
+ <g id="little-house" stroke="#a58c70" stroke-width="1.2" stroke-linejoin="round"><path d="M0 12 L17 4 L33 13 L16 21Z" fill="#c98b68"/><path d="M0 12 L16 21 L16 39 L0 30Z" fill="#e8d8b7"/><path d="M16 21 L33 13 L33 31 L16 39Z" fill="#d6c4a0"/><path d="M5 21v5 M23 24v5" stroke="#9d856a" stroke-width="3"/></g>
+ <g id="cypress"><ellipse cx="0" cy="-17" rx="5" ry="18" fill="#9eab8d"/><path d="M0-13v19" stroke="#ab967b" stroke-width="2"/></g>
+</defs>
+<path d="M-30 480 Q170 450 330 475 T610 490 T1030 395" fill="none" stroke="#c9dde0" stroke-width="46"/>
+<path d="M-30 480 Q170 450 330 475 T610 490 T1030 395" fill="none" stroke="#edf4ef" stroke-width="2"/>
+<g stroke="#a9c5c9" fill="none" stroke-width="1.2" opacity=".6"><path d="M60 489q18-5 34-2 M168 463q18-3 32-1 M422 502l30 2 M733 469l30-8 M876 432l25-7"/></g>
+<g fill="none" stroke="#ded6c3" stroke-width="3"><path d="M150 445 L140 250 L250 125 L480 75 L720 120 L900 300 L870 410 M150 510 L275 585 L520 610 L770 535 L870 470" stroke-dasharray="6 6"/><path d="M240 470 L340 330 L490 230 L570 100 M340 330 L650 350 L870 300 M490 230 L650 350 L600 490 M490 230 L740 210 M340 330 L240 215 M275 570 L350 485"/></g>
+<g opacity=".35"><use href="#little-house" transform="translate(166 300) scale(.8)"/><use href="#little-house" transform="translate(200 324) scale(.8)"/><use href="#little-house" transform="translate(705 155) scale(.8)"/><use href="#little-house" transform="translate(745 177) scale(.7)"/><use href="#little-house" transform="translate(430 554) scale(.9)"/><use href="#little-house" transform="translate(466 569) scale(.7)"/><use href="#little-house" transform="translate(820 238) scale(.8)"/><use href="#little-house" transform="translate(304 176) scale(.7)"/></g>
+<g opacity=".6"><use href="#cypress" transform="translate(195 265)"/><use href="#cypress" transform="translate(183 274) scale(.8)"/><use href="#cypress" transform="translate(850 391)"/><use href="#cypress" transform="translate(865 391) scale(.8)"/><use href="#cypress" transform="translate(409 167) scale(.8)"/></g>
+<!-- Original miniature illustrations. Architectural forms are schematic. -->
+<g id="landmark-cathedral" transform="translate(475 196)" stroke="#9d846c" stroke-width="1.5" stroke-linejoin="round">
+<title>Santa Maria del Fiore, with the dome under construction</title><ellipse cx="30" cy="60" rx="68" ry="12" fill="#ddd2b8" stroke="none" opacity=".4"/>
+<path d="M-35 25 L28 11 L69 26 L6 42Z" fill="#bf805e"/><path d="M-35 25 L6 42 L6 65 L-35 48Z" fill="#e4d5b6"/><path d="M6 42 L69 26 L69 50 L6 65Z" fill="#d7c5a3"/><path d="M-35 25 L-15 7 L6 42" fill="#f0e4cc"/><path d="M-22 53v-16q7-10 13 5v17" fill="#ad947c"/>
+<path d="M31 12 L31-4 L52-12 L75 0 L75 20 L53 29Z" fill="#ece1c9"/><path d="M31-4 Q34-25 43-35 L49-20 L57-24 L62-34 Q73-21 75 0 L52 10Z" fill="#c48b68"/><path d="M26-31v59 M81-26v48 M26-19l55 9 M26-4l55 10 M26 12l55 10" fill="none" stroke="#b69c79" stroke-width="1.5"/>
+<path d="M-51 35V-33l15-5v64Z" fill="#e8dfca"/><path d="M-51-33l15-5 7 6-15 5Z" fill="#c3ac8c"/><path d="M-36-38l7 6v64l-7-6Z" fill="#cfbea1"/><path d="M-47-24v7 M-40-26v7 M-47-8v7 M-40-10v7 M-47 8v7 M-40 6v7" stroke="#91a39a" stroke-width="3"/>
+</g>
+<g id="landmark-palazzo" transform="translate(651 335)" stroke="#9d846c" stroke-width="1.5" stroke-linejoin="round"><title>Palazzo della Signoria</title><ellipse cx="10" cy="39" rx="48" ry="9" fill="#ddd2b8" stroke="none" opacity=".5"/>
+<path d="M-30-7L17-17 42-1 42 29-5 41-30 25Z" fill="#ddc6a3"/><path d="M-5 9L42-1V29L-5 41Z" fill="#c8ad87"/><path d="M-30-7L-5 9 42-1 17-17Z" fill="#c7926b"/><path d="M-30-7v-8l7 4v6l7 4v-6l7 4v6l7 4v-6l7-2v7l7-2v-7l7-2v7l7-2v-7l7-2v7l8-2v-7l7 4v8" fill="#e5d1af"/>
+<path d="M6-12V-65l17-4v53Z" fill="#e5ceaa"/><path d="M23-69l8 6v52l-8-5Z" fill="#c8ad87"/><path d="M3-65v-10h6v4h6v-5h6v4h6v-5h6v13L6-58Z" fill="#dec5a0"/><path d="M14-76v-12l7-8 6 10v10" fill="#be865f"/><path d="M13-52v9 M22-54v9" stroke="#937b60" stroke-width="3"/><circle cx="15" cy="-30" r="5" fill="#f5eddc"/><path d="M15-34v4l3 1" fill="none"/><path d="M-20 4v6 M-11 9v6 M5 15v6 M17 12v6 M29 9v6" stroke-width="3"/><path d="M-19 31v-10q5-7 10 2v14" fill="#9d846c"/>
+</g>
+<g id="landmark-novella" transform="translate(226 218)" stroke="#a58c70" stroke-width="1.5" stroke-linejoin="round"><title>Santa Maria Novella, simplified medieval church</title><ellipse cx="10" cy="38" rx="55" ry="10" fill="#ddd2b8" stroke="none" opacity=".4"/>
+<path d="M-30 3L17-16 51 1 5 22Z" fill="#c68b68"/><path d="M5 22L51 1v26L5 47Z" fill="#d9c5a1"/><path d="M-30 3L-13-23 5 22V47L-30 28Z" fill="#eadfc6"/><path d="M-30 18L5 35 M-30 25L5 42" stroke="#b5b69d"/><path d="M-20 33V18q5-7 11 5v15" fill="#ae9578"/><circle cx="-13" cy="4" r="5" fill="#b9c9bc"/>
+<path d="M35-8v-44l12-3v42Z" fill="#decbac"/><path d="M35-52l5-19 7 16Z" fill="#b97758"/><path d="M39-44v8" stroke-width="3"/>
+</g>
+<g id="landmark-croce" transform="translate(804 335)" stroke="#a58c70" stroke-width="1.5" stroke-linejoin="round"><title>Santa Croce, simplified medieval church</title><ellipse cx="14" cy="42" rx="55" ry="9" fill="#ddd2b8" stroke="none" opacity=".4"/>
+<path d="M-35 10L17-12 55 8 4 31Z" fill="#c68b68"/><path d="M4 31L55 8V31L4 55Z" fill="#d4bd96"/><path d="M-35 10L-15-20 4 31V55L-35 33Z" fill="#e5d1ae"/><path d="M-15-20v-13 M-20-28h10" fill="none"/><circle cx="-15" cy="12" r="6" fill="#b7c7bb"/><path d="M-23 40V27q7-9 14 7v14" fill="#ac9170"/><path d="M17 32v8 M29 27v8 M41 22v8" stroke-width="3"/>
+</g>
+<g id="landmark-lorenzo" transform="translate(448 126)" stroke="#a58c70" stroke-width="1.5" stroke-linejoin="round"><title>San Lorenzo, simplified church during its rebuilding</title><ellipse cx="13" cy="30" rx="49" ry="9" fill="#ddd2b8" stroke="none" opacity=".4"/>
+<path d="M-29-3L15-18 49-4 5 14Z" fill="#c58a67"/><path d="M5 14L49-4V21L5 39Z" fill="#d2bb94"/><path d="M-29-3L-12-17 5 14V39L-29 23Z" fill="#e1cba9"/><path d="M-18 29V9q6-6 12 6v20" fill="#a68c6b"/><path d="M-26 5l29 13 M-26 16l8 4 M-4 26l7 3" stroke="#c6b08c"/><path d="M17 15v8 M30 10v8" stroke-width="3"/>
+</g>
+<g id="landmark-bridge" transform="translate(596 488) rotate(-7)" stroke="#a58c70" stroke-width="1.5" stroke-linejoin="round"><title>Ponte Vecchio with shops</title><ellipse cx="0" cy="23" rx="66" ry="10" fill="#abc6c7" stroke="none" opacity=".35"/><path d="M-62-3L58-3 65 6-55 6Z" fill="#e9d9b9"/><path d="M-55 6H65V24H48Q38 0 28 24H6Q-4 0-14 24H-34Q-44 0-49 24H-55Z" fill="#d9bf98"/>
+<path d="M-48-3v-18l21-3v21 M-22-3v-16l20 2v14 M24-3v-20l25 3v17" fill="#ead8b7"/><path d="M-52-21l14-9 16 6-5 3Z M-26-19l12-8 17 10-5 2Z M20-23l14-9 20 12-5 2Z" fill="#bd7b58"/><path d="M-42-16v7 M-32-16v7 M-15-13v7 M31-17v7 M42-15v7" stroke="#a18b70" stroke-width="3"/>
+</g>
+<g fill="#937b60" font-family="Georgia,serif" font-size="14" font-style="italic" text-anchor="middle" paint-order="stroke" stroke="#faf8f2" stroke-width="3" stroke-linejoin="round"><text x="67" y="528">Arno</text><text x="601" y="548">Ponte Vecchio</text><text x="514" y="283">Santa Maria del Fiore</text><text x="664" y="398">Palazzo della Signoria</text><text x="234" y="285">Santa Maria Novella</text><text x="818" y="416">Santa Croce</text><text x="457" y="184">San Lorenzo</text></g>
+<g id="florentine-lily" transform="translate(32 12) scale(.5)" fill="#a93535" stroke="#a93535" stroke-linecap="round" stroke-linejoin="round"><title>Florentine lily (giglio), the symbol of Florence</title>
+<path d="M32 2 C23 13 22 22 27 33 L29 46 H35 L37 33 C42 22 41 13 32 2Z" stroke="none"/>
+<path d="M27 45 C25 29 14 17 5 21 C-2 25 1 37 9 38 C4 30 12 27 17 34 L24 46Z M37 45 C39 29 50 17 59 21 C66 25 63 37 55 38 C60 30 52 27 47 34 L40 46Z" stroke="none"/>
+<path d="M26 49 C24 57 17 59 12 55 C13 65 24 64 29 56 L32 70 L35 56 C40 64 51 65 52 55 C47 59 40 57 38 49Z" stroke="none"/>
+<path d="M25 44 Q17 28 18 12 M39 44 Q47 28 46 12" fill="none" stroke-width="2.5"/><circle cx="18" cy="10" r="3.5" stroke="none"/><circle cx="46" cy="10" r="3.5" stroke="none"/><path d="M20 45H44V50H20Z" stroke="none"/>
+</g><text x="78" y="40" fill="#907e65" font-family="Georgia,serif" font-size="18" letter-spacing="3">FLORENCE · c. 1430</text><text x="32" y="624" fill="#776b58" font-family="system-ui,sans-serif" font-size="12">Illustrated city context. Family positions show network structure, not residences.</text></g>
+</svg>

@@ -1,0 +1,37 @@
+Florentine Families interactive supplement
+
+Open florentine-families-demo.html in a browser. The file is self-contained.
+The data and all illustrations are embedded; no server is required.
+Share this HTML file and retain its visible Citations and data reuse section.
+The accompanying data.json supplies the adapted data separately in a machine-
+readable format, with source, changes and license information included.
+
+Research reference
+Padgett, John F., and Christopher K. Ansell. 1993. Robust Action and the Rise
+of the Medici, 1400-1434. American Journal of Sociology 98(6), 1259-1319.
+https://doi.org/10.1086/230190
+
+Data provider
+CoMuNe Lab / Manlio De Domenico.
+Padgett-Florentine-Families Multiplex Network.
+https://github.com/CoMuNeLab/Padgett-Florentine-Families
+
+Data licensing
+The original and adapted database are available under ODbL 1.0.
+https://opendatacommons.org/licenses/odbl/1-0/
+Rights in individual contents are licensed under DbCL 1.0.
+https://opendatacommons.org/licenses/dbcl/1-0/
+Preserve attribution and license notices. Any publicly shared derivative
+database remains under ODbL; provide the adapted data in machine-readable
+form. The JSON included here serves that purpose for this version.
+
+Changes
+Expanded family labels, rescaled graph coordinates and repositioned the
+isolated Pucci node. Relationship data retained. The Florence illustration
+is schematic and does not locate family residences. This small teaching
+network is not the complete network analyzed in the 1993 article.
+
+The interface and original schematic illustration are credited separately
+to Keith A. Preble / Engaged Thinking, 2026. No ownership of the underlying
+research data is claimed. The database licenses do not designate a license
+for the separately created interface code or illustrations.

@@ -1,0 +1,17 @@
+Package: offlineatlas
+Type: Package
+Title: Standalone Offline Maps and Networks
+Version: 0.0.8
+Authors@R: person("Keith A.", "Preble", role = c("aut", "cre"), email = "preblek25@ecu.edu")
+Description: Prepares geographic and schematic networks and area maps as
+    standalone HTML files. A shared browser renderer supports filtering,
+    selection, and local figure and data downloads without a server.
+    Includes fictional aid, Florentine family, World Bank, and FDI examples.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.1.0)
+Imports: jsonlite, xml2, grid
+Suggests: sf (>= 1.0-0), ggplot2 (>= 3.5.0), knitr, rmarkdown
+VignetteBuilder: knitr
+URL: https://github.com/preblek/offlineatlas
+BugReports: https://github.com/preblek/offlineatlas/issues

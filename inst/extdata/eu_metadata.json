@@ -1,0 +1,40 @@
+{
+  "boundaries": "Natural Earth 1:50m admin 0 countries, public domain",
+  "download": "https://naturalearth.s3.amazonaws.com/50m_cultural/ne_50m_admin_0_countries.zip",
+  "source_md5": "a33f3bf62d90e1916ebc16fe38959165",
+  "date_prepared": "2026-11-20",
+  "features": 64,
+  "bounds": {
+    "west": -25,
+    "south": 33,
+    "east": 45,
+    "north": 72
+  },
+  "explicitly_repaired": [],
+  "membership_source": "https://www.consilium.europa.eu/en/policies/how-enlargement-works/timeline-accession-eu-member-states/",
+  "cyprus_source": "https://european-union.europa.eu/principles-countries-history/eu-countries/cyprus_en",
+  "aland_source": "https://um.fi/the-special-status-of-the-aland-islands",
+  "changes": "CYP and CYN combined into Cyprus; ALA combined into Finland. Greenland excluded as outside the European country view. Planar GEOS crop to Europe; no historical border reconstruction.",
+  "periods": [
+    1958,
+    1973,
+    1981,
+    1986,
+    1995,
+    2004,
+    2007,
+    2013,
+    2020
+  ],
+  "expected_members": [
+    6,
+    9,
+    10,
+    12,
+    15,
+    25,
+    27,
+    28,
+    27
+  ]
+}
