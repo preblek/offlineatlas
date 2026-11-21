@@ -52,7 +52,7 @@ Take note that the data can be read by anyone who receives the file, so export o
 
 [FDI Atlas](https://fdiatlas.engagedthinking.com/) is a related, more customized
 web project showing how this approach can be used for a public-facing atlas hosted on my web site.
-The package examples presented one this site generates standalone files. Their source and data notices travel with each exported viewer.
-The bilateral FDI data was provided by UNCTAD.
+The package examples presented on this site generates standalone files. Their source and data notices travel with each exported viewer.
+The bilateral FDI data for [FDI Atlas](https://fdiatlas.engagedthinking.com/) was provided by UNCTAD.
 
 offlineatlas is an early release. [Report a problem or suggest an improvement](https://github.com/preblek/offlineatlas/issues).
