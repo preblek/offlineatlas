@@ -1,0 +1,34 @@
+FDI example data in offlineatlas
+
+Source and reuse
+United Nations Trade and Development (UNCTAD) Data Hub.
+https://unctadstat.unctad.org/
+The Data Hub identifies its materials as Creative Commons Attribution 3.0 IGO
+(CC BY 3.0 IGO). Retain source attribution, identify adaptations, and link to
+the license when redistributing the bundled FDI data or derived visualizations.
+Source terms https://unctadstat.unctad.org/EN/About.html
+License https://creativecommons.org/licenses/by/3.0/igo/
+Terms checked 20 November 2026.
+
+National data
+fdi_national.csv is a cleaned subset of US_FdiFlowsStock.csv supplied for this
+project. It retains country and economy inward flows for 1990-2025, with
+missing-value reasons and reporting footnotes. Stocks, outward measures and
+73 regional aggregates are excluded. Economy identifiers use a saved
+countrycode crosswalk, with an explicit Kosovo mapping. Historical economies
+are not reassigned to successors. Missing values are not imputed. The map uses
+current US dollar millions and present-day boundaries. The cleaned table also
+retains the source's percentage measures.
+
+Bilateral data
+fdi_bilateral.csv is a nine-country, 2020-2024 subset derived from the FDI Atlas's
+UNCTAD FDI/MNE data. The example uses host-reported inflows, preferring direct
+values and then existing mirror reports. Direct zeroes and negative values
+are retained. Sample totals are not national totals. The file also retains
+comparison fields; the example uses its value and provenance columns.
+
+Source checksums, coverage counts, transformations and national footnotes are
+recorded in fdi_metadata.json. These are adapted teaching datasets, not an
+unaltered official UNCTAD release. No UNCTAD or United Nations endorsement is
+implied. The package's MIT license covers original software and schematic
+artwork; it does not replace the FDI data license or Natural Earth notices.

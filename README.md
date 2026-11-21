@@ -319,6 +319,12 @@ maintainer's research workspace, outside this package repository. The bundled
 map data and metadata are in inst/extdata. No historical values are reassigned to
 successor countries. The source does not supply estimate/revision status.
 
+National and bilateral FDI examples use UNCTAD Data Hub data under
+CC BY 3.0 IGO. [FDI-NOTICE.txt](inst/extdata/FDI-NOTICE.txt) records the source,
+reuse links and adaptations. Retain attribution and identify changes when
+sharing these data or derived visualizations. The package's MIT license does
+not replace the data license.
+
 Selecting exactly one area in a numeric time series reveals a country history
 chart and an accessible table of all periods. Negative values fall below zero;
 missing observations break the line. The chart scale uses the selected country's

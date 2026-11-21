@@ -1,10 +1,14 @@
 Florentine Families interactive supplement
 
-Open florentine-families-demo.html in a browser. The file is self-contained.
-The data and all illustrations are embedded; no server is required.
-Share this HTML file and retain its visible Citations and data reuse section.
-The accompanying data.json supplies the adapted data separately in a machine-
-readable format, with source, changes and license information included.
+The installed example script examples/florence.R writes florence-families.html.
+Open that standalone file in a browser; no server or internet connection is
+required. Retain its Sources and interpretation section when sharing it.
+
+Bundled machine-readable files in inst/extdata are florence_nodes.csv,
+florence_edges.csv and florence_source.json. The CSV files contain the adapted
+node and relationship tables used by the package example. florence_source.json
+records the source demo's data and provenance. The viewer's All data JSON
+button also exports the atlas's embedded data and source notices.
 
 Research reference
 Padgett, John F., and Christopher K. Ansell. 1993. Robust Action and the Rise
@@ -23,7 +27,8 @@ Rights in individual contents are licensed under DbCL 1.0.
 https://opendatacommons.org/licenses/dbcl/1-0/
 Preserve attribution and license notices. Any publicly shared derivative
 database remains under ODbL; provide the adapted data in machine-readable
-form. The JSON included here serves that purpose for this version.
+form. The bundled CSV tables and the All data JSON export provide these
+machine-readable data.
 
 Changes
 Expanded family labels, rescaled graph coordinates and repositioned the

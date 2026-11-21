@@ -1,6 +1,16 @@
 Made with Natural Earth. https://www.naturalearthdata.com/
-Public-domain Natural Earth 1:110m present-day country boundaries, excluding Antarctica.
+
+Natural Earth boundary data are public domain.
 Source terms https://www.naturalearthdata.com/about/terms-of-use/
-The bundled SVG is a simplified equirectangular rendering derived from the project geography.
-Coordinates in countries.csv are approximate display locations, not aid project locations.
-All aid amounts and their connection to these countries are fictional teaching data.
+
+world_paths.csv contains prepared SVG paths derived from 1:110m present-day
+country boundaries, excluding Antarctica. world_sf.geojson contains the
+corresponding sf-ready polygons. Boundary preparation and explicit geometry
+repairs are recorded in world_sf_metadata.json.
+
+europe_sf.geojson uses 1:50m present-day boundaries. Its source, regional extent
+and preparation are recorded in eu_metadata.json.
+
+Coordinates in aid_nodes.csv are approximate display locations, not aid
+project locations. All amounts in aid.csv and the fictional aid connections
+are teaching data, not observed aid flows.

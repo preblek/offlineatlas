@@ -283,6 +283,12 @@ of current US dollars. Negative flows, reported zeroes and unavailable values
 remain distinct. The separate bilateral FDI fixture is not used here, and
 its sample flows must not be treated as national totals.
 
+These UNCTAD Data Hub data use CC BY 3.0 IGO. Read
+`readLines(example_file("FDI-NOTICE.txt"))` for the source and adaptations, and
+retain attribution and the license link in shared outputs. The
+[Data Hub reuse terms](https://unctadstat.unctad.org/EN/About.html) apply to
+these data separately from the package's MIT software license.
+
 ```{r fdi-panel, eval=have_sf}
 # Start with a fresh boundary table, without the GDP attributes.
 boundaries <- sf::st_read(example_file("world_sf.geojson"), quiet = TRUE)
@@ -324,7 +330,8 @@ fdi_map <- atlas(
     "historical economies are not reassigned. Revision status is not supplied."
   ),
   sources = c(
-    "UNCTAD FDI flows and stock export supplied for this example.",
+    "UNCTAD Data Hub, FDI flows and stock. CC BY 3.0 IGO.",
+    "https://creativecommons.org/licenses/by/3.0/igo/",
     "National inward flows, 1990-2025; regional aggregates excluded.",
     "Natural Earth boundaries, public domain. No UN endorsement is implied."
   )

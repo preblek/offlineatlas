@@ -13,7 +13,7 @@ fdi <- atlas("Bilateral FDI in a nine-country sample",
     "Inflows and outflows are alternative reporting perspectives, not additive measures. This example uses inflows only. Missing reports stay missing; zero and missing rows do not create lines.",
     "Circle area uses the sum of absolute incoming flows, while tables and totals preserve signs. Negative flows do not automatically mean a complete investment exit.",
     paste("Derived source SHA-256", meta$bilateral_source_sha256),
-    "UNCTAD source and reuse notice inherited from the FDI Atlas: https://unctadstat.unctad.org/EN/FAQ.html",
+    "United Nations Trade and Development (UNCTAD) Data Hub source and reuse terms: https://unctadstat.unctad.org/EN/About.html. See bundled FDI-NOTICE.txt.",
     "License reference: https://creativecommons.org/licenses/by/3.0/igo/")) |>
   add_areas(example_data("world_paths")) |>
   add_nodes(locations, id = "id", label = "label") |>
