@@ -48,6 +48,13 @@ Take note that the data can be read by anyone who receives the file, so export o
 
 [See every example in the demo gallery](articles/demo-gallery.html).
 
+## Related preprint
+
+For more on using portable interactive atlases in political science research,
+see Keith A. Preble’s [Portable Interactive Atlases for Political Science Research](https://preprints.apsanet.org/engage/apsa/article-details/6aef45d1d02d1c3f6401efdb)
+on APSA Preprints. The paper illustrates the approach with international trade
+and economic sanctions and includes interactive examples, as well.
+
 ## A living example
 
 [FDI Atlas](https://fdiatlas.engagedthinking.com/) is a related, more customized
