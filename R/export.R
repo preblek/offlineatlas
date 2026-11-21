@@ -26,6 +26,8 @@ export_html <- function(x, file, overwrite = FALSE) {
     stop("initial_time is not present in the relationships or area periods", call. = FALSE)
   browser_data <- unclass(x)
   attr(browser_data, "area_geometry") <- NULL
+  attr(browser_data, "node_attributes") <- NULL
+  attr(browser_data, "network_layout") <- NULL
   payload <- jsonlite::toJSON(browser_data, auto_unbox = TRUE, na = "null", null = "null",
     dataframe = "rows", digits = NA)
   # Escape '<' even inside ordinary labels so a closing script tag is inert.

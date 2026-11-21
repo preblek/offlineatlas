@@ -1,5 +1,13 @@
 # offlineatlas 0.0.10
 
+* Added reproducible Fruchterman-Reingold, Kamada-Kawai and circular layouts
+  through layout_network() and the static adapter. Computed schematic
+  coordinates can be embedded in offline HTML. Geographic nodes stay fixed.
+* Added ggrepel label placement and static node size, fill and shape mappings
+  from explicitly retained attributes or filtered network measures. Missing
+  values and isolates remain visible. Original attributes stay out of HTML.
+* Added igraph and ggrepel as required authoring dependencies, installed
+  automatically. Neither is required by exported viewers or image files.
 * Added editable ggplot2 output for schematic and geographic networks, with
   relationship layer, year and directed source filters, optional labels and
   adjustable fixed node size. Isolates and original positions are retained.

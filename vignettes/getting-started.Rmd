@@ -57,8 +57,9 @@ Copying the HTML file alone is enough. The viewer never retrieves new data;
 rebuild it in R when you want to update the underlying observations.
 
 The package API is experimental. This tutorial uses bundled snapshots and
-does not download data. sf handles geographic inputs and ggplot2 creates
-static figures. Both are required R dependencies and are installed automatically
+does not download data. sf handles geographic inputs, ggplot2 creates
+static figures, igraph supplies layouts and measures, and ggrepel places labels.
+These are required R dependencies and are installed automatically
 when missing during the standard GitHub installation.
 
 ```{r install-package, eval=FALSE}
@@ -223,6 +224,8 @@ schematic layout, not historical residential locations.
 families <- example_data("florence_nodes")
 ties <- example_data("florence_edges")
 marriages <- ties[ties$layer == "Marriage", ]
+# A display category derived from the name, not a historical measurement.
+families$family_role <- ifelse(families$label == "Medici", "Medici", "Other families")
 stopifnot(nrow(marriages) > 0)
 ```
 
@@ -245,7 +248,8 @@ marriage_map <- atlas(
 ) |>
   add_nodes(
     families, id = "id", label = "label",
-    layout_x = "x", layout_y = "y", coordinates = "schematic"
+    layout_x = "x", layout_y = "y", coordinates = "schematic",
+    attributes = "family_role"
   ) |>
   add_edges(
     marriages, from = "from", to = "to", layer = "layer",
@@ -263,8 +267,8 @@ network from the original study.
 
 To compare marriage and business layers, supply `ties` instead of `marriages`
 in a **new** atlas construction. Nodes, relationships and areas can each be
-added once. There is no automatic graph layout; supply schematic coordinates
-or geographic locations. For geographic networks, `add_nodes()` accepts
+added once. Supply schematic coordinates, or omit them and call
+`layout_network()` after adding edges. For geographic networks, `add_nodes()` accepts
 longitude and latitude columns or `sf` POINT geometry.
 
 For weighted flows, use `weight` with `coverage = "observed_rows"`, or a
@@ -473,24 +477,68 @@ path tables do not retain the required geometry.
 
 ### Make a static network figure
 
-Use the Florence atlas built earlier. The supplied schematic positions and
-all families, including isolates, are retained. Circles have equal size, so
-their area does not encode a network measure.
+Use the Florence atlas built earlier. Here an automatic layout replaces the
+supplied schematic positions, symbol size shows distinct marriage partners,
+and fill distinguishes Medici from the other families. All families, including
+isolates, are retained. A minimum symbol size keeps zero values visible.
 
-```{r static-network, fig.width=9, fig.height=6.5}
+```{r static-network, fig.width=9, fig.height=7}
 marriage_figure <- as_ggplot(set_preset(marriage_map, "compact"),
-                           layers = "Marriage", node_size = 3) +
-  ggplot2::labs(title = "Marriage alliances in Florence")
+                           layers = "Marriage", layout = "fr", seed = 7,
+                           node_size_by = "degree", node_fill_by = "family_role") +
+  ggplot2::labs(title = "Marriage alliances in Florence") +
+  ggplot2::scale_fill_manual(name = "Family",
+    values = c("Medici" = "#b46c3b", "Other families" = "#177b7b"))
 marriage_figure
 ggplot2::ggsave(file.path(output_dir, "florence-marriages.png"),
-               marriage_figure, width = 9, height = 6.5, dpi = 200)
+               marriage_figure, width = 9, height = 7, dpi = 200)
 ```
 
 For a network containing several relationship layers, `layers = "Marriage"`
 shows one layer and `layers = c("Marriage", "Business")` shows both. Colors
 remain stable as you change the selected layers. `labels = FALSE` hides node
-labels; automatic label repulsion is not yet implemented. You can change
-titles, legends, colors and themes using ordinary ggplot2 functions.
+labels. By default, ggrepel places labels away from other labels and symbols,
+with leader lines. Labels within the map bounds are retained, although very crowded figures
+may need more space. Use `repel = FALSE` for simple offset labels.
+
+The `"fr"` layout uses Fruchterman-Reingold. Alternatives are `"kk"`
+(Kamada-Kawai) and `"circle"`; `"existing"` keeps supplied positions. Layouts
+ignore direction and weight magnitude and use all supplied periods and layers
+to keep positions stable across filters. Geographic locations are never moved
+by these layout algorithms. Seeds make layouts and labels reproducible with
+the same library versions, fonts and figure dimensions.
+
+For a layout shared by HTML and static figures, calculate it on the atlas:
+
+```{r automatic-network-html}
+arranged_marriages <- layout_network(marriage_map, "fr", seed = 7)
+export_html(arranged_marriages, file.path(output_dir, "florence-automatic.html"),
+            overwrite = TRUE)
+```
+
+You can also omit both schematic coordinate columns in `add_nodes()` to
+start from a circle, then call `layout_network()` after adding edges. The
+coordinates are calculated in R and saved in the HTML. The exported viewer
+does not need igraph or an R session and does not recalculate the layout.
+
+Use `attributes` in `add_nodes()` to retain your own numeric or categorical
+columns. They remain in R for static styling and are excluded from the HTML
+payload. `node_size_by` accepts a nonnegative numeric column;
+`node_fill_by` accepts numeric or categorical columns; `node_shape_by`
+accepts up to five categories. The Florence example retained `family_role`
+for this purpose. Missing fills are gray; missing shape categories use crosses.
+Missing and zero size values receive a minimum-size symbol while their
+original values stay distinct in the plot data.
+
+Built-in measures are `degree`, `in_degree`, `out_degree`, `strength`,
+`in_strength`, `out_strength`, `betweenness`, and `component`. Degree counts
+distinct observed partners. Strength sums known absolute weights; the
+`strength_partial` and corresponding incoming/outgoing flags identify
+incomplete totals. All-missing supplied records yield NA. Betweenness ignores
+weight magnitudes. Measures use the current year, layers and source filters.
+Node scales adapt to each figure, so set fixed ggplot2 scale limits yourself
+when comparing periods. You can adjust titles, legends, palettes, size ranges,
+shapes and themes with ordinary ggplot2 functions.
 
 Geographic networks use the same function. Supply any background boundaries
 as `sf` polygons. For a directed network, choose a year and optionally a source:
@@ -516,14 +564,14 @@ geographic network figures as PNG, PDF and SVG.
 
 ## Share and inspect the results
 
-The five HTML files can be opened directly and shared independently. The
+The six HTML files can be opened directly and shared independently. The
 example code below lists them without launching a browser during a build.
 Temporary files may be removed when your R session ends. Copy the files you
 want to keep to a permanent folder.
 
 ```{r check-outputs, include=FALSE}
 expected <- c("florence.html", "gdp.html", "fdi-timeline.html",
-              "fdi-customized.html", "regional-gdp.html")
+              "fdi-customized.html", "regional-gdp.html", "florence-automatic.html")
 stopifnot(all(file.exists(file.path(output_dir, expected))))
 ```
 

@@ -14,9 +14,10 @@ remotes::install_github("preblek/offlineatlas")
 ```
 
 R 4.1 or later is required. The installer automatically installs missing required
-R packages, including sf for geographic inputs and ggplot2 for static maps, and
-checks their minimum versions. You do not need separate installation commands
-for sf or ggplot2. Do not disable dependency installation with
+R packages, including sf for geographic inputs, ggplot2 for static figures,
+igraph for layouts and network measures, and ggrepel for static label placement.
+It checks their minimum versions. You do not need separate installation commands
+for these dependencies. Do not disable dependency installation with
 `dependencies = FALSE`.
 
 Installing packages may require internet access. On systems that build sf from
@@ -141,9 +142,10 @@ ggsave("florence-marriages.png", p, width = 9, height = 7, dpi = 300)
 ```
 
 The Florence illustration is omitted with a warning, while the node positions
-and ties are retained. Circles have equal size; they do not encode degree or
-flow. Use `labels = FALSE` to hide labels. All nodes, including isolates, stay
-visible. Labels do not yet avoid overlaps automatically.
+and ties are retained. Circles have equal size by default. Use `labels = FALSE`
+to hide labels or `repel = FALSE` for simple offset labels. By default, ggrepel
+places labels with leader lines and keeps every label within the map bounds. Very dense figures can
+still need more space. All nodes, including isolates, stay visible.
 
 For geographic networks, supply boundaries as sf polygons to `add_areas()`.
 The installed aid and bilateral FDI examples use this input. For example,
@@ -158,9 +160,51 @@ split at the dateline. Paths are schematic connections, not travel routes.
 
 Run `examples/static_networks.R` from the installed package for Florence and
 geographic aid figures in PNG, PDF and SVG. Network styling can be changed
-with normal ggplot2 color, linewidth, linetype and theme settings. Automatic
-network layouts, label repulsion and node styling by attributes or network
-measures are candidates for a later version.
+with normal ggplot2 color, linewidth, linetype, fill, size, shape and theme settings.
+
+**Automatic layouts and node styling**
+
+For schematic networks, choose `layout = "fr"` (Fruchterman-Reingold), `"kk"`
+(Kamada-Kawai), or `"circle"` in `as_ggplot()`. The default `"existing"` retains
+supplied positions. Geographic nodes stay at their real locations. Layouts
+use the union of observed nonzero ties over all supplied periods and layers,
+without using direction or weight magnitude, so filters do not rearrange nodes.
+Fixed seeds make results reproducible with the same library versions.
+
+```r
+p <- as_ggplot(florence_atlas, layers = "Marriage",
+               layout = "fr", seed = 7, node_size_by = "degree")
+```
+
+To retain a layout for both HTML and figures, use `layout_network()` after
+adding edges. You can omit schematic `layout_x` and `layout_y` in `add_nodes()`
+to start from a circle. `layout_network()` removes any attached illustration
+with a warning because new positions may not align with the artwork.
+
+```r
+arranged <- layout_network(florence_atlas, "fr", seed = 7)
+export_html(arranged, "florence-automatic.html", overwrite = TRUE)
+```
+
+Use `attributes = c("group", "wealth")` in `add_nodes()` to explicitly retain
+columns for static styling. They stay in R and are excluded from HTML.
+Then use `node_fill_by = "group"`, `node_shape_by = "group"`, or
+`node_size_by = "wealth"`. Size requires nonnegative numeric values; shape
+supports up to five categories. Missing fills are gray, missing shape categories
+use crosses, and zero or missing size values use a small visible symbol.
+Original values, including NA, remain available in `p$data`.
+
+Built-in measures include `degree` (distinct partners), `in_degree`,
+`out_degree`, `strength`, `in_strength`, `out_strength`, `betweenness` and
+`component`. Measures use the selected year, layers and source. Strength sums
+known absolute weights and flags incomplete totals in the corresponding
+`*_partial` columns. Betweenness is unweighted and unnormalized. Node styling
+scales adapt to each figure; use fixed ggplot2 scale limits for comparisons
+across years. See `?as_ggplot` for exact definitions and missing-data behavior.
+
+These label and node styling options apply to static figures. The computed
+layout can also be embedded in HTML. No R packages are needed to view either
+export, and the browser does not recalculate the layout.
 
 Run examples/static.R from the installed package to build FDI, GDP, and EU
 examples as PNG, PDF, and SVG in a static folder. The standard nine
@@ -413,7 +457,7 @@ notices. Natural Earth geometry is public domain. World Bank indicators retain
 CC BY 4.0 attribution. See the bundled notices and export source panels.
 
 Prototype limits include one fixed geographic display projection,
-no automatic graph layout, no self-links, and no synchronized
+no self-links, and no synchronized
 map/network panels. Geographic areas accept sf polygons or prepared SVG paths. The
 example_data("world_paths") fixture remains available for data-frame workflows. Native area membership,
 and unlocated nodes are not implemented yet. The

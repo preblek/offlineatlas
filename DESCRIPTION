@@ -10,7 +10,8 @@ Description: Prepares geographic and schematic networks and area maps as
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 4.1.0)
-Imports: jsonlite, xml2, grid, sf (>= 1.0-0), ggplot2 (>= 3.5.0)
+Imports: jsonlite, xml2, grid, sf (>= 1.0-0), ggplot2 (>= 3.5.0),
+    igraph (>= 2.0.0), ggrepel (>= 0.9.8)
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/preblek/offlineatlas

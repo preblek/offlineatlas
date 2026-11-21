@@ -12,10 +12,11 @@ Start with \code{\link{atlas}}. Add geographic variables with
 \code{\link{add_nodes}} and \code{\link{add_edges}}.
 Finish with \code{\link{export_html}}.
 
-The API is experimental. sf and ggplot2 are required authoring dependencies.
+The API is experimental. sf, ggplot2, igraph and ggrepel are required authoring dependencies.
 The installer includes them automatically when missing. sf handles
 polygon and point inputs; ggplot2 creates editable static area maps and networks through
-\code{\link{as_ggplot}}. Saved HTML and image files require neither package.
+\code{\link{as_ggplot}}. igraph supplies layouts and network measures;
+ggrepel places static labels. Saved HTML and image files require no R packages.
 Installing authoring dependencies may need internet access. Preparing the
 bundled examples and viewing their exports use local resources.
 }
@@ -48,12 +49,12 @@ Playback, selection and numeric country histories run in the browser.
 \section{Current limits}{
 HTML maps use one equirectangular display projection, with longitude -180 to
 180 and latitude -60 to 85. Regional framing does not change projection.
-One rectangular geographic inset is supported. Schematic layouts must be
-supplied. Self-links, automatic graph layout, changing historical boundaries
+One rectangular geographic inset is supported. Schematic layouts can be
+supplied or computed with \code{\link{layout_network}}. Self-links, changing historical boundaries
 and synchronized map/network panels are not implemented. Large-data
 performance is unmeasured. Static ggplot output supports sf area maps and
-networks, without insets or SVG illustrations. Static network circles have
-equal size and labels do not automatically avoid overlaps. Read source notes
+networks, without insets or SVG illustrations. Automatic label placement is
+best-effort; crowded figures may need more space. Read source notes
 and preserve dataset attribution.
 }
 \seealso{\code{\link{atlas}}, \code{\link{export_html}},

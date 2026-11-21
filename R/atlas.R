@@ -48,7 +48,7 @@ atlas <- function(title = "Offline atlas", description = "", notice = "",
 
 add_nodes <- function(x, data, id, label = id, longitude = NULL, latitude = NULL,
                       layout_x = NULL, layout_y = NULL,
-                      coordinates = c("geographic", "schematic")) {
+                      coordinates = c("geographic", "schematic"), attributes = NULL) {
   check_atlas(x)
   if (!is.null(x$nodes)) stop("Nodes have already been added", call. = FALSE)
   coordinates <- match.arg(coordinates)
@@ -72,8 +72,16 @@ add_nodes <- function(x, data, id, label = id, longitude = NULL, latitude = NULL
     py <- 92 + (85 - b) / 145 * 380
   } else {
     if (!is.null(x$areas)) stop("Geographic areas cannot use schematic coordinates", call. = FALSE)
-    a <- numbers(column(data, layout_x), "Layout x")
-    b <- numbers(column(data, layout_y), "Layout y")
+    if (is.null(layout_x) != is.null(layout_y))
+      stop("Supply both layout_x and layout_y, or omit both for a circular starting layout", call. = FALSE)
+    if (is.null(layout_x)) {
+      angle <- 2 * pi * (seq_along(ids) - 1) / length(ids)
+      a <- if (length(ids) == 1) 500 else 500 + 245 * cos(angle)
+      b <- if (length(ids) == 1) 315 else 315 + 245 * sin(angle)
+    } else {
+      a <- numbers(column(data, layout_x), "Layout x")
+      b <- numbers(column(data, layout_y), "Layout y")
+    }
     if (any(a < 30 | a > 970 | b < 30 | b > 600))
       stop("Schematic coordinates must fit x [30,970], y [30,600]", call. = FALSE)
     px <- a; py <- b
@@ -82,6 +90,23 @@ add_nodes <- function(x, data, id, label = id, longitude = NULL, latitude = NULL
     longitude = if (coordinates == "geographic") a else NA_real_,
     latitude = if (coordinates == "geographic") b else NA_real_, stringsAsFactors = FALSE)
   x$coordinates <- coordinates
+  if (!is.null(attributes)) {
+    reserved <- c(names(x$nodes), "plot_x", "plot_y", names(network_metric_names()),
+      "strength_partial", "in_strength_partial", "out_strength_partial")
+    if (!is.character(attributes) || anyNA(attributes) || anyDuplicated(attributes) ||
+        any(!nzchar(attributes)) || any(attributes %in% reserved) || any(startsWith(attributes, ".node")))
+      stop("attributes must be distinct column names, excluding node coordinates and reserved network metric names", call. = FALSE)
+    retained <- data.frame(id = ids, stringsAsFactors = FALSE)
+    for (name in attributes) {
+      value <- column(data, name)
+      if ((!is.numeric(value) && !is.character(value) && !is.factor(value) && !is.logical(value)) ||
+          is.object(value) && !is.factor(value) || !is.null(dim(value)))
+        stop("Node attributes must be plain numeric, character, factor or logical columns", call. = FALSE)
+      if (is.numeric(value)) value <- numbers(value, paste("Attribute", name), missing = TRUE)
+      retained[[name]] <- value
+    }
+    attr(x, "node_attributes") <- retained
+  }
   x
 }
 

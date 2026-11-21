@@ -2,10 +2,13 @@
 \alias{as_ggplot}
 \title{Create an Editable Static Map or Network}
 \description{Convert a geographic or schematic network, or one variable and period of an sf-backed area atlas, into
-a regular ggplot object. ggplot2 and sf are required authoring dependencies installed with offlineatlas;
-saved figures and HTML viewers need neither package.}
+a regular ggplot object. ggplot2, sf, igraph and ggrepel are required authoring
+dependencies installed with offlineatlas; saved figures and HTML viewers need no R packages.}
 \usage{as_ggplot(x, variable = NULL, time = NULL, layers = NULL,
-  source = NULL, labels = TRUE, node_size = 3)}
+  source = NULL, labels = TRUE, node_size = 3,
+  layout = c("existing", "fr", "kk", "circle"), seed = 1,
+  repel = TRUE, node_size_by = NULL, node_fill_by = NULL,
+  node_shape_by = NULL, node_fill = "#177b7b")}
 \arguments{
 \item{x}{An offline_atlas object. Area maps and network boundaries require sf polygon input to add_areas. Networks may also omit boundaries.}
 \item{variable}{An original area variable column name. NULL uses the first variable.}
@@ -16,10 +19,24 @@ for a static area or edge table with no time column.}
 character(0) shows nodes without relationships. Colors remain stable across filters.}
 \item{source}{For directed networks, one source node ID to show its outgoing ties.
 NULL includes all sources, independently of the HTML initial_source control.}
-\item{labels}{Whether to draw network node labels. All labels are drawn when TRUE;
-automatic label repulsion is not implemented. Ignored for area maps.}
+\item{labels}{Whether to draw network node labels. Ignored for area maps.}
 \item{node_size}{Positive fixed network node size in millimetres. Default 3.
-Circle size does not encode degree or weight. Ignored for area maps.}
+Used when node_size_by is NULL. Ignored for area maps.}
+\item{layout}{Keep existing node coordinates, or calculate an automatic fr, kk
+or circle layout for a schematic network. Geographic coordinates stay fixed.
+See \code{\link{layout_network}} for graph construction and layout definitions.}
+\item{seed}{Nonnegative integer seed for layouts and label repulsion.}
+\item{repel}{Use ggrepel to move static labels away from one another and node
+symbols, with leader lines to their nodes. Default TRUE. FALSE uses simple
+offset labels. This does not move nodes or change browser label behavior.}
+\item{node_size_by}{Name of a retained nonnegative numeric node attribute or a
+network metric. NULL uses fixed node_size. Scaled symbols range from 2 to 6 mm.}
+\item{node_fill_by}{Name of a numeric or categorical node attribute or metric.
+NULL uses the fixed node_fill color. Missing fills are gray.}
+\item{node_shape_by}{Name of a categorical node attribute or component.
+Up to five categories use filled symbols; missing categories use crosses.
+NULL uses circles.}
+\item{node_fill}{A fixed R color for nodes when node_fill_by is NULL.}
 }
 \details{
 The result retains fixed numeric intervals, their lower-inclusive thresholds,
@@ -35,12 +52,47 @@ the Cairo device. A plot is one static snapshot; HTML search, playback,
 selection, history charts and browser camera state do not carry into it.
 Visible insets produce a warning and are omitted.
 
-Networks preserve supplied node positions and all nodes, including isolates.
+Networks preserve all nodes, including isolates. Supplied positions are used
+unless layout requests an automatic arrangement.
 Schematic coordinates run downwards as in the HTML viewer. Geographic
 networks use longitude and latitude, with neutral sf boundaries when supplied.
 Network plots do not color boundaries by an area variable; leave variable NULL.
 SVG illustrations are omitted with a warning. SVG-path-only boundaries must
-be rebuilt with sf input. Automatic network layouts are not computed.
+be rebuilt with sf input. Static automatic layouts use the full supplied
+network across periods and layers, so filtering does not rearrange nodes.
+
+With repel = TRUE, ggrepel attempts to avoid label overlaps at the output
+device dimensions. Labels within the configured map bounds are not discarded
+when crowded. Nodes outside regional bounds are not labeled. Very dense plots
+may still need a larger figure, shorter labels or labels = FALSE. Fixed seeds
+and iteration limits make repeated renders reproducible at the same dimensions
+and library versions. Placement can change with figure dimensions and fonts.
+
+Retain attributes with attributes in \code{\link{add_nodes}}. Computed network
+metrics are degree (distinct partners regardless of direction), in_degree,
+out_degree, strength (sum of known absolute incident weights), in_strength,
+out_strength, unnormalized unweighted betweenness, and weakly connected
+component. In undirected networks, incoming and outgoing metrics equal their
+undirected counterparts. Metrics use the selected period, layers and source.
+Degree and betweenness collapse repeated ties; strength sums layer-specific
+records. In unweighted networks, strength counts layer-specific ties using
+implicit unit weights. Observed negative weights contribute topology and absolute strength.
+Zero and missing weights do not contribute topology. Betweenness ignores
+weight magnitudes. These are measures of the supplied observed network,
+not estimates of missing ties.
+
+Strength includes known values only. All-missing incident records yield NA;
+no supplied incident records yield zero known weight. The strength_partial,
+in_strength_partial and out_strength_partial columns flag supplied missing
+records. Original metric and attribute values retain NA. The drawing helper
+uses minimum size for missing and zero size values so nodes remain visible.
+Categorical fills and shapes retain factor levels. Numeric fills use a
+diverging palette centered at zero when negative values are present.
+Component identifiers are local to the selected network; they are not persistent
+community labels across periods. Node styling scales are calculated for each plotted snapshot. Set fixed
+ggplot2 scale limits yourself for comparisons across years or filters.
+Use scale_size_continuous, scale_fill_manual or scale_fill_gradient, and
+scale_shape_manual to override ranges, palettes, legend titles and limits.
 
 Relationship colors identify layers. Parallel and reciprocal ties have
 separate curved paths. Geographic paths take the shorter longitude span and
@@ -49,8 +101,9 @@ routes. Directed networks have arrows along each line. Negative weights keep
 their original direction and use dashed lines. Width encodes absolute weight,
 with a fixed scale over all supplied periods and layers. Zero and unavailable
 rows create no lines and remain distinct in the edge metadata. Relationships
-between coincident positions are omitted with a warning. Nodes use equal-size
-circles, unlike the browser's degree or flow sizing. All nodes remain visible
+between coincident positions are omitted with a warning. Nodes default to
+equal-size circles; the node mapping arguments enable other encodings. These
+static styling choices do not change the browser's node styling. All nodes remain visible
 after source and layer filtering. Schematic illustrations and insets are not
 included in static network figures.
 
@@ -89,7 +142,9 @@ rebuilt with sf input. The original sf attribute table is not retained.
 \value{A ggplot object. Area plots have sf data containing id, label, value,
 status, notes, time, fill_key and geometry. fill_key identifies the fixed
 legend class. Network plots have node data with id, label, original coordinates,
-plot_x and plot_y. The offlineatlas_edges attribute contains the filtered edge
+plot_x and plot_y, retained attributes and computed metrics. Internal .node
+columns are drawing helpers. The offlineatlas_layout attribute records an
+automatic layout method and seed when used. The offlineatlas_edges attribute contains the filtered edge
 table, including original signed weights, zero and unavailable rows, provenance
 when supplied, and a drawn flag. Route data are in the ggplot layers.}
 \seealso{\code{\link{add_areas}}, \code{\link{set_legend}},
@@ -110,7 +165,8 @@ if (requireNamespace("sf", quietly = TRUE) &&
               layout_y = "y", coordinates = "schematic") |>
     add_edges(example_data("florence_edges"), from = "from", to = "to",
               layer = "layer")
-  p <- as_ggplot(network, layers = "Marriage")
+  p <- as_ggplot(network, layers = "Marriage", layout = "fr", seed = 7,
+                 node_size_by = "degree", node_fill_by = "component")
   stopifnot(nrow(p$data) == 16)
 }
 }

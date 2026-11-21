@@ -1,10 +1,15 @@
 # Network geometry stays in ordinary ggplot layers; no browser runtime changes.
-network_ggplot <- function(x, variable, time, layers, source, labels, node_size) {
+network_ggplot <- function(x, variable, time, layers, source, labels, node_size,
+                           seed, repel, node_size_by, node_fill_by, node_shape_by, node_fill) {
   if (!is.null(variable)) stop("variable is only available for area maps; network boundaries are neutral", call. = FALSE)
   if (!is.logical(labels) || length(labels) != 1L || is.na(labels))
     stop("labels must be TRUE or FALSE", call. = FALSE)
   if (!is.numeric(node_size) || length(node_size) != 1L || !is.finite(node_size) || node_size <= 0)
     stop("node_size must be a positive finite number in millimetres", call. = FALSE)
+  if (!is.logical(repel) || length(repel) != 1L || is.na(repel))
+    stop("repel must be TRUE or FALSE", call. = FALSE)
+  scalar_text(node_fill, "node_fill")
+  tryCatch(grDevices::col2rgb(node_fill), error = function(e) stop("node_fill must be a valid R color", call. = FALSE))
   geographic <- identical(x$coordinates, "geographic")
   retained <- attr(x, "area_geometry", exact = TRUE)
   if (!is.null(x$areas) && is.null(retained))
@@ -40,9 +45,26 @@ network_ggplot <- function(x, variable, time, layers, source, labels, node_size)
   if (!is.null(source)) selected <- selected & all_edges$from == source
   edges <- all_edges[selected, , drop = FALSE]
   edges$drawn <- !is.na(edges$weight) & edges$weight != 0
-  nodes <- x$nodes
+  nodes <- network_node_data(x, edges)
   nodes$plot_x <- if (geographic) nodes$longitude else nodes$x
   nodes$plot_y <- if (geographic) nodes$latitude else nodes$y
+  size_values <- network_style_value(nodes, node_size_by, "node_size_by", numeric_only = TRUE)
+  fill_values <- network_style_value(nodes, node_fill_by, "node_fill_by")
+  shape_values <- network_style_value(nodes, node_shape_by, "node_shape_by")
+  categorical <- function(value) {
+    if (is.factor(value)) return(value)
+    factor(value, levels = sort(unique(value[!is.na(value)])))
+  }
+  # Only the drawing helper uses the minimum size for NA. Original attribute
+  # and metric columns keep NA, separately from observed zero values.
+  if (!is.null(size_values)) nodes$.node_size <- ifelse(is.na(size_values), 0, size_values)
+  if (!is.null(fill_values)) nodes$.node_fill <- if (is.numeric(fill_values)) fill_values else categorical(fill_values)
+  if (!is.null(shape_values)) {
+    if (is.numeric(shape_values)) stop("node_shape_by requires a categorical attribute or component", call. = FALSE)
+    nodes$.node_shape <- categorical(shape_values)
+    if (nlevels(nodes$.node_shape) > 5)
+      stop("node_shape_by supports at most five categories; use fill for more groups", call. = FALSE)
+  }
   bounds <- if (is.null(x$view)) c(-180, -60, 180, 85) else
     unlist(x$view[c("west", "south", "east", "north")])
 
@@ -95,6 +117,7 @@ network_ggplot <- function(x, variable, time, layers, source, labels, node_size)
   active_layers <- available_layers[available_layers %in% layers]
   # Bind aesthetics locally for R CMD check without adding a dependency on rlang.
   plot_x <- plot_y <- route_id <- layer <- magnitude <- sign <- label <- NULL
+  .node_size <- .node_fill <- .node_shape <- NULL
   mapping <- ggplot2::aes(x = plot_x, y = plot_y, group = route_id, colour = layer)
   if (isTRUE(x$weighted)) mapping$linewidth <- ggplot2::aes(linewidth = magnitude)$linewidth
   if (isTRUE(x$signed)) mapping$linetype <- ggplot2::aes(linetype = sign)$linetype
@@ -111,14 +134,62 @@ network_ggplot <- function(x, variable, time, layers, source, labels, node_size)
     path_args$show.legend <- FALSE
     p <- p + do.call(ggplot2::geom_path, path_args)
   }
-  p <- p + ggplot2::geom_point(ggplot2::aes(x = plot_x, y = plot_y),
-    shape = 21, size = node_size, fill = "#177b7b", colour = "white", stroke = .5)
-  if (labels) p <- p + ggplot2::geom_label(ggplot2::aes(x = plot_x, y = plot_y, label = label),
-    nudge_y = if (geographic) (bounds[4] - bounds[2]) * .024 else 18,
-    size = 3, colour = "#183f45", fill = "white", linewidth = 0,
-    label.padding = grid::unit(.08, "lines"))
+  point_mapping <- ggplot2::aes(x = plot_x, y = plot_y)
+  if (!is.null(size_values)) point_mapping$size <- ggplot2::aes(size = .node_size)$size
+  if (!is.null(fill_values)) point_mapping$fill <- ggplot2::aes(fill = .node_fill)$fill
+  if (!is.null(shape_values)) point_mapping$shape <- ggplot2::aes(shape = .node_shape)$shape
+  point_args <- list(mapping = point_mapping, colour = "#35595d", stroke = .4)
+  if (is.null(size_values)) point_args$size <- node_size
+  if (is.null(fill_values)) point_args$fill <- node_fill
+  if (is.null(shape_values)) point_args$shape <- 21
+  p <- p + do.call(ggplot2::geom_point, point_args)
+  if (labels) {
+    # Off-map labels must not be pulled into a regional map by the solver.
+    label_nodes <- if (geographic) nodes[nodes$longitude >= bounds[1] & nodes$longitude <= bounds[3] &
+      nodes$latitude >= bounds[2] & nodes$latitude <= bounds[4], , drop = FALSE] else nodes
+    label_args <- list(data = label_nodes, mapping = ggplot2::aes(x = plot_x, y = plot_y, label = label),
+      size = 3, colour = "#183f45", fill = "white", label.padding = grid::unit(.08, "lines"))
+    if (repel) {
+      label_args <- c(label_args, list(seed = seed, max.overlaps = Inf, max.time = Inf,
+        max.iter = 10000, box.padding = .35, point.padding = .3,
+        point.size = if (is.null(size_values)) node_size else 6,
+        min.segment.length = 0, segment.color = "#809292", segment.size = .25,
+        label.size = 0, linewidth = 0))
+      p <- p + do.call(ggrepel::geom_label_repel, label_args)
+    } else {
+      label_args$nudge_y <- if (geographic) (bounds[4] - bounds[2]) * .024 else 18
+      label_args$linewidth <- 0
+      p <- p + do.call(ggplot2::geom_label, label_args)
+    }
+  }
   legend <- x$legend
   columns <- if (is.null(legend$columns)) 3L else legend$columns
+  if (!is.null(size_values)) p <- p + ggplot2::scale_size_continuous(
+    name = network_style_title(node_size_by, x$units), range = c(2, 6),
+    limits = c(0, max(c(1, size_values), na.rm = TRUE)),
+    breaks = function(limits) {
+      if (node_size_by %in% c("degree", "in_degree", "out_degree"))
+        unique(round(seq(0, limits[2], length.out = 3)))
+      else { ticks <- pretty(limits, n = 2); ticks[ticks >= 0 & ticks <= limits[2]] }
+    }, labels = network_number_labels)
+  if (!is.null(fill_values)) {
+    title <- network_style_title(node_fill_by, x$units)
+    if (is.numeric(fill_values)) {
+      if (any(fill_values < 0, na.rm = TRUE)) p <- p + ggplot2::scale_fill_gradient2(
+        name = title, low = "#b05b3a", mid = "#faf8ee", high = "#177b7b", midpoint = 0,
+        na.value = "#bdbdbd", labels = network_number_labels)
+      else p <- p + ggplot2::scale_fill_gradient(name = title, low = "#d7ebdc", high = "#12616c",
+        na.value = "#bdbdbd", labels = network_number_labels)
+    } else {
+      palette <- grDevices::hcl.colors(max(1, nlevels(nodes$.node_fill)), "Dark 3")
+      p <- p + ggplot2::scale_fill_manual(name = title,
+        values = stats::setNames(palette[seq_len(nlevels(nodes$.node_fill))], levels(nodes$.node_fill)),
+        drop = FALSE, na.value = "#bdbdbd")
+    }
+  }
+  if (!is.null(shape_values)) p <- p + ggplot2::scale_shape_manual(name = network_style_title(node_shape_by),
+    values = stats::setNames((21:25)[seq_len(nlevels(nodes$.node_shape))], levels(nodes$.node_shape)),
+    drop = FALSE, na.value = 4)
   if (length(active_layers)) p <- p + ggplot2::scale_colour_manual(values = colors,
     limits = active_layers, drop = FALSE, name = if (is.null(legend$title)) "Relationship" else legend$title)
   if (isTRUE(x$weighted)) {
@@ -150,7 +221,15 @@ network_ggplot <- function(x, variable, time, layers, source, labels, node_size)
   font <- if (is.null(x$style$font_family)) "sans" else unname(family[x$style$font_family])
   heading <- if (is.null(x$style$heading_family)) "sans" else unname(family[x$style$heading_family])
   large <- identical(x$preset, "presentation")
-  caption <- c("Equal-size circles identify nodes; circle size does not encode a value.",
+  layout_info <- attr(x, "network_layout", exact = TRUE)
+  caption <- c(if (is.null(size_values)) "Equal-size symbols identify nodes; symbol size does not encode a value." else
+      paste0("Symbol size shows ", network_style_title(node_size_by, x$units), "; a minimum size keeps zero and missing values visible."),
+    if (!is.null(fill_values) && anyNA(fill_values)) "Gray node fill indicates a missing attribute or metric.",
+    if (!is.null(shape_values) && anyNA(shape_values)) "Crosses indicate missing shape categories.",
+    if (any(vapply(nodes[c("strength_partial", "in_strength_partial", "out_strength_partial")], any, logical(1))) &&
+        any(c(node_size_by, node_fill_by) %in% c("strength", "in_strength", "out_strength")))
+      "Strength sums known absolute weights only; missing records make some totals incomplete.",
+    if (!is.null(layout_info)) paste0("Automatic ", layout_info$method, " layout from all supplied periods and layers; seed ", layout_info$seed, "."),
     if (isTRUE(x$weighted)) "Line width shows absolute weight, using a fixed scale across all supplied periods and layers.",
     if (isTRUE(x$directed)) paste0("Arrows indicate source-to-target direction",
       if (isTRUE(x$signed)) ", including negative flows." else "."),
@@ -170,6 +249,8 @@ network_ggplot <- function(x, variable, time, layers, source, labels, node_size)
     ggplot2::guides(colour = ggplot2::guide_legend(ncol = columns, byrow = TRUE),
       linewidth = ggplot2::guide_legend(ncol = columns, byrow = TRUE),
       linetype = ggplot2::guide_legend(ncol = columns, byrow = TRUE)) +
+    ggplot2::guides(size = ggplot2::guide_legend(ncol = columns, byrow = TRUE),
+      shape = ggplot2::guide_legend(ncol = columns, byrow = TRUE)) +
     ggplot2::theme_void(base_family = font) + ggplot2::theme(
       legend.position = position, legend.box = "vertical", legend.title = ggplot2::element_text(size = if (large) 11 else 9),
       legend.text = ggplot2::element_text(size = if (large) 10 else 8),
@@ -180,6 +261,7 @@ network_ggplot <- function(x, variable, time, layers, source, labels, node_size)
       plot.caption.position = "plot", plot.caption = ggplot2::element_text(size = 8, hjust = 0, margin = ggplot2::margin(t = 7)),
       plot.margin = ggplot2::margin(10, 10, 10, 10))
   attr(p, "offlineatlas_edges") <- edges
+  attr(p, "offlineatlas_layout") <- layout_info
   p
 }
 

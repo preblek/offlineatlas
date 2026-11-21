@@ -1,11 +1,21 @@
 # Static authoring adapter. No ggplot2 or sf code is needed by exported viewers.
 as_ggplot <- function(x, variable = NULL, time = NULL, layers = NULL,
-                      source = NULL, labels = TRUE, node_size = 3) {
+                      source = NULL, labels = TRUE, node_size = 3,
+                      layout = c("existing", "fr", "kk", "circle"), seed = 1,
+                      repel = TRUE, node_size_by = NULL, node_fill_by = NULL,
+                      node_shape_by = NULL, node_fill = "#177b7b") {
   check_atlas(x)
   if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("sf", quietly = TRUE))
     stop("Required dependencies ggplot2 and sf could not be loaded; reinstall offlineatlas with its dependencies", call. = FALSE)
-  if (!is.null(x$nodes))
-    return(network_ggplot(x, variable, time, layers, source, labels, node_size))
+  layout <- match.arg(layout)
+  if (!is.null(x$nodes)) {
+    seed <- network_seed(seed)
+    if (layout != "existing") x <- layout_network(x, layout = layout, seed = seed)
+    return(network_ggplot(x, variable, time, layers, source, labels, node_size,
+      seed, repel, node_size_by, node_fill_by, node_shape_by, node_fill))
+  }
+  if (layout != "existing" || !is.null(node_size_by) || !is.null(node_fill_by) || !is.null(node_shape_by))
+    stop("Layouts and node styling are only available for network plots", call. = FALSE)
   if (!is.null(layers) || !is.null(source))
     stop("layers and source are only available for network plots", call. = FALSE)
   if (is.null(x$areas) || !length(x$variables))
