@@ -1,0 +1,7 @@
+^\.git$
+^\.gitignore$
+^.*\.Rcheck$
+^.*\.tar\.gz$
+^.*\.zip$
+^Rplots\.pdf$
+^LICENSE\.md$
