@@ -31,36 +31,33 @@ library(offlineatlas)
 
 Read this tutorial on the [documentation website](https://preblek.github.io/offlineatlas/articles/getting-started.html)
 or explore the [demo gallery](https://preblek.github.io/offlineatlas/articles/demo-gallery.html)
-for live examples, standalone HTML downloads, and complete R scripts.
+for examples, standalone HTML downloads, and complete R scripts.
 
-This tutorial creates a GDP map, a Florence marriage network, and an FDI
-map that changes over time. You will customize the controls and legend from
+This tutorial creates a map showing GDP variation, a Florence marriage network, and an FDI
+map that changes over time. You can customize the controls and legend from
 R, export independent HTML files, and make an editable static figure.
 
-For a **living example**, visit [FDI Atlas](https://fdiatlas.engagedthinking.com/),
-Keith A. Preble's interactive website for exploring foreign direct investment.
-That earlier project helped shape offlineatlas. This tutorial builds smaller,
-standalone examples of related mapping and network workflows.
+For a **live example of what the package can do**, visit [FDI Atlas](https://fdiatlas.engagedthinking.com/),
+Keith A. Preble's interactive website for exploring bilateral foreign direct investment in- and outflows using FDI data provided by UNCTAD.
+That earlier project helped shape offlineatlas. This tutorial builds standalone examples of related mapping and network workflows.
 
 Publishing an offlineatlas map can be as simple as uploading the generated
 `.html` file to your website and linking to it. Visitors can explore the map
-in their browsers without a running R session or a Shiny server. They can
-also download that same file and open it offline.
+in their browsers without a running R session or a Shiny server, and they can
+also download that same file and open it offline, as well.
 
 FDI Atlas uses a more elaborate hosting arrangement, including a dataset
-stored in a private folder. The offlineatlas examples here embed their mapped
-data in the HTML itself, so those data are included whenever you share the file.
+stored in a private folder to prevent data sharing. The offlineatlas examples here embed their mapped
+data in the HTML itself, so those data are included whenever you share the file (so be mindful of what you share)!
 
-Visiting the hosted FDI Atlas requires an internet connection. The link is
-optional; this tutorial and its exported maps work offline.
+Visiting the hosted FDI Atlas requires an internet connection, but the examples here do not require an internet connection to function (although
+you will need an internet connection to download and access them).
 
-R prepares the data and writes the files. The exported viewers contain their
-data, geometry, JavaScript and CSS. People opening them need only a browser.
-They do not need R, Shiny, a server, an API key or an internet connection.
-Copying the HTML file alone is enough. The viewer never retrieves new data;
-rebuild it in R when you want to update the underlying observations.
+R prepares the data and writes the necessary files to build the web site. The exported viewers contain all the
+data, geometry, JavaScript and CSS needed to render the map. Users do not need R, Shiny, a server, an API key or an internet connection.
+The viewer never retrieves new data, and updates to data sets require rebuilding sites in R when you want to update the underlying observations.
 
-The package API is experimental. This tutorial uses bundled snapshots and
+The package API is experimental and a work in progress. This tutorial uses bundled snapshots and
 does not download data. sf handles geographic inputs, ggplot2 creates
 static figures, igraph supplies layouts and measures, and ggrepel places labels.
 These are required R dependencies and are installed automatically
@@ -71,10 +68,8 @@ install.packages("remotes")
 remotes::install_github("preblek/offlineatlas")
 ```
 
-Installing R packages may require internet access. Systems that build sf from
-source may also need system libraries or build tools; see the
-[sf installation guide](https://r-spatial.github.io/sf/#installing).
-These authoring dependencies do not change the offline HTML export.
+Installing R packages require internet access. Systems that build sf from source may also need system libraries or build tools; see the
+[sf installation guide](https://r-spatial.github.io/sf/#installing). These authoring dependencies do not change the offline HTML export.
 
 ```{r libraries}
 library(offlineatlas)
@@ -158,7 +153,7 @@ utils::browseURL(file.path(output_dir, "gdp.html"))
 
 For your own map, use `sf::st_read()` to read local boundaries, join your
 variables by identifiers, and pass the resulting `sf` object to `add_areas()`.
-Polygon and multipolygon geometry is supported. A valid CRS must be present;
+Polygon and multipolygon geometry is also supported. A valid CRS must be present;
 projected inputs are transformed during preparation. The HTML display uses a
 fixed equirectangular projection with latitude coverage from -60 to 85.
 Invalid shapes and out-of-range geometry produce errors. Repair or clip them
@@ -211,9 +206,14 @@ export_html(regional_map, file.path(output_dir, "regional-gdp.html"),
 Add all geographic layers before fitting. The function includes every
 supplied feature, even if its value is missing. It preserves islands and
 outlying territories, so subset the geometry explicitly when you want only
-a particular region. It does not change projection. Very small regions have
-a minimum one-degree span; dateline-crossing geometry can require a world
-view. Prepared SVG path tables still need explicit bounds.
+a particular region to display. However, please note that it does not change projection. Very small regions have
+a minimum one-degree span, and dateline-crossing geometry can require a world
+view. With sf boundaries, the package can automatically fit the map to your region. 
+If you supply SVG shapes instead, specify the viewing area using west, south, east, and north coordinates.
+
+```r
+set_view(my_atlas, bounds = c(-25, 33, 45, 72))
+```
 
 ## 2. Draw the Florence marriage network
 
@@ -278,7 +278,10 @@ longitude and latitude columns or `sf` POINT geometry.
 For weighted flows, use `weight` with `coverage = "observed_rows"`, or a
 complete directed panel with `coverage = "complete_panel"` and a time column.
 An omitted observed row is not assumed to be zero. Negative weights require
-`signed = TRUE`. The `add_edges()` help page explains the coverage contract.
+`signed = TRUE`. 
+
+The add_edges() help page explains how to specify whether your data lists connections, contains only observed records, or includes every expected combination, 
+and how missing records are handled.
 
 ## 3. Add an FDI timeline
 
@@ -389,8 +392,8 @@ fonts. Use them before your own overrides. Static legends choose a column
 count based on category count and label length unless you set one explicitly.
 You still choose figure width and height when saving with ggplot2.
 
-You can make presentation changes in R without editing JavaScript or CSS.
-Here, keep the initial year explicit, move the toolbar, slow playback, and
+You can make presentation changes in R without editing JavaScript or CSS directly.
+In this example, keep the initial year explicit, move the toolbar, slow playback, and
 provide readable labels for the six fixed FDI intervals.
 
 ```{r customize}
@@ -470,13 +473,12 @@ the subtitle already gives the units. Use `legend.position = "right"` to
 move the legend, or `"none"` to hide it. These ggplot2 changes apply to this
 static figure without changing the interactive atlas.
 
-An interval labeled `0 to <1,000` includes zero and values such as 999.5,
-but excludes 1,000. The highest interval uses the greater-than-or-equal symbol.
+An interval labeled 0 to <1,000 includes values from zero up to, but not including, 1,000. A label such as ≥80,000 means 80,000 or more.
 
 Static output also supports schematic and geographic networks. It does not
 reproduce browser selection, history charts or the browser's current zoom.
 Visible insets and illustrated SVG backgrounds are omitted with a warning.
-Area maps and geographic network boundaries require `sf` input; prepared SVG
+Area maps and geographic network boundaries require `sf` input, and prepared SVG
 path tables do not retain the required geometry.
 
 ### Make a static network figure
@@ -585,14 +587,33 @@ list.files(output_dir, pattern = "[.]html$")
 
 The viewer offers several downloads.
 
-- **SVG and PNG** capture the visible map or network, with its captions,
-  legend and any visible inset or numeric history chart.
+- **SVG and PNG** capture the current map or network, including captions,
+  the legend, and any visible inset or numeric history chart.
 - **View data CSV** follows the current filters and selection.
 - **History CSV** contains every period for the selected country.
-- **All data JSON** retains all embedded periods and mapped data, regardless
-  of hidden controls. It retains original prepared node coordinates.
+- **All data JSON** includes all embedded periods and mapped data,
+  regardless of which controls are hidden. It also retains the prepared
+  node coordinates.
 
-Search narrows the selection list, not the underlying map data. Clear focus
+Static figures can also be saved as **PDFs** in R. PDF download links are
+planned for the demo gallery.
+
+```r
+figure <- as_ggplot(my_atlas)
+
+ggplot2::ggsave(
+  "my-figure.pdf",
+  plot = figure,
+  width = 9,
+  height = 6,
+  units = "in"
+)
+```
+
+Replace `my_atlas` with the name of your atlas object. This saves a
+9-by-6-inch PDF in your working directory.
+
+Search narrows the selection list but not the underlying map data. Clear focus
 restores all entities while retaining filters and zoom. Exporting a current
 view pauses playback. CSV text that could be interpreted as a spreadsheet
 formula receives a protective apostrophe; JSON preserves the original text.
