@@ -2,8 +2,8 @@
 
 <div class="atlas-intro">
 <p class="atlas-kicker">THE OFFLINEATLAS R PACKAGE</p>
-<p class="atlas-lead">Build an interactive atlas in R. Share a single HTML file that anyone can open, even without an internet connection.</p>
-<p>Explore variables across countries, follow change over time, or connect places and people. Make editable static figures with ggplot2 from the same atlas.</p>
+<p class="atlas-lead">This package helps you to create interactive dynamic maps in R as well as static visualizations for papers, publications, or presentations.</p>
+<p>You can explore variables across countries, follow change over time, or connect places and people, and the objects you create do not have to be geospatial. The package allows allows you to create editable static figures using ggplot2 from the same atlas.</p>
 <p class="atlas-actions"><a class="btn btn-primary" href="articles/getting-started.html">Start the tutorial</a> <a class="btn btn-outline-primary" href="articles/demo-gallery.html">Explore the demos</a></p>
 </div>
 
@@ -25,9 +25,8 @@ Systems that compile sf from source may need additional
 [system libraries](https://r-spatial.github.io/sf/#installing).
 
 The [getting-started tutorial](articles/getting-started.html) walks through a
-GDP map, a Florence family network, an FDI timeline, customization, and static
-figures. The [demo gallery](articles/demo-gallery.html) pairs working examples
-with their R scripts.
+map of variation in gross domestic product (GDP), the Florence family network commonly used in social network courses and workshops, and an FDI timeline. The getting started tutorial also walks you through customization and how to create static
+figures. There is also a [demo gallery](articles/demo-gallery.html) that pairs working examples with their R scripts.
 
 ## From R to a file you can share
 
@@ -35,11 +34,10 @@ with their R scripts.
 2. **Customize** legends, controls, labels, and presentation through R functions.
 3. **Export** a standalone HTML file with `export_html()`, or an editable ggplot2 figure with `as_ggplot()`.
 
-The HTML includes its data, geometry, JavaScript, CSS, and artwork. Viewers need
-no R installation, Shiny server, API key, or online map tiles. You can email the
-file, open it locally, or place it on a static website such as GitHub Pages.
-Included data can be read by anyone who receives the file, so export only data
-you intend to share.
+The HTML includes its data, geometry, JavaScript, CSS, and artwork all in one HTML file. Viewers do not
+require an R installation, Shiny server, API key, or online map tiles to view and interact with the files. 
+Depending on the size of the HTML file, you can email the file, open it locally, or place it on a static website such as GitHub Pages or Dropbox, for example.
+Take note that the data can be read by anyone who receives the file, so export only data you intend to share (although there are ways to secure data if you plan to place the html file online).
 
 ## Choose an example
 
@@ -53,8 +51,8 @@ you intend to share.
 ## A living example
 
 [FDI Atlas](https://fdiatlas.engagedthinking.com/) is a related, more customized
-web project showing how this approach can be used for a public-facing atlas.
-The package examples here are standalone files. Their source and data notices
-travel with each exported viewer.
+web project showing how this approach can be used for a public-facing atlas hosted on my web site.
+The package examples presented one this site generates standalone files. Their source and data notices travel with each exported viewer.
+The bilateral FDI data was provided by UNCTAD.
 
 offlineatlas is an early release. [Report a problem or suggest an improvement](https://github.com/preblek/offlineatlas/issues).
