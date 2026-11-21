@@ -14,5 +14,6 @@ Imports: jsonlite, xml2, grid, sf (>= 1.0-0), ggplot2 (>= 3.5.0),
     igraph (>= 2.0.0), ggrepel (>= 0.9.8)
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
-URL: https://github.com/preblek/offlineatlas
+URL: https://preblek.github.io/offlineatlas/, https://github.com/preblek/offlineatlas
 BugReports: https://github.com/preblek/offlineatlas/issues
+Config/Needs/website: pkgdown

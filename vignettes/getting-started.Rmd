@@ -29,6 +29,10 @@ library(offlineatlas)
 
 ## What you will make
 
+Read this tutorial on the [documentation website](https://preblek.github.io/offlineatlas/articles/getting-started.html)
+or explore the [demo gallery](https://preblek.github.io/offlineatlas/articles/demo-gallery.html)
+for live examples, standalone HTML downloads, and complete R scripts.
+
 This tutorial creates a GDP map, a Florence marriage network, and an FDI
 map that changes over time. You will customize the controls and legend from
 R, export independent HTML files, and make an editable static figure.

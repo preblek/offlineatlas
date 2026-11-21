@@ -1,5 +1,10 @@
 **offlineatlas 0.0.10 prototype**
 
+[Documentation website](https://preblek.github.io/offlineatlas/) ·
+[Getting-started tutorial](https://preblek.github.io/offlineatlas/articles/getting-started.html) ·
+[Demo gallery](https://preblek.github.io/offlineatlas/articles/demo-gallery.html) ·
+[Function reference](https://preblek.github.io/offlineatlas/reference/index.html)
+
 This R package builds independent HTML visualizations from data frames. The
 aid network, Florence network, World Bank GDP map, national FDI map, and
 bilateral FDI sample, and EU enlargement timeline use the same renderer.

@@ -1,0 +1,38 @@
+url: https://preblek.github.io/offlineatlas/
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#126b68"
+    link-color: "#126b68"
+    base_font: "-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    heading_font: "-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    code_font: "SFMono-Regular, Consolas, monospace"
+home:
+  title: Standalone maps and networks from R
+  description: Create interactive maps and networks that work offline, plus editable ggplot2 figures. Explore tutorials, reproducible examples, and the function reference.
+navbar:
+  structure:
+    left: [tutorial, gallery, reference, news]
+    right: [search, github]
+  components:
+    tutorial:
+      text: Tutorial
+      href: articles/getting-started.html
+    gallery:
+      text: Demo gallery
+      href: articles/demo-gallery.html
+articles:
+- title: Learn and explore
+  contents:
+  - getting-started
+  - articles/demo-gallery
+reference:
+- title: Build an atlas
+  desc: Start with data frames or sf geometries, then add areas, nodes, and relationships.
+  contents: [offlineatlas, atlas, add_areas, add_nodes, add_edges]
+- title: Adjust the presentation
+  contents: [set_view, set_background, set_inset, set_controls, set_legend, set_style, set_preset, layout_network]
+- title: Inspect and export
+  contents: [summary.offline_atlas, export_html, as_ggplot]
+- title: Bundled examples
+  contents: [example_data, example_file]

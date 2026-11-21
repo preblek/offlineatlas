@@ -1,0 +1,113 @@
+---
+title: "Demo gallery"
+description: "Working maps and networks, with standalone HTML downloads and reproducible R scripts."
+output: html_document
+---
+
+Explore an example, download its standalone HTML, or use its R script as a
+starting point for your own data. Every live demo below runs entirely in your
+browser. Downloaded HTML files work without R, a server, or an internet connection.
+
+The images are static ggplot2 previews. Interactive viewers have their own
+controls and presentation. On a small screen, opening the demo directly gives
+it more room than an embedded frame.
+
+## Maps and change over time
+
+<div class="atlas-gallery">
+<section class="atlas-demo" aria-label="World Bank GDP">
+<a class="atlas-thumb" href="../demos/world-bank-gdp.html" aria-label="Open World Bank GDP"><img src="../images/gdp_2024.png" alt="GDP per capita choropleth with a compact legend" loading="lazy"></a>
+<h3>World Bank GDP</h3>
+<p>Compare GDP per capita and total GDP across countries. Select a country to inspect its values.</p>
+<p class="atlas-links"><a href="../demos/world-bank-gdp.html">Open demo</a><a href="../demos/world-bank-gdp.html" download>Download HTML</a><a href="../examples/gdp.R">R code</a></p>
+<p class="atlas-note">World Bank WDI, 2024, CC BY 4.0. Current US dollars, not purchasing-power-adjusted. Natural Earth boundaries are public domain.</p>
+</section>
+<section class="atlas-demo" aria-label="EU enlargement">
+<a class="atlas-thumb" href="../demos/eu-enlargement.html" aria-label="Open EU enlargement"><img src="../images/eu_2004.png" alt="Europe colored by membership wave in 2004" loading="lazy"></a>
+<h3>EU enlargement</h3>
+<p>Move through enlargement periods from the 1958 EEC founders to the UK’s departure in 2020. Colors identify accession waves.</p>
+<p class="atlas-links"><a href="../demos/eu-enlargement.html">Open demo</a><a href="../demos/eu-enlargement.html" download>Download HTML</a><a href="../examples/eu.R">R code</a></p>
+<p class="atlas-note">Council of the European Union membership history. Present-day Natural Earth boundaries; historical territorial coverage is not reconstructed. Preview shows 2004.</p>
+</section>
+<section class="atlas-demo" aria-label="FDI inflows over time">
+<a class="atlas-thumb" href="../demos/fdi-national-inflows.html" aria-label="Open FDI inflows over time"><img src="../images/fdi_2025.png" alt="World map of FDI inflows in 2025" loading="lazy"></a>
+<h3>FDI inflows over time</h3>
+<p>Explore annual inward flows from 1990 to 2025. Play the timeline and select a country to see its trend.</p>
+<p class="atlas-links"><a href="../demos/fdi-national-inflows.html">Open demo</a><a href="../demos/fdi-national-inflows.html" download>Download HTML</a><a href="../examples/fdi_national.R">R code</a></p>
+<p class="atlas-note">UNCTAD export, USD millions, CC BY 3.0 IGO. Negative, zero, and missing values remain distinct. Present-day boundaries. Preview shows 2025; no UN endorsement is implied.</p>
+</section>
+<section class="atlas-demo" aria-label="A regional sf map">
+<a class="atlas-thumb" href="../demos/regional-gdp.html" aria-label="Open A regional sf map"><img src="../images/regional.png" alt="Regional GDP map of the Benelux countries" loading="lazy"></a>
+<h3>A regional sf map</h3>
+<p>Map GDP per capita in Belgium, the Netherlands, and Luxembourg using sf boundaries and automatic regional framing.</p>
+<p class="atlas-links"><a href="../demos/regional-gdp.html">Open demo</a><a href="../demos/regional-gdp.html" download>Download HTML</a><a href="../examples/regional.R">R code</a></p>
+<p class="atlas-note">World Bank WDI, 2024, CC BY 4.0; Natural Earth boundaries, public domain. Demonstrates the compact presentation preset.</p>
+</section>
+</div>
+
+## Networks and relationships
+
+<div class="atlas-gallery">
+<section class="atlas-demo" aria-label="Florence family relationships">
+<a class="atlas-thumb" href="../demos/florence-families.html" aria-label="Open Florence family relationships"><img src="../images/florence_marriages.png" alt="Schematic network of Florentine marriage alliances" loading="lazy"></a>
+<h3>Florence family relationships</h3>
+<p>Explore marriage alliances and business ties among 16 families. Select a family or switch relationship layers in the illustrated viewer.</p>
+<p class="atlas-links"><a href="../demos/florence-families.html">Open demo</a><a href="../demos/florence-families.html" download>Download HTML</a><a href="../examples/florence.R">R code</a></p>
+<p class="atlas-note">Padgett / CoMuNe Lab teaching subset, ODbL 1.0 and DbCL 1.0. Positions are schematic, not historical residences. Preview shows marriage ties only.</p>
+</section>
+<section class="atlas-demo" aria-label="Fictional aid relationships">
+<a class="atlas-thumb" href="../demos/aid-atlas.html" aria-label="Open Fictional aid relationships"><img src="../images/aid_2024.png" alt="Canada’s fictional aid relationships on a world map" loading="lazy"></a>
+<h3>Fictional aid relationships</h3>
+<p>Switch donor and year to explore a directed geographic network with weighted flows, country selection, and filtering.</p>
+<p class="atlas-links"><a href="../demos/aid-atlas.html">Open demo</a><a href="../demos/aid-atlas.html" download>Download HTML</a><a href="../examples/aid.R">R code</a></p>
+<p class="atlas-note">All aid amounts are invented for teaching. Locations are approximate country display points. Natural Earth boundaries, public domain. Preview shows Canada in 2024.</p>
+</section>
+<section class="atlas-demo" aria-label="Bilateral FDI">
+<a class="atlas-thumb" href="../demos/fdi-bilateral.html" aria-label="Open Bilateral FDI"><img src="../images/bilateral.png" alt="Bilateral investment network for nine countries" loading="lazy"></a>
+<h3>Bilateral FDI</h3>
+<p>Follow investor-to-host relationships in a nine-country sample from 2020 to 2024. Use the Europe inset to inspect clustered locations.</p>
+<p class="atlas-links"><a href="../demos/fdi-bilateral.html">Open demo</a><a href="../demos/fdi-bilateral.html" download>Download HTML</a><a href="../examples/fdi_bilateral.R">R code</a></p>
+<p class="atlas-note">UNCTAD, CC BY 3.0 IGO. Reporting choices and mirror fallback are documented in the viewer. Totals cover this sample only; no UN endorsement is implied. Preview shows 2024.</p>
+</section>
+<section class="atlas-demo" aria-label="Automatic layouts and styled nodes">
+<a class="atlas-thumb" href="../demos/florence-automatic.html" aria-label="Open Automatic layouts and styled nodes"><img src="../images/florence_automatic.png" alt="Automatically arranged marriage network with node size by degree and Medici highlighted" loading="lazy"></a>
+<h3>Automatic layouts and styled nodes</h3>
+<p>Arrange a schematic network automatically. The R script also makes ggplot2 figures with repelled labels and node size, fill, and shape mappings.</p>
+<p class="atlas-links"><a href="../demos/florence-automatic.html">Open demo</a><a href="../demos/florence-automatic.html" download>Download HTML</a><a href="../examples/static_networks.R">R code</a></p>
+<p class="atlas-note">The preview sizes nodes by degree and highlights the Medici with an explicit display category. These node styles apply to the static figure. The HTML uses a precomputed layout of all ties and its own viewer styling.</p>
+</section>
+</div>
+
+## Run an example yourself
+
+Install offlineatlas, then run an example script in a dedicated output folder.
+The scripts use bundled data and replace their previous example exports.
+
+```{r, eval=FALSE}
+library(offlineatlas)
+dir.create("atlas-examples", showWarnings = FALSE)
+setwd("atlas-examples")
+source(system.file("examples", "gdp.R", package = "offlineatlas"))
+browseURL("world-bank-gdp.html")
+```
+
+Each **R code** link above opens the complete script. The scripts are also
+installed with the package. For publication figures, see the
+[static map script](../examples/static.R) and
+[static network script](../examples/static_networks.R). Their PNG, PDF, and SVG
+outputs can be recreated locally. For example, compare the
+[automatic network PNG](../images/florence_automatic.png) with its
+[vector PDF](../images/florence_automatic.pdf).
+
+The [tutorial](getting-started.html) explains how to adapt these examples.
+The [function reference](../reference/index.html) describes the available options.
+
+## A living example on the web
+
+[FDI Atlas](https://fdiatlas.engagedthinking.com/) is a related, more customized
+project. It shows how an atlas can become a public resource. For the standalone
+package exports, publishing can be as simple as putting the HTML file on a
+website. Everything embedded in that file is available to its viewers.
+
+Full source notes and data reuse terms appear inside the exported viewers and
+in the package’s bundled notices. Downloaded demos retain those notices.
