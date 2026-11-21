@@ -2,7 +2,7 @@
 \alias{as_ggplot}
 \title{Create an Editable Static Area Map}
 \description{Convert one variable and period of an sf-backed area atlas into
-a regular ggplot object. ggplot2 and sf are optional authoring dependencies;
+a regular ggplot object. ggplot2 and sf are required authoring dependencies installed with offlineatlas;
 saved figures and HTML viewers need neither package.}
 \usage{as_ggplot(x, variable = NULL, time = NULL)}
 \arguments{

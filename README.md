@@ -1,4 +1,4 @@
-**offlineatlas 0.0.8 prototype**
+**offlineatlas 0.0.9 prototype**
 
 This R package builds independent HTML visualizations from data frames. The
 aid network, Florence network, World Bank GDP map, national FDI map, and
@@ -6,19 +6,28 @@ bilateral FDI sample, and EU enlargement timeline use the same renderer.
 All required data, geometry, JavaScript, CSS, and artwork are embedded. The
 viewer needs no R installation, server, API key, cache, or internet connection.
 
-Install from a local checkout with `R CMD INSTALL .` at the repository root.
-The core authoring dependencies are R 4.1 or later, jsonlite, and xml2.
-The optional sf package is needed for sf inputs and the bundled GDP/FDI/EU scripts.
-The optional ggplot2 package creates static area maps. The viewer does not
-use Python, Node, Pandoc, Shiny, or online tiles. Installing dependencies
-may require an internet connection; rebuilding the included examples does not.
-
-Once this source is published, install the development version from R with
+Install from GitHub with
 
 ```r
 install.packages("remotes")
 remotes::install_github("preblek/offlineatlas")
 ```
+
+R 4.1 or later is required. The installer automatically installs missing required
+R packages, including sf for geographic inputs and ggplot2 for static maps, and
+checks their minimum versions. You do not need separate installation commands
+for sf or ggplot2. Do not disable dependency installation with
+`dependencies = FALSE`.
+
+Installing packages may require internet access. On systems that build sf from
+source, additional system libraries or build tools may be needed; see the
+[sf installation guide](https://r-spatial.github.io/sf/#installing).
+The exported HTML viewer needs no R packages, Python, Node, Pandoc, Shiny or
+online tiles. Rebuilding the bundled examples performs no data downloads.
+
+From a local checkout, `remotes::install_local(".")` also resolves dependencies.
+`R CMD INSTALL .` is a lower-level alternative when dependencies are already
+installed; it does not download missing packages.
 
 The example scripts use bundled data and write standalone HTML into the
 working directory. Run them in a dedicated output folder. The scripts replace
@@ -56,12 +65,12 @@ Pandoc available, then build and install the source archive:
 
 ```sh
 R CMD build .
-R CMD INSTALL offlineatlas_0.0.8.tar.gz
+R CMD INSTALL offlineatlas_0.0.9.tar.gz
 ```
 
-Building with sf and ggplot2 installed executes all tutorial sections. Without
-them, optional sections remain visible but are skipped. Installing a built
-archive or using the package does not require the documentation tools.
+Building the vignette executes all tutorial sections using the required sf
+and ggplot2 dependencies. Using the package or installing its built archive
+with dependencies already present does not require the documentation tools.
 Direct `R CMD INSTALL` on the source directory does not build the vignette.
 
 The interface supports source and year selection, network layers, multiple
@@ -89,7 +98,7 @@ are escaped with an apostrophe; JSON preserves the original strings.
 
 as_ggplot returns a regular ggplot object for a single variable and period.
 The atlas must have been built with sf polygon input in version 0.0.7 or later.
-ggplot2 and sf are optional authoring dependencies. The saved figures and
+ggplot2 and sf are required authoring dependencies installed with offlineatlas. The saved figures and
 interactive HTML need neither R nor these packages to view.
 
 ```r
@@ -386,7 +395,7 @@ Maintainer contact is preblek25@ecu.edu. Report reproducible problems or suggest
 improvements through [GitHub issues](https://github.com/preblek/offlineatlas/issues).
 
 R validation tests are in tests/. Run `R CMD build .`, then
-`R CMD check --no-manual offlineatlas_0.0.8.tar.gz` to run the package examples,
+`R CMD check --no-manual offlineatlas_0.0.9.tar.gz` to run the package examples,
 tests and vignette checks. A PDF manual can be built separately with
 `R CMD Rd2pdf .` when a working TeX installation is available.
 

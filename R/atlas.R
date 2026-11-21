@@ -37,7 +37,7 @@ atlas <- function(title = "Offline atlas", description = "", notice = "",
   if (!is.character(sources) || anyNA(sources)) stop("sources must be text", call. = FALSE)
   scalar_text(entity_name, "entity_name")
   scalar_text(entity_names, "entity_names")
-  structure(list(schema_version = "0.1", package_version = "0.0.8",
+  structure(list(schema_version = "0.1", package_version = "0.0.9",
     title = title, description = description, notice = notice, sources = unname(as.list(sources)),
     units = units, entity_name = entity_name, entity_names = entity_names,
     coordinates = NULL, nodes = NULL, edges = NULL, areas = NULL, spatial = list(),

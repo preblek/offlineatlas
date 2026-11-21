@@ -12,8 +12,9 @@ Start with \code{\link{atlas}}. Add geographic variables with
 \code{\link{add_nodes}} and \code{\link{add_edges}}.
 Finish with \code{\link{export_html}}.
 
-The API is experimental. sf is optional for authoring polygon and point
-inputs; ggplot2 is optional for editable static area maps through
+The API is experimental. sf and ggplot2 are required authoring dependencies.
+The installer includes them automatically when missing. sf handles
+polygon and point inputs; ggplot2 creates editable static area maps through
 \code{\link{as_ggplot}}. Saved HTML and image files require neither package.
 Installing authoring dependencies may need internet access. Preparing the
 bundled examples and viewing their exports use local resources.

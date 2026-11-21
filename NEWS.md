@@ -1,3 +1,11 @@
+# offlineatlas 0.0.9
+
+* Moved sf and ggplot2 from Suggests to Imports so standard GitHub and local
+  dependency-aware installation includes them automatically when missing.
+* Updated installation guidance and help pages. The tutorial now runs every
+  geographic and static section with the required dependencies.
+* Exported HTML remains standalone and offline; its viewers need no R packages.
+
 # offlineatlas 0.0.8
 
 * Added summary() tables for area variables, categories and relationships,

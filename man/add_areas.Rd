@@ -57,8 +57,8 @@ performed explicitly before calling add_areas or add_nodes. Validation uses
 planar GEOS after dateline splitting and does not change sf_use_s2(). Source
 CRS and preparation metadata are retained in the prepared object and JSON.
 
-sf is an optional authoring dependency. The GDP and FDI examples use it;
-data-frame workflows and exported HTML viewers do not require it. The
+sf is a required authoring dependency installed with offlineatlas. The GDP and FDI examples use it;
+data-frame workflows do not call it, and exported HTML viewers need no R packages. The
 world_sf.geojson fixture contains 176 Natural Earth features, with explicit
 USA and Sudan repairs recorded in world_sf_metadata.json. Identifiers join
 exactly; no fuzzy matching is performed. Join attributes to shapes by their

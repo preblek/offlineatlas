@@ -1,8 +1,8 @@
-# sf is an optional authoring dependency. The browser receives only plain paths
+# sf is a required authoring dependency. The browser receives only plain paths
 # and coordinates, with no CRS transformation or geometry library at runtime.
 sf_geometry <- function(data, ids, types) {
   if (!requireNamespace("sf", quietly = TRUE))
-    stop("Install the optional sf package to use sf inputs", call. = FALSE)
+    stop("Required dependency sf could not be loaded; reinstall offlineatlas with its dependencies", call. = FALSE)
   geometry <- sf::st_geometry(data)
   crs <- sf::st_crs(geometry)
   if (is.na(crs)) stop("sf input needs a declared CRS; assign its known source CRS before mapping", call. = FALSE)
@@ -88,7 +88,7 @@ auto_view_bounds <- function(x, padding) {
       if (is.null(retained))
         stop("Automatic area framing needs sf input; supply explicit bounds for SVG path tables", call. = FALSE)
       if (!requireNamespace("sf", quietly = TRUE))
-        stop("Install sf to frame this older atlas, or supply explicit bounds", call. = FALSE)
+        stop("Required dependency sf could not be loaded; reinstall offlineatlas with its dependencies", call. = FALSE)
       box <- as.numeric(sf::st_bbox(retained$geometry))
     }
     bounds[[length(bounds) + 1L]] <- unlist(box, use.names = FALSE)

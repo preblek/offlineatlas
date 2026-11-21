@@ -25,8 +25,6 @@ img { max-width: 100%; height: auto; }
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
                      fig.width = 7, fig.height = 4.5)
 library(offlineatlas)
-have_sf <- requireNamespace("sf", quietly = TRUE)
-have_ggplot <- requireNamespace("ggplot2", quietly = TRUE)
 ```
 
 ## What you will make
@@ -59,20 +57,22 @@ Copying the HTML file alone is enough. The viewer never retrieves new data;
 rebuild it in R when you want to update the underlying observations.
 
 The package API is experimental. This tutorial uses bundled snapshots and
-does not download data. The GDP and FDI sections need **sf** for authoring;
-the last section also needs **ggplot2**. The Florence example needs neither.
-Installing R packages may require internet access. If an optional package
-is unavailable during a vignette build, the relevant code remains visible
-but is not run.
+does not download data. sf handles geographic inputs and ggplot2 creates
+static figures. Both are required R dependencies and are installed automatically
+when missing during the standard GitHub installation.
+
+```{r install-package, eval=FALSE}
+install.packages("remotes")
+remotes::install_github("preblek/offlineatlas")
+```
+
+Installing R packages may require internet access. Systems that build sf from
+source may also need system libraries or build tools; see the
+[sf installation guide](https://r-spatial.github.io/sf/#installing).
+These authoring dependencies do not change the offline HTML export.
 
 ```{r libraries}
 library(offlineatlas)
-```
-
-If needed, install optional authoring dependencies separately.
-
-```{r install-optional, eval=FALSE}
-install.packages(c("sf", "ggplot2"))
 ```
 
 ## Choose an output folder
@@ -99,7 +99,7 @@ Read the bundled boundaries and GDP snapshot. Join by a stable country ID,
 not by row order or the spelling of a country name. `match()` returns `NA`
 for an unmatched ID. Keep those rows so their boundaries remain on the map.
 
-```{r gdp-data, eval=have_sf}
+```{r gdp-data}
 world <- sf::st_read(example_file("world_sf.geojson"), quiet = TRUE)
 gdp <- example_data("worldbank_gdp")
 stopifnot(!anyDuplicated(gdp$id))
@@ -118,7 +118,7 @@ Start with `atlas()`, then add the geographic data with `add_areas()`. Column
 names are quoted strings. `values` selects the variable to color, and `labels`
 supplies its reader-facing name.
 
-```{r gdp-map, eval=have_sf}
+```{r gdp-map}
 gdp_map <- atlas(
   "GDP per capita in 2024",
   units = "USD",
@@ -167,7 +167,7 @@ records with missing values from areas with no matching record, and keeps
 zero and negative values distinct. The result contains ordinary data frames
 that you can inspect or save.
 
-```{r summary-gdp, eval=have_sf}
+```{r summary-gdp}
 audit <- summary(gdp_map)
 audit$areas
 ```
@@ -185,7 +185,7 @@ Call `set_view()` without bounds to fit the supplied geographic data. This
 example uses the bundled European boundaries for Belgium, the Netherlands
 and Luxembourg. Its values are joined from the same GDP snapshot.
 
-```{r automatic-region, eval=have_sf}
+```{r automatic-region}
 europe <- sf::st_read(example_file("europe_sf.geojson"), quiet = TRUE)
 region <- europe[europe$id %in% c("BEL", "NLD", "LUX"), ]
 joined <- match(region$id, gdp$id)
@@ -289,7 +289,7 @@ retain attribution and the license link in shared outputs. The
 [Data Hub reuse terms](https://unctadstat.unctad.org/EN/About.html) apply to
 these data separately from the package's MIT software license.
 
-```{r fdi-panel, eval=have_sf}
+```{r fdi-panel}
 # Start with a fresh boundary table, without the GDP attributes.
 boundaries <- sf::st_read(example_file("world_sf.geojson"), quiet = TRUE)
 fdi <- example_data("fdi_national")
@@ -320,7 +320,7 @@ Creating each frame from the same boundary table preserves the complete
 roster and fixed geometry. Countries without records stay in the panel with
 `NA` values. Historical economy identifiers are not reassigned to successors.
 
-```{r fdi-map, eval=have_sf}
+```{r fdi-map}
 fdi_map <- atlas(
   "FDI inflows over time", units = "USD millions",
   entity_name = "country or area", entity_names = "countries and areas",
@@ -371,7 +371,7 @@ Start with a reusable preset when you want coordinated defaults.
 larger text and keys. Both use local sans-serif fonts and preserve data,
 labels, source notes, initial filters and control visibility.
 
-```{r presets, eval=have_sf}
+```{r presets}
 compact_map <- set_preset(fdi_map, "compact")
 presentation_map <- set_preset(fdi_map, "presentation")
 ```
@@ -385,7 +385,7 @@ You can make presentation changes in R without editing JavaScript or CSS.
 Here, keep the initial year explicit, move the toolbar, slow playback, and
 provide readable labels for the six fixed FDI intervals.
 
-```{r customize, eval=have_sf}
+```{r customize}
 custom_map <- fdi_map |>
   set_controls(
     initial_time = "2025", position = "above_map", playback_interval = 1800,
@@ -431,7 +431,7 @@ Choose an original variable column name and, for a timeline, one period.
 The static map preserves interval boundaries, colors, missing values and
 legend aliases. Add normal ggplot2 themes, labels or layers afterwards.
 
-```{r static-figure, eval=have_sf && have_ggplot}
+```{r static-figure}
 p <- as_ggplot(set_preset(custom_map, "compact"),
                variable = "inflow", time = 2025) +
   ggplot2::labs(
@@ -478,9 +478,8 @@ Temporary files may be removed when your R session ends. Copy the files you
 want to keep to a permanent folder.
 
 ```{r check-outputs, include=FALSE}
-expected <- "florence.html"
-if (have_sf) expected <- c(expected, "gdp.html", "fdi-timeline.html",
-                           "fdi-customized.html", "regional-gdp.html")
+expected <- c("florence.html", "gdp.html", "fdi-timeline.html",
+              "fdi-customized.html", "regional-gdp.html")
 stopifnot(all(file.exists(file.path(output_dir, expected))))
 ```
 
