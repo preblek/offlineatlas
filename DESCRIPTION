@@ -3,10 +3,14 @@ Type: Package
 Title: Standalone Offline Maps and Networks
 Version: 0.0.12
 Authors@R: person("Keith A.", "Preble", role = c("aut", "cre"), email = "preblek25@ecu.edu")
-Description: Prepares geographic and schematic networks and area maps as
-    standalone HTML files. A shared browser renderer supports filtering,
-    selection, and local figure and data downloads without a server.
-    Includes fictional aid, Florentine family, World Bank, and FDI examples.
+Description: Creates interactive geographic maps and network visualizations
+    as standalone HTML files that work without an internet connection,
+    a server, or a running R session. Accepts data frames and geographic
+    features supplied through 'sf'. Supports numeric and categorical area
+    maps, geographic and schematic networks, time-series playback, and
+    country history charts. Provides configurable legends and controls,
+    optional lossless compression, and figure and data downloads.
+    Creates customizable static maps and network figures through 'ggplot2'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 4.1.0)
