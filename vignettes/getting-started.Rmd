@@ -33,34 +33,30 @@ Read this tutorial on the [documentation website](https://preblek.github.io/offl
 or explore the [demo gallery](https://preblek.github.io/offlineatlas/articles/demo-gallery.html)
 for examples, standalone HTML downloads, and complete R scripts.
 
-This tutorial creates a map showing GDP variation, a Florence marriage network, and an FDI
-map that changes over time. You can customize the controls and legend from
+This tutorial provides instructions to create three different maps/networks: a map showing GDP variation, a Florence marriage network, and an FDI map that changes over time. 
+
+You can customize the controls and legend from
 R, export independent HTML files, and make an editable static figure.
 
 For a **live example of what the package can do**, visit [FDI Atlas](https://fdiatlas.engagedthinking.com/),
-Keith A. Preble's interactive website for exploring bilateral foreign direct investment in- and outflows using FDI data provided by UNCTAD.
-That earlier project helped shape offlineatlas. This tutorial builds standalone examples of related mapping and network workflows.
+Keith A. Preble's interactive website for exploring bilateral foreign direct investment in- and outflows using FDI data provided by UNCTAD. That earlier project helped shape offlineatlas, although I also tweaked and made adjustments to the html/CSS/Javascript export after its creation (but this is not required). This tutorial builds standalone examples of related mapping and network workflows.
 
 Publishing an offlineatlas map can be as simple as uploading the generated
 `.html` file to your website and linking to it. Visitors can explore the map
 in their browsers without a running R session or a Shiny server, and they can
 also download that same file and open it offline, as well.
 
-FDI Atlas uses a more elaborate hosting arrangement, including a dataset
+FDI Atlas uses a more elaborate hosting arrangement using a hosting provider, including a dataset
 stored in a private folder to prevent data sharing. The offlineatlas examples here embed their mapped
 data in the HTML itself, so those data are included whenever you share the file (so be mindful of what you share)!
 
-Visiting the hosted FDI Atlas requires an internet connection, but the examples here do not require an internet connection to function (although
-you will need an internet connection to download and access them).
+Visiting the hosted FDI Atlas requires an internet connection, but the examples here do not require an internet connection to function (although you will need an internet connection to download and access them).
 
 R prepares the data and writes the necessary files to build the web site. The exported viewers contain all the
-data, geometry, JavaScript and CSS needed to render the map. Users do not need R, Shiny, a server, an API key or an internet connection.
-The viewer never retrieves new data, and updates to data sets require rebuilding sites in R when you want to update the underlying observations.
+data, geometry, JavaScript and CSS needed to render the map. Users do not need R, Shiny, a server, an API key or an internet connection. The viewer never retrieves new data, and updates to data sets require rebuilding sites in R when you want to update the underlying observations.
 
-The package API is experimental and a work in progress. This tutorial uses bundled snapshots and
-does not download data. sf handles geographic inputs, ggplot2 creates
-static figures, igraph supplies layouts and measures, and ggrepel places labels.
-These are required R dependencies and are installed automatically
+The package API is a work in progress, but I hope to publish to CRAN in the near future. This tutorial uses bundled snapshots and
+does not download data. sf handles geographic inputs, ggplot2 creates static figures, igraph supplies layouts and measures, and ggrepel places labels. These are required R dependencies and are installed automatically
 when missing during the standard GitHub installation.
 
 ```{r install-package, eval=FALSE}
