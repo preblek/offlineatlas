@@ -15,9 +15,10 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
                      fig.width = 9, fig.height = 8)
 ```
 
-Build a prefecture map with three choices in its dropdown, then try different
-legends, a regional inset, and static figures. This tutorial uses bundled
-population data and geographic boundaries, so it runs without downloading
+offlineatlas does not just work with the world map/atlas. You can also 
+display variation at the regional/subregional level.
+This examples uses Japan and shows how to create a prefecture map with three choices in its dropdown. 
+This tutorial uses bundled population data and geographic boundaries, so it runs without downloading
 data. It requires offlineatlas 0.0.14 or later.
 
 The three choices are **population in 2020**, **preliminary population in
