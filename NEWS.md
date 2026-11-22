@@ -1,3 +1,13 @@
+# offlineatlas 0.0.11
+
+* Added optional internal compression with export_html(..., compress = TRUE).
+  Compressed files remain standalone HTML and work offline. Data and geometry
+  are restored losslessly in the browser; figures and data downloads are unchanged.
+* Uncompressed exports remain the default. Compressed exports display a clear
+  message when browser decompression is unavailable or the payload is damaged.
+* Added compression guidance and checks for payload integrity, Unicode,
+  missing and signed values, and unchanged default exports.
+
 # offlineatlas 0.0.10
 
 * Added reproducible Fruchterman-Reingold, Kamada-Kawai and circular layouts

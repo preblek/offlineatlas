@@ -4,11 +4,22 @@ html_escape <- function(x) {
   gsub(">", "&gt;", x, fixed = TRUE)
 }
 
-export_html <- function(x, file, overwrite = FALSE) {
+# gzfile writes a real gzip stream. memCompress(type = "gzip") writes zlib,
+# which is a different format from the browser's DecompressionStream("gzip").
+gzip_payload <- function(bytes) {
+  path <- tempfile(fileext = ".gz")
+  on.exit(unlink(path))
+  con <- gzfile(path, open = "wb", compression = 9)
+  tryCatch(writeBin(bytes, con), finally = close(con))
+  readBin(path, what = "raw", n = file.info(path)$size)
+}
+
+export_html <- function(x, file, overwrite = FALSE, compress = FALSE) {
   check_atlas(x)
   scalar_text(file, "file")
   if (is.null(x$nodes) && is.null(x$areas)) stop("Add nodes or areas before export", call. = FALSE)
   if (!is.logical(overwrite) || length(overwrite) != 1 || is.na(overwrite)) stop("overwrite must be TRUE or FALSE", call. = FALSE)
+  if (!is.logical(compress) || length(compress) != 1 || is.na(compress)) stop("compress must be TRUE or FALSE", call. = FALSE)
   if (file.exists(file) && !overwrite) stop("File exists; use overwrite = TRUE", call. = FALSE)
   for (key in names(x$legend$labels)) {
     variable <- Filter(function(v) identical(v$source_column, key), x$variables)
@@ -34,13 +45,30 @@ export_html <- function(x, file, overwrite = FALSE) {
   payload <- gsub("<", "\\u003c", payload, fixed = TRUE)
   read_asset <- function(name) paste(readLines(system.file("runtime", name,
     package = "offlineatlas", mustWork = TRUE), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  data_tag <- '<script id="atlas-data" type="application/json">'
+  runtime <- read_asset("atlas.js")
+  loading <- ""
+  if (compress) {
+    payload <- jsonlite::base64_enc(gzip_payload(charToRaw(enc2utf8(payload))))
+    data_tag <- '<script id="atlas-data" type="application/octet-stream" data-encoding="gzip">'
+    loading <- '<p id="atlas-load-status" role="status">Opening compressed atlas...</p>'
+    runtime <- paste0("(async () => {\n", read_asset("decompress.js"), "\n", runtime,
+      "\n})().catch(error => {\n",
+      "  const message = document.createElement('p');\n",
+      "  message.id = 'atlas-load-error'; message.setAttribute('role', 'alert');\n",
+      "  message.style.cssText = 'padding:2rem;max-width:48rem;margin:auto';\n",
+      "  message.textContent = error.atlasUnsupported ? error.message : ",
+      "'This compressed atlas could not be opened. The file may be incomplete or damaged. Try downloading it again, or ask for an uncompressed export.';\n",
+      "  document.body.replaceChildren(message);\n",
+      "});")
+  }
   # Fixed assembly keeps user data out of template replacement expressions.
   html <- paste0('<!doctype html>\n<html lang="en"><head><meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width,initial-scale=1">',
     '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src blob: data:; font-src \'none\'; connect-src \'none\'; base-uri \'none\'; form-action \'none\'">',
     '<title>', html_escape(x$title), '</title><style>', read_asset("atlas.css"), '</style></head><body>',
-    read_asset("body.html"), '<script id="atlas-data" type="application/json">', payload,
-    '</script><script>', read_asset("atlas.js"), '</script></body></html>\n')
+    loading, read_asset("body.html"), data_tag, payload,
+    '</script><script>', runtime, '</script></body></html>\n')
   dir.create(dirname(file), recursive = TRUE, showWarnings = FALSE)
   con <- base::file(file, open = "wb")
   on.exit(close(con))

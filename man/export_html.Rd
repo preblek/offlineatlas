@@ -3,12 +3,14 @@
 \title{Export a Standalone Offline Atlas}
 \description{Write one HTML file containing the atlas data, geometry, scripts, styles and artwork.}
 \usage{
-export_html(x, file, overwrite = FALSE)
+export_html(x, file, overwrite = FALSE, compress = FALSE)
 }
 \arguments{
 \item{x}{An atlas object.}
 \item{file}{Output HTML filename. Parent directories are created if needed.}
 \item{overwrite}{Allow replacement of an existing output file. Defaults to FALSE.}
+\item{compress}{Use lossless gzip compression for the embedded atlas payload.
+Defaults to FALSE. The result is still a single HTML file, not a gzip archive.}
 }
 \details{
 Search narrows the selection list and rankings without changing the map,
@@ -29,6 +31,19 @@ itself and opened directly in a browser without R, a server or internet.
 All supplied periods and mapped data remain embedded, even when controls are
 hidden. Hiding controls is not a method for removing data from an export.
 Authoring-only sf geometry attributes are excluded from the HTML payload.
+
+With compress = TRUE, the embedded data, geometry, and artwork are gzip-compressed
+and base64-encoded. The browser unpacks them locally before rendering. No R,
+server, external scripts, or network connection is needed. Controls and data
+and image downloads behave as in an uncompressed export. Compression does not
+remove observations, change precision, or simplify boundaries. It is not encryption.
+
+Compressed exports require a browser supporting DecompressionStream("gzip").
+Use a current Safari, Firefox, Chrome, or Edge. If decompression is unavailable,
+the viewer displays a message explaining how to request an uncompressed export.
+Keep compress = FALSE when supporting older browsers. File-size savings depend
+on the data; very small payloads may grow slightly. Compression reduces stored
+file size, not the size of the unpacked data needed in browser memory.
 
 Image and CSV exports pause timeline playback and identify the selected
 period. A visible numeric area history chart and geographic inset are included
@@ -51,6 +66,10 @@ m <- add_edges(m, example_data("florence_edges"), "from", "to",
                layer = "layer")
 file <- tempfile(fileext = ".html")
 export_html(m, file)
+stopifnot(file.exists(file))
+unlink(file)
+file <- tempfile(fileext = ".html")
+export_html(m, file, compress = TRUE)
 stopifnot(file.exists(file))
 unlink(file)
 }

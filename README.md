@@ -1,4 +1,4 @@
-**offlineatlas 0.0.10 prototype**
+**offlineatlas 0.0.11 prototype**
 
 [Documentation website](https://preblek.github.io/offlineatlas/) ·
 [Getting-started tutorial](https://preblek.github.io/offlineatlas/articles/getting-started.html) ·
@@ -40,6 +40,22 @@ working directory. Run them in a dedicated output folder. The scripts replace
 previous files with the same names; `export_html()` itself rejects overwriting
 unless explicitly requested. Each HTML file can be copied by itself and opened
 directly in a browser.
+
+For a smaller standalone file, opt into internal compression when exporting.
+
+```r
+export_html(my_atlas, "my-atlas.html", compress = TRUE)
+```
+
+Replace `my_atlas` with your atlas object. The browser unpacks the embedded
+data locally, without R, a server, or an internet connection. All observations,
+geometry, and numeric precision are preserved, and the viewer's figure and data
+downloads work as usual. Compression is not encryption and does not hide data.
+Savings vary with the dataset, and unpacked data still needs browser memory.
+
+Compressed exports need a current browser with built-in gzip decompression
+support. Use `compress = FALSE` (the default) for older browsers. No additional
+R packages are needed for compression.
 
 To run one example from R in a chosen output directory, use
 
@@ -478,16 +494,21 @@ Maintainer contact is preblek25@ecu.edu. Report reproducible problems or suggest
 improvements through [GitHub issues](https://github.com/preblek/offlineatlas/issues).
 
 R validation tests are in tests/. Run `R CMD build .`, then
-`R CMD check --no-manual offlineatlas_0.0.10.tar.gz` to run the package examples,
+`R CMD check --no-manual offlineatlas_0.0.11.tar.gz` to run the package examples,
 tests and vignette checks. A PDF manual can be built separately with
 `R CMD Rd2pdf .` when a working TeX installation is available.
 
-Version 0.0.8 passed local R package checks on macOS. Separate maintainer
-browser checks covered direct-file offline operation, downloads, controls,
-regional framing, and desktop/mobile layouts in Chrome. Those browser checks
-and their tooling are retained in the research workspace, outside this package
-repository. Other operating systems have not yet been verified.
+Version 0.0.11 passed local R package checks on macOS, including all ten test
+scripts and the getting-started vignette. The previous release also passed
+GitHub Actions checks on macOS, Windows, and Ubuntu.
 
-The author reported successful manual offline-map testing in Safari on November
-20, 2026. Automated Safari checks remain separate and have not completed.
-Firefox compatibility remains unverified.
+Compressed and uncompressed exports were compared in Chrome 159 and Firefox 160
+using local files with network access blocked. Eight fixtures passed checks for
+identical data and initial views, controls, and SVG, PNG, CSV, and JSON downloads.
+The checks also covered FDI history downloads and readable failure messages.
+Safari 27.2 passed interactive local-file checks of compressed FDI, Florence,
+and GDP examples, including timeline, country history, relationship filters,
+and variable selection. Safari's automation driver could not connect; Safari
+downloads were not verified because its download-permission prompt was declined.
+These browser checks and their tooling are retained in the research workspace,
+outside this package repository.

@@ -568,16 +568,41 @@ travel routes. The returned plot's `data` contains the node table.
 The installed `examples/static_networks.R` script saves both schematic and
 geographic network figures as PNG, PDF and SVG.
 
+## Make a smaller standalone HTML file
+
+Set `compress = TRUE` to compress the data inside your HTML export. For example,
+this saves a smaller copy of the FDI timeline.
+
+```{r compressed-export}
+compressed_file <- file.path(output_dir, "fdi-timeline-compressed.html")
+export_html(fdi_map, compressed_file, compress = TRUE, overwrite = TRUE)
+```
+
+It is still one HTML file that you can open directly and share. The browser
+unpacks the data locally, without R, a server, or an internet connection. All
+periods, values, map boundaries, and artwork are retained without loss of
+precision. The timeline, filters, and figure and data downloads work as usual.
+
+Compression reduces file size, but the unpacked data still needs browser
+memory. Savings depend on the dataset, and very small payloads may grow slightly.
+It does not hide or encrypt the data.
+
+Use a current Safari, Firefox, Chrome, or Edge with built-in gzip decompression
+support. If a browser cannot open a compressed atlas, it displays a message
+asking the viewer to use a current browser or request an uncompressed copy.
+For older browsers, export with `compress = FALSE`, which remains the default.
+
 ## Share and inspect the results
 
-The six HTML files can be opened directly and shared independently. The
+The seven HTML files can be opened directly and shared independently. The
 example code below lists them without launching a browser during a build.
 Temporary files may be removed when your R session ends. Copy the files you
 want to keep to a permanent folder.
 
 ```{r check-outputs, include=FALSE}
 expected <- c("florence.html", "gdp.html", "fdi-timeline.html",
-              "fdi-customized.html", "regional-gdp.html", "florence-automatic.html")
+              "fdi-customized.html", "regional-gdp.html", "florence-automatic.html",
+              "fdi-timeline-compressed.html")
 stopifnot(all(file.exists(file.path(output_dir, expected))))
 ```
 
