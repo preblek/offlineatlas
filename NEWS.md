@@ -1,3 +1,11 @@
+# offlineatlas 0.0.12
+
+* Atlas objects and exported viewer badges now obtain their version from the
+  installed package. Re-exporting an older object records the current exporter
+  version without modifying the original object.
+* The website build runs every bundled example script and checks demo versions
+  and generated-file checksums before deployment, including static figures.
+
 # offlineatlas 0.0.11
 
 * Added optional internal compression with export_html(..., compress = TRUE).

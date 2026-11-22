@@ -1,4 +1,4 @@
-**offlineatlas 0.0.11 prototype**
+**offlineatlas 0.0.12 prototype**
 
 [Documentation website](https://preblek.github.io/offlineatlas/) ·
 [Getting-started tutorial](https://preblek.github.io/offlineatlas/articles/getting-started.html) ·
@@ -493,8 +493,16 @@ CC BY 4.0 attribution in inst/extdata/worldbank_metadata.json.
 Maintainer contact is preblek25@ecu.edu. Report reproducible problems or suggest
 improvements through [GitHub issues](https://github.com/preblek/offlineatlas/issues).
 
+Each push to the main branch rebuilds the documentation and all bundled example
+scripts from the current source. The website check verifies the version in
+every HTML demo and checksums of the generated figures and downloadable scripts
+before deployment. To run the same build locally, use
+`Rscript pkgdown/build-site.R` from the package directory.
+Existing HTML files already downloaded or shared must be regenerated separately;
+standalone files do not update themselves.
+
 R validation tests are in tests/. Run `R CMD build .`, then
-`R CMD check --no-manual offlineatlas_0.0.11.tar.gz` to run the package examples,
+`R CMD check --no-manual offlineatlas_0.0.12.tar.gz` to run the package examples,
 tests and vignette checks. A PDF manual can be built separately with
 `R CMD Rd2pdf .` when a working TeX installation is available.
 

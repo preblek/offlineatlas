@@ -36,6 +36,9 @@ export_html <- function(x, file, overwrite = FALSE, compress = FALSE) {
   if (!is.null(x$controls$initial_time) && !x$controls$initial_time %in% times)
     stop("initial_time is not present in the relationships or area periods", call. = FALSE)
   browser_data <- unclass(x)
+  # The exported viewer records the version doing the export, including when
+  # x was restored from an older R session. The original object is unchanged.
+  browser_data$package_version <- atlas_package_version()
   attr(browser_data, "area_geometry") <- NULL
   attr(browser_data, "node_attributes") <- NULL
   attr(browser_data, "network_layout") <- NULL
@@ -45,6 +48,8 @@ export_html <- function(x, file, overwrite = FALSE, compress = FALSE) {
   payload <- gsub("<", "\\u003c", payload, fixed = TRUE)
   read_asset <- function(name) paste(readLines(system.file("runtime", name,
     package = "offlineatlas", mustWork = TRUE), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  body <- gsub("{{PACKAGE_VERSION}}", html_escape(browser_data$package_version),
+    read_asset("body.html"), fixed = TRUE)
   data_tag <- '<script id="atlas-data" type="application/json">'
   runtime <- read_asset("atlas.js")
   loading <- ""
@@ -67,7 +72,7 @@ export_html <- function(x, file, overwrite = FALSE, compress = FALSE) {
     '<meta name="viewport" content="width=device-width,initial-scale=1">',
     '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src blob: data:; font-src \'none\'; connect-src \'none\'; base-uri \'none\'; form-action \'none\'">',
     '<title>', html_escape(x$title), '</title><style>', read_asset("atlas.css"), '</style></head><body>',
-    loading, read_asset("body.html"), data_tag, payload,
+    loading, body, data_tag, payload,
     '</script><script>', runtime, '</script></body></html>\n')
   dir.create(dirname(file), recursive = TRUE, showWarnings = FALSE)
   con <- base::file(file, open = "wb")

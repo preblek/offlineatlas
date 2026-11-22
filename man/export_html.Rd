@@ -31,6 +31,10 @@ itself and opened directly in a browser without R, a server or internet.
 All supplied periods and mapped data remain embedded, even when controls are
 hidden. Hiding controls is not a method for removing data from an export.
 Authoring-only sf geometry attributes are excluded from the HTML payload.
+The viewer badge and embedded package_version identify the installed package
+performing the export, including when exporting an object created by an older
+release. The input object is not modified. Existing HTML files must be
+re-exported to receive updated code and version labels.
 
 With compress = TRUE, the embedded data, geometry, and artwork are gzip-compressed
 and base64-encoded. The browser unpacks them locally before rendering. No R,

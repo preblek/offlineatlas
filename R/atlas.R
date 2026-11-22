@@ -29,6 +29,8 @@ numbers <- function(x, what, missing = FALSE) {
   as.numeric(x)
 }
 
+atlas_package_version <- function() as.character(utils::packageVersion("offlineatlas"))
+
 atlas <- function(title = "Offline atlas", description = "", notice = "",
                   sources = character(), units = "",
                   entity_name = "entity", entity_names = "entities") {
@@ -37,7 +39,7 @@ atlas <- function(title = "Offline atlas", description = "", notice = "",
   if (!is.character(sources) || anyNA(sources)) stop("sources must be text", call. = FALSE)
   scalar_text(entity_name, "entity_name")
   scalar_text(entity_names, "entity_names")
-  structure(list(schema_version = "0.1", package_version = "0.0.10",
+  structure(list(schema_version = "0.1", package_version = atlas_package_version(),
     title = title, description = description, notice = notice, sources = unname(as.list(sources)),
     units = units, entity_name = entity_name, entity_names = entity_names,
     coordinates = NULL, nodes = NULL, edges = NULL, areas = NULL, spatial = list(),

@@ -1,7 +1,7 @@
 Package: offlineatlas
 Type: Package
 Title: Standalone Offline Maps and Networks
-Version: 0.0.11
+Version: 0.0.12
 Authors@R: person("Keith A.", "Preble", role = c("aut", "cre"), email = "preblek25@ecu.edu")
 Description: Prepares geographic and schematic networks and area maps as
     standalone HTML files. A shared browser renderer supports filtering,
