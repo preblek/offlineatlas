@@ -8,8 +8,8 @@
 This R package builds independent HTML visualizations from data frames. The
 aid network, Florence network, World Bank GDP map, national FDI map, and
 bilateral FDI sample, and EU enlargement timeline use the same renderer.
-All required data, geometry, JavaScript, CSS, and artwork are embedded. The
-viewer needs no R installation, server, API key, cache, or internet connection.
+All required data, geometry, JavaScript, CSS, and artwork are embedded directly in the HTML file that is created. The
+You do not need an R installation, server, API key, cache, or internet connection to view the HTML file that is generated (but you do need the internet to share/distribute the file).
 
 Install from GitHub with
 
