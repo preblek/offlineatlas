@@ -15,33 +15,33 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
                      fig.width = 9, fig.height = 7)
 ```
 
-Build a map in stages, then compare alternative palettes, legends, and exports.
-The data and boundaries come with offlineatlas 0.0.14 or later. There is no
-personal file path to edit and no data download during this tutorial.
+This tutorial provides an example for creating an interactive map using OFAC monetary penalties mapped to states in the US using data from the OFAC Enforcement Action data set from one of my projects with Bryan R. Early:
+
+- Early, Bryan R., and Keith A. Preble. 2020. “Going Fishing versus Hunting
+  Whales: Explaining Changes in How the US Enforces Economic Sanctions.”
+  *Security Studies* 29(2): 231–267.
+  [https://doi.org/10.1080/09636412.2020.1722850](https://doi.org/10.1080/09636412.2020.1722850).
 
 The CSV contains 850 rows, one for each of the 50 states in each year from
 2009 through 2025. This example selects 2025 and compares the average and
-largest recorded monetary penalty. The full annual table is available for
-your own timeline experiments.
+largest recorded monetary penalty, but a larger example that incorpates several years or the entire range of data is possible. 
 
 ## What the amounts mean
 
-Keith A. Preble prepared these aggregates from his OFAC enforcement dataset.
-They include positive monetary records classified as US entities with a
+I prepared these aggregates from the OFAC enforcement dataset.
+They include positive monetary records classified as US entities (entities are 'firms' in OFAC enforcement parlance) with a
 recorded state, excluding individuals, mixed respondents, DC, and territories.
 US subsidiaries can be included. State refers to the respondent's recorded
-location, not necessarily where the conduct occurred. This classification
-does not independently establish ultimate ownership.
+location in one of the US 50 states, not necessarily where the conduct occurred. 
 
-Amounts are already in **constant 2025 dollars**, using the annual BEA GDP
+Amounts are in **constant 2025 dollars**, using the annual BEA GDP
 implicit price deflator via FRED. Each case amount was adjusted before
 averaging or taking its maximum. For a case in year `y`, the calculation is
-`nominal_amount * 128.893 / deflator_y`. Do not adjust the CSV values again.
+`nominal_amount * 128.893 / deflator_y`. The values do not need to be adjusted for the example.
 
 **Zero means no qualifying monetary penalty recorded in this source for
-that state and year.** It is not an average over all companies. Findings
-without a monetary amount were excluded, not turned into zero-dollar cases.
-The maximum is the largest observed penalty, not a legal maximum. The source
+that state and year.**  Findings without a monetary amount were excluded.
+The maximum is the largest observed penalty in a given year in that state and not the legal maximum. The source
 ends on December 16, 2025, so this is a teaching snapshot rather than a claim
 of complete enforcement coverage.
 
