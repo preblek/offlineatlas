@@ -1,4 +1,4 @@
-**offlineatlas 0.0.12 prototype**
+**offlineatlas prototype**
 
 [Documentation website](https://preblek.github.io/offlineatlas/) ·
 [Getting-started tutorial](https://preblek.github.io/offlineatlas/articles/getting-started.html) ·
@@ -501,9 +501,10 @@ before deployment. To run the same build locally, use
 Existing HTML files already downloaded or shared must be regenerated separately;
 standalone files do not update themselves.
 
-R validation tests are in tests/. Run `R CMD build .`, then
-`R CMD check --no-manual offlineatlas_0.0.12.tar.gz` to run the package examples,
-tests and vignette checks. A PDF manual can be built separately with
+R validation tests are in tests/. Run `R CMD build .`, then run
+`R CMD check --no-manual` followed by the generated `.tar.gz` filename to check
+the package examples, tests and vignette. The filename includes the version
+from `DESCRIPTION`. A PDF manual can be built separately with
 `R CMD Rd2pdf .` when a working TeX installation is available.
 
 Version 0.0.11 passed local R package checks on macOS, including all ten test
