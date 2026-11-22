@@ -1,3 +1,26 @@
+# offlineatlas 0.0.13
+
+* Added set_palette() to recolor an existing area atlas without adding its
+  geometry or data again. Palettes can target one or several variables.
+  Separate zero and missing colors, a zero legend label, and boundary color
+  and width are configurable. The settings also apply to static area figures.
+* Added set_number_format() for currency symbols and fixed decimal places,
+  including amounts such as $150.50. Area variables can use different formats.
+  Formatting changes presentation only; CSV and JSON retain numeric values.
+* Added set_legend(type = "bar") for compact numeric legends with adjoining
+  interval bands and separate zero/missing keys. HTML, SVG/PNG and static area
+  figures support the option; box legends remain the default.
+* Selecting one area now shows its active value in a prominent card. The card
+  follows variable and timeline changes, moves below the map on narrow screens,
+  and is included in SVG and PNG downloads. set_selection_card() controls its
+  visibility and position.
+* SVG and PNG download buttons now offer editable titles and subtitles placed
+  above the figure. set_export_options() supplies defaults or disables the
+  dialog for immediate downloads. Blank headings are omitted, and the atlas
+  title and data are unchanged.
+* Updated presentation documentation and bundled examples. All exported maps,
+  cards, number formatting and download controls work standalone and offline.
+
 # offlineatlas 0.0.12
 
 * Atlas objects and exported viewer badges now obtain their version from the

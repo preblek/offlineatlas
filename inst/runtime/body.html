@@ -15,7 +15,7 @@
   <section class="stats" aria-label="Current summary"><div><span id="metric-label"></span><strong id="metric"></strong></div><div><span id="coverage-label"></span><strong id="coverage"></strong></div><div><span>Current focus</span><strong id="focus-summary"></strong></div></section>
   <div class="workspace">
     <section class="panel map-panel"><div class="panel-head"><div><p class="eyebrow" id="map-eyebrow">EXPLORE THE CONNECTIONS</p><h2 id="map-title">The view</h2></div><div class="zoom"><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button><button id="zoom-reset">Fit</button></div></div>
-      <svg id="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" role="group" tabindex="0" aria-label="Interactive visualization. Use arrow keys to pan."></svg>
+      <div class="map-stage"><svg id="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" role="group" tabindex="0" aria-label="Interactive visualization. Use arrow keys to pan."></svg><section id="selection-card" class="selection-card" aria-label="Selected area" aria-live="polite" hidden><h3 id="selection-card-name"></h3><p id="selection-card-variable"></p><strong id="selection-card-value"></strong><p id="selection-card-context"></p></section></div>
       <section id="inset-panel" hidden><div class="inset-heading"><h3 id="inset-title"></h3><p>Fixed geographic extent. Shares filters, selection, and symbol scales with the main map. Connections with an endpoint in this region are clipped at the edge.</p></div><svg id="inset-map" xmlns="http://www.w3.org/2000/svg" role="group"></svg></section>
       <section id="legend" class="legend" aria-label="Map legend"><h3>Reading this view</h3><p id="view-caption"></p><div id="legend-items"></div><p id="legend-note"></p></section>
       <p id="map-note" class="map-note"></p>
@@ -27,3 +27,10 @@
   <section class="panel provenance"><h2>Sources and interpretation</h2><div id="sources"></div><p>This HTML contains its data, graphics, and interactions. It works without R, a server, or an internet connection. Recipients can inspect all embedded data.</p></section>
   <p id="download-status" role="status" aria-live="polite"></p>
 </main><footer>Built with offlineatlas · Shared as one independent HTML file</footer>
+<dialog id="figure-dialog" aria-labelledby="figure-dialog-title" aria-describedby="figure-dialog-help">
+  <h2 id="figure-dialog-title">Download figure</h2>
+  <p id="figure-dialog-help">Edit the headings for this image. Leave a field blank to omit it. Your atlas and data stay unchanged.</p>
+  <label for="figure-title">Title</label><input id="figure-title" type="text" maxlength="240">
+  <label for="figure-subtitle">Subtitle</label><textarea id="figure-subtitle" rows="3" maxlength="600"></textarea>
+  <div class="figure-actions"><button id="figure-cancel" type="button">Cancel</button><button id="figure-download" type="button">Download</button></div>
+</dialog>

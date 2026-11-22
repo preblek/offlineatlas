@@ -34,8 +34,12 @@ Add one geographic detail panel with \code{\link{set_inset}}.
 Use \code{\link{set_background}} for a schematic illustration.
 \code{\link{set_controls}}, \code{\link{set_legend}} and
 \code{\link{set_style}} customize the viewer from R.
-Configuration functions replace their own settings using supplied arguments
-and defaults; keep the desired overrides together in one call.
+Use \code{\link{set_palette}} to recolor existing area maps without rebuilding
+their data or geometry, and \code{\link{set_number_format}} for decimal places
+and currency. \code{\link{set_selection_card}} configures the selected area
+card; \code{\link{set_export_options}} supplies browser download headings.
+Most configuration functions replace their own settings using supplied arguments
+and defaults. set_palette preserves omitted appearance settings.
 }
 \section{Time and missing data}{
 Use \code{\link{summary.offline_atlas}} through summary(x) to inspect

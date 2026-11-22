@@ -20,6 +20,11 @@ source, year, background, and selected entities. Selection uses an outer ring
 without changing the zero or unavailable symbols. The interactive legend uses
 readable HTML; exported figures contain a vector legend from the same model.
 
+SVG and PNG downloads offer an editable title and subtitle above the figure.
+Use \code{\link{set_export_options}} to supply defaults or disable the dialog.
+A selected area card is included when visible; \code{\link{set_selection_card}}
+controls its position and visibility.
+
 HTML exports include a content security policy that prevents network access.
 SVG and PNG downloads preserve the current visible view. CSV downloads follow
 the current filters and selection; JSON downloads include all embedded data.

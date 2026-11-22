@@ -29,7 +29,8 @@ This distinguishes an unmatched area from a matched record with an unavailable
 observation in the inspector, CSV, and JSON. Defaults to all matched.}
 \item{colors}{Optional list of six-digit hex color vectors, one per area
 variable and one color per interval or category. Numeric variables default to
-the sequential palette. Categorical variables require an explicit palette.}
+the sequential palette. Categorical variables require an explicit palette.
+Use \code{\link{set_palette}} to recolor the atlas after adding its areas.}
 \item{categories}{Optional list with one entry per area variable. NULL entries
 identify numeric variables; character vectors give the complete ordered levels
 for categorical variables. Unknown categories are rejected; NA is allowed.}

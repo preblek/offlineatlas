@@ -31,7 +31,7 @@ reference:
   desc: Start with data frames or sf geometries, then add areas, nodes, and relationships.
   contents: [offlineatlas, atlas, add_areas, add_nodes, add_edges]
 - title: Adjust the presentation
-  contents: [set_view, set_background, set_inset, set_controls, set_legend, set_style, set_preset, layout_network]
+  contents: [set_view, set_background, set_inset, set_controls, set_legend, set_style, set_palette, set_number_format, set_selection_card, set_export_options, set_preset, layout_network]
 - title: Inspect and export
   contents: [summary.offline_atlas, export_html, as_ggplot]
 - title: Bundled examples

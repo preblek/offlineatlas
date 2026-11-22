@@ -6,7 +6,8 @@
 set_legend(x, title = "Reading this view",
            position = c("below", "above", "sidebar"),
            columns = NULL, visible = TRUE, show_counts = TRUE,
-           note = NULL, labels = NULL, missing_label = "Unavailable or unmatched")
+           note = NULL, labels = NULL, missing_label = "Unavailable or unmatched",
+           type = c("boxes", "bar"))
 }
 \arguments{
 \item{x}{An atlas object.}
@@ -21,10 +22,18 @@ the specified number, or three by default.}
 an empty string suppresses it. Captions, source attribution and notices remain.}
 \item{labels}{NULL or a named list keyed by original area variable column, with one display label per interval or category. Missing labels are configured separately.}
 \item{missing_label}{Legend wording for unavailable or unmatched areas.}
+\item{type}{Separate boxes (default), or a compact bar for numeric area maps.
+The bar uses adjoining, equal-width color bands for the configured intervals,
+with threshold ticks. Its width is not a linear numeric scale. Zero and missing
+keys stay separate. Categorical and network legends retain their ordinary keys.}
 }
 \details{
 Legend labels affect display only; original values and category names remain
-in CSV and JSON. Numeric label vectors follow interval order; category labels
+unchanged. Bar legends work in HTML, browser SVG/PNG downloads and static area
+figures. They do not interpolate colors or change interval thresholds. Explicit
+interval labels appear at band centers instead of threshold ticks.
+
+Numeric label vectors follow interval order; category labels
 follow declared category order. Their lengths and variable names are checked
 at export, so presentation may be configured before adding data. For network
 legends, relationship names come from the supplied layer column. Custom legend

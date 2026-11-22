@@ -54,7 +54,7 @@ as_ggplot <- function(x, variable = NULL, time = NULL, layers = NULL,
   } else {
     breaks <- unlist(v$breaks, use.names = FALSE)
     bins <- findInterval(value, breaks) + 1L
-    formatted <- format(round(breaks, 2), trim = TRUE, scientific = FALSE, big.mark = ",")
+    formatted <- format_atlas_numbers(breaks, v$number_format)
     labels <- c(paste0("<", formatted[1]),
       if (length(breaks)>1) paste0(utils::head(formatted,-1)," to <",utils::tail(formatted,-1)),
       paste0("\u2265", utils::tail(formatted,1)))
@@ -64,16 +64,27 @@ as_ggplot <- function(x, variable = NULL, time = NULL, layers = NULL,
     if (length(aliases) != length(labels)) stop("Legend labels need one entry per interval or category", call. = FALSE)
     labels <- unlist(aliases, use.names = FALSE)
   }
+  separate_zero <- !categorical && !is.null(v$zero_color)
+  if (separate_zero) {
+    zero_bin <- findInterval(0, breaks) + 1L
+    labels[zero_bin] <- paste0(labels[zero_bin], " (excluding zero)")
+  }
   if (categorical && !identical(legend$show_counts, FALSE))
     labels <- paste0(labels, " (", tabulate(bins, nbins = length(labels)), ")")
   keys <- paste0("class_", seq_along(labels));missing_key <- "missing"
   colors <- if (is.null(v$colors)) c("#edf4db","#c7dfb1","#8fc1a0","#4c9d91","#247577","#164c60")[seq_along(labels)] else unlist(v$colors, use.names = FALSE)
+  missing_color <- if (is.null(v$missing_color)) "#d8dbd7" else v$missing_color
+  if (separate_zero) {
+    keys <- c(keys, "zero");colors <- c(colors, v$zero_color)
+    labels <- c(labels, if (is.null(v$zero_label)) "Recorded zero" else v$zero_label)
+  }
   include_missing <- !categorical || anyNA(value)
   if (include_missing) {
-    keys <- c(keys, missing_key);colors <- c(colors, "#d8dbd7")
+    keys <- c(keys, missing_key);colors <- c(colors, missing_color)
     labels <- c(labels, if (is.null(legend$missing_label)) "Unavailable or unmatched" else legend$missing_label)
   }
   fill_key <- ifelse(is.na(value), missing_key, paste0("class_", bins))
+  if (separate_zero) fill_key[!is.na(value) & value == 0] <- "zero"
   geometry_index <- match(rows$id, retained$ids)
   if (anyNA(geometry_index)) stop("Retained geometry does not match area IDs", call. = FALSE)
   plot_data <- sf::st_sf(id = rows$id, label = rows$label, value = value,
@@ -99,11 +110,12 @@ as_ggplot <- function(x, variable = NULL, time = NULL, layers = NULL,
   caption <- paste(vapply(caption[nzchar(caption)], function(s) paste(strwrap(s,width=115),collapse="\n"),character(1)),collapse="\n")
   # Local binding avoids an undeclared-global warning from ggplot's aesthetic DSL.
   fill_key <- NULL
-  ggplot2::ggplot(plot_data, ggplot2::aes(fill = fill_key)) +
-    ggplot2::geom_sf(colour = "white", linewidth = 0.15, show.legend = TRUE) +
+  plot <- ggplot2::ggplot(plot_data, ggplot2::aes(fill = fill_key)) +
+    ggplot2::geom_sf(colour = if (is.null(x$area_style$border_color)) "white" else x$area_style$border_color,
+      linewidth = if (is.null(x$area_style$border_width)) 0.15 else x$area_style$border_width / 4, show.legend = TRUE) +
     ggplot2::scale_fill_manual(values = stats::setNames(colors,keys), limits = keys,
       breaks = keys, labels = vapply(labels,function(s)paste(strwrap(s,width=29),collapse="\n"),character(1),USE.NAMES=FALSE),
-      drop = FALSE, na.value = "#d8dbd7", name = display_title) +
+      drop = FALSE, na.value = missing_color, name = display_title) +
     ggplot2::coord_sf(crs = "+proj=eqc +lat_ts=0 +datum=WGS84 +units=m +no_defs",
       default_crs = "OGC:CRS84", datum = NA, xlim = bounds[c(1,3)], ylim = bounds[c(2,4)], expand = FALSE) +
     ggplot2::labs(title = x$title, subtitle = paste(c(v$label,if(!is.null(time))paste("Year",time),
@@ -121,4 +133,7 @@ as_ggplot <- function(x, variable = NULL, time = NULL, layers = NULL,
       legend.box.spacing = grid::unit(2,"mm"),
       plot.caption = ggplot2::element_text(hjust=0,size=if (large) 9 else 8,margin=ggplot2::margin(t=6)),
       plot.margin = ggplot2::margin(10,10,10,10))
+  if (identical(legend$type,"bar") && !categorical && position != "none")
+    plot <- plot + ggplot2::guides(fill="none", atlas_bar=area_bar_guide(v,colors,labels,display_title,body_font,position,aliases))
+  plot
 }

@@ -417,11 +417,68 @@ export_html(custom_map, file.path(output_dir, "fdi-customized.html"),
             overwrite = TRUE)
 ```
 
+### Change colors without rebuilding a map
+
+Use `set_palette()` after adding areas. It preserves the data, geometry,
+periods, view and other settings. Assigning its result to a new name keeps
+the original atlas available for comparison.
+
+```{r palette-options}
+blue_region <- regional_map |>
+  set_palette(
+    colors = c("#6BAED6", "#3182BD", "#08519C"),
+    zero_color = "#E6E6E6",
+    missing_color = "#FFFFFF",
+    border_color = "#000000",
+    border_width = 0.6
+  ) |>
+  set_number_format(style = "currency", currency = "USD") |>
+  set_selection_card(position = "top_right") |>
+  set_export_options(subtitle = "GDP per capita, current US dollars")
+
+export_html(blue_region, file.path(output_dir, "regional-blue.html"),
+            compress = TRUE, overwrite = TRUE)
+```
+
+This example has two breakpoints, so it needs three interval colors. A
+separate zero color does not consume an interval color. Exactly zero is
+gray; small positive values still use the numeric palette. Missing values
+have their own color and legend key. The same styling applies to static
+area figures from `as_ggplot()`.
+
+For a compact spectrum-like legend, use adjoining interval bands instead of
+separate boxes. The colors and thresholds remain unchanged, and zero and missing
+values keep separate small keys. Band widths do not represent numeric distance.
+Categorical and network legends keep their ordinary keys.
+
+```{r bar-legend}
+blue_bar <- set_legend(blue_region, type = "bar", title = "GDP per capita")
+```
+
+The bar also works in browser SVG/PNG downloads and static area figures.
+Use `type = "boxes"` to return to the default style.
+
+By default, palette and number-format changes apply to all numeric area
+variables. Supply `variable = "gdp"` to change just that variable. Variables
+sharing one palette must have the same number of intervals. Omitted palette
+settings are preserved in subsequent `set_palette()` calls.
+
+Currency formatting shows values such as `$150.50`, including the trailing
+zero and currency symbol. Set `digits` to choose a different number of decimal
+places. It does not alter observations, convert currencies, or adjust for
+inflation. CSV and JSON retain the original numeric values. Ranking and
+chart-axis labels remain abbreviated where space is limited.
+
+Selecting one area displays its active value in a card that follows period
+and variable changes. Use `set_selection_card(visible = FALSE)` to hide it.
+The card moves below the map on narrow screens and is included in browser
+figure downloads.
+
 Legend aliases change display text only. Original values remain in data
 exports. Labels are plain text. Fonts come from the viewing computer and are
 not downloaded, so exact appearance may vary.
 
-Each configuration function replaces its own previous settings with its
+Most configuration functions replace their own previous settings with their
 arguments and defaults. Keep the desired options together in one call.
 For example, when changing playback speed, repeat `initial_time` if you want
 to retain a previously configured starting period. A control appears only
@@ -612,8 +669,12 @@ list.files(output_dir, pattern = "[.]html$")
 
 The viewer offers several downloads.
 
-- **SVG and PNG** capture the current map or network, including captions,
-  the legend, and any visible inset or numeric history chart.
+- **SVG and PNG** open a dialog where you can edit the title and subtitle.
+  The headings appear above the image; blank headings are omitted. Downloads
+  include captions, the legend, and any visible selection card, inset or numeric
+  history chart. These edits do not change the atlas or its data. Use
+  `set_export_options(prompt = FALSE)` for immediate downloads with the default
+  headings, or supply `title` and `subtitle` in R to set your own defaults.
 - **View data CSV** follows the current filters and selection.
 - **History CSV** contains every period for the selected country.
 - **All data JSON** includes all embedded periods and mapped data,

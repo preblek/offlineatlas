@@ -340,10 +340,12 @@ named_options <- function(value, keys, what, logical = FALSE) {
 
 set_legend <- function(x, title = "Reading this view", position = c("below", "above", "sidebar"),
                        columns = NULL, visible = TRUE, show_counts = TRUE,
-                       note = NULL, labels = NULL, missing_label = "Unavailable or unmatched") {
+                       note = NULL, labels = NULL, missing_label = "Unavailable or unmatched",
+                       type = c("boxes", "bar")) {
   check_atlas(x)
   scalar_text(title, "Legend title");scalar_text(missing_label, "missing_label")
   position <- match.arg(position)
+  type <- match.arg(type)
   if (!is.null(columns) && (!is.numeric(columns) || length(columns) != 1L ||
       is.na(columns) || !columns %in% 1:4)) stop("columns must be NULL or an integer from 1 to 4", call. = FALSE)
   for (value in list(visible, show_counts))
@@ -358,7 +360,7 @@ set_legend <- function(x, title = "Reading this view", position = c("below", "ab
     labels <- lapply(labels, function(value) unname(as.list(value)))
   }
   x$legend <- list(title = title, position = position, columns = columns, visible = visible,
-    show_counts = show_counts, note = note, labels = labels, missing_label = missing_label)
+    show_counts = show_counts, note = note, labels = labels, missing_label = missing_label, type = type)
   x
 }
 

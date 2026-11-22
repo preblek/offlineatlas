@@ -201,6 +201,7 @@ network_ggplot <- function(x, variable, time, layers, source, labels, node_size,
         ticks <- pretty(limits, n = 3)
         ticks[ticks > 0 & ticks <= limits[2]]
       }, labels = function(values) {
+        if (!is.null(x$number_format)) return(format_atlas_numbers(values, x$number_format))
         divisor <- ifelse(values >= 1e9, 1e9, ifelse(values >= 1e6, 1e6, ifelse(values >= 1e3, 1e3, 1)))
         suffix <- ifelse(divisor == 1e9, "B", ifelse(divisor == 1e6, "M", ifelse(divisor == 1e3, "K", "")))
         paste0(format(values / divisor, trim = TRUE, scientific = FALSE, digits = 3), suffix)
