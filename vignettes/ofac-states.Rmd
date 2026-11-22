@@ -1,0 +1,594 @@
+---
+title: "OFAC penalties by US state"
+output:
+  rmarkdown::html_vignette:
+    self_contained: true
+    mathjax: null
+vignette: >
+  %\VignetteIndexEntry{OFAC penalties by US state}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, purl=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+                     fig.width = 9, fig.height = 7)
+```
+
+Build a map in stages, then compare alternative palettes, legends, and exports.
+The data and boundaries come with offlineatlas 0.0.14 or later. There is no
+personal file path to edit and no data download during this tutorial.
+
+The CSV contains 850 rows, one for each of the 50 states in each year from
+2009 through 2025. This example selects 2025 and compares the average and
+largest recorded monetary penalty. The full annual table is available for
+your own timeline experiments.
+
+## What the amounts mean
+
+Keith A. Preble prepared these aggregates from his OFAC enforcement dataset.
+They include positive monetary records classified as US entities with a
+recorded state, excluding individuals, mixed respondents, DC, and territories.
+US subsidiaries can be included. State refers to the respondent's recorded
+location, not necessarily where the conduct occurred. This classification
+does not independently establish ultimate ownership.
+
+Amounts are already in **constant 2025 dollars**, using the annual BEA GDP
+implicit price deflator via FRED. Each case amount was adjusted before
+averaging or taking its maximum. For a case in year `y`, the calculation is
+`nominal_amount * 128.893 / deflator_y`. Do not adjust the CSV values again.
+
+**Zero means no qualifying monetary penalty recorded in this source for
+that state and year.** It is not an average over all companies. Findings
+without a monetary amount were excluded, not turned into zero-dollar cases.
+The maximum is the largest observed penalty, not a legal maximum. The source
+ends on December 16, 2025, so this is a teaching snapshot rather than a claim
+of complete enforcement coverage.
+
+```{r load-package}
+library(offlineatlas)
+stopifnot(packageVersion("offlineatlas") >= "0.0.14")
+```
+
+Full definitions and source notes are installed with the data.
+
+```{r source-notes, eval=FALSE, purl=FALSE}
+file.show(example_file("OFAC-NOTICE.txt"))
+```
+
+## 1. Import the penalty data
+
+```{r ofac-1}
+# example_data() reads the CSV from the installed package.
+# It works regardless of your working directory.
+ofac <- example_data("ofac_state_penalties_2009_2025")
+
+# Inspect the column names and first few observations.
+
+names(ofac)
+head(ofac)
+
+# The data contain annual average and maximum monetary penalties.
+# Both amounts have already been converted to constant 2025 dollars.
+#
+# Zero means no qualifying monetary penalty recorded in the source
+# for that state and year. Missing values should remain NA.
+```
+
+## 2. Read the bundled state boundaries
+
+```{r ofac-2}
+# These are US Census Bureau 2024 cartographic boundaries at 1:20m.
+# They are simplified for display and already contain just the 50 states.
+us_states <- sf::st_read(
+  example_file("us_states_sf.geojson"),
+  quiet = TRUE
+)
+
+nrow(us_states)  # 50 states.
+sf::st_crs(us_states)  # Longitude and latitude, EPSG:4326.
+```
+
+### An alternative source using tigris
+
+For another boundary year or resolution, `tigris` can download Census
+boundaries. It is **optional**, and is not needed for the bundled tutorial.
+Install it separately, then run this in place of the boundary-loading step.
+The first download needs internet access. The exported atlas still works offline.
+
+```{r optional-tigris, eval=FALSE, purl=FALSE}
+install.packages("tigris")  # Only once.
+options(tigris_use_cache = TRUE)
+us_states <- tigris::states(cb = TRUE, resolution = "20m", year = 2024)
+us_states <- us_states[us_states$STUSPS %in% state.abb, ]
+```
+
+`cb = TRUE` requests cartographic boundaries. `20m` means a 1:20,000,000
+display scale, not a 20-metre resolution. Boundary year and observation year
+are separate choices. Keep their dates in your source notes.
+
+## 3. Select a year and join the data to the boundaries
+
+```{r ofac-3}
+ofac_2025 <- subset(ofac, year == 2025)
+
+# Check that each state appears exactly once in this year's data.
+
+stopifnot(
+  nrow(ofac_2025) == 50,
+  !anyDuplicated(ofac_2025$state),
+  setequal(ofac_2025$state, state.name)
+)
+
+# The CSV uses "state" for state names.
+# The boundary file uses "NAME".
+# character(0) means every data name has a boundary match.
+
+setdiff(ofac_2025$state, us_states$NAME)
+
+# Attach the observations to the geographic shapes.
+# all.x = TRUE retains every state boundary.
+
+states_ofac <- merge(
+  us_states,
+  ofac_2025,
+  by.x = "NAME",
+  by.y = "state",
+  all.x = TRUE
+)
+
+# Verify that the join preserved all 50 states and their values.
+
+stopifnot(
+  nrow(states_ofac) == 50,
+  !anyNA(states_ofac$average_penalty_2025_usd),
+  !anyNA(states_ofac$max_penalty_2025_usd)
+)
+```
+
+## 4. Set up shared settings
+
+```{r ofac-4}
+# Use a temporary folder while learning. To keep your exports,
+# replace this with a folder you own, such as "ofac_maps".
+
+output_dir <- file.path(tempdir(), "offlineatlas-ofac")
+
+dir.create(
+  output_dir,
+  showWarnings = FALSE,
+  recursive = TRUE
+)
+
+# Five breakpoints create six color intervals.
+# The same thresholds let us compare average and maximum penalties.
+# A value exactly on a breakpoint enters the higher interval.
+
+penalty_breaks <- c(
+  1000000,
+  5000000,
+  10000000,
+  50000000,
+  100000000
+)
+
+# Set the opening view to the contiguous United States.
+# The order is west, south, east, north.
+# Alaska and Hawaii remain in the atlas data.
+
+us_bounds <- c(-125, 24, -66, 50)
+
+# Create a reusable starting object.
+# This contains the title and explanatory text, but no areas yet.
+
+ofac_base <- atlas(
+  title = "OFAC penalties by state, 2025",
+  units = "2025 USD",
+  entity_name = "state",
+  entity_names = "states",
+  notice = paste(
+    "US-based entities. Amounts adjusted using the GDP deflator.",
+    "Zero indicates no qualifying monetary penalty recorded."
+  ),
+  sources = c(
+    "Prepared OFAC state-year penalty data, 2009–2025.",
+    "BEA GDP implicit price deflator, via FRED.",
+    "US Census Bureau, 2024 cartographic state boundaries."
+  )
+)
+```
+
+The opening view shows the contiguous states. Alaska and Hawaii remain
+in the data and in searches, although this opening extent does not show them.
+For a different geographic extent, change `us_bounds` or use `set_view()`
+without explicit bounds to fit all supplied features. Alaska's islands can
+make that full extent very wide.
+
+## 5. First map: average penalties with the default appearance
+
+```{r ofac-5}
+# Start from ofac_base, which has no area layer.
+# STUSPS supplies unique state identifiers.
+# NAME supplies the state names displayed to readers.
+
+ofac_map <- add_areas(
+  ofac_base,
+  data = states_ofac,
+  id = "STUSPS",
+  label = "NAME",
+  values = "average_penalty_2025_usd",
+  labels = "Average penalty (2025 USD)",
+  breaks = list(penalty_breaks)
+)
+
+ofac_map <- set_view(
+  ofac_map,
+  bounds = us_bounds,
+  title = "Contiguous United States"
+)
+
+# Inspect the prepared atlas before exporting.
+
+summary(ofac_map)
+
+# Each export contains the data, shapes, scripts, and styles.
+# Compression reduces file size without changing the observations.
+
+file1 <- file.path(
+  output_dir,
+  "ofac-states-2025-average.html"
+)
+
+export_html(
+  ofac_map,
+  file = file1,
+  compress = TRUE,
+  overwrite = TRUE
+)
+
+# Open this example manually when you want to inspect it.
+# The interactive() check prevents browser windows opening while knitting.
+
+if (interactive()) {
+  browseURL(normalizePath(file1))
+}
+```
+
+## 6. Second map: choose average or maximum penalty
+
+```{r ofac-6}
+# Create another atlas from the empty base.
+# Do not add areas to ofac_map again: it already has an area layer.
+#
+# Supplying two variables creates a dropdown in the viewer.
+# It switches between measures on the same map.
+
+ofac_map2 <- add_areas(
+  ofac_base,
+  data = states_ofac,
+  id = "STUSPS",
+  label = "NAME",
+  values = c(
+    "average_penalty_2025_usd",
+    "max_penalty_2025_usd"
+  ),
+  labels = c(
+    "Average penalty (2025 USD)",
+    "Maximum penalty (2025 USD)"
+  ),
+  breaks = list(
+    penalty_breaks,
+    penalty_breaks
+  )
+)
+
+ofac_map2 <- set_view(
+  ofac_map2,
+  bounds = us_bounds,
+  title = "Contiguous United States"
+)
+
+file2 <- file.path(
+  output_dir,
+  "ofac-states-2025-average-and-max.html"
+)
+
+export_html(
+  ofac_map2,
+  file = file2,
+  compress = TRUE,
+  overwrite = TRUE
+)
+```
+
+## 7. Third map: change the palette and format dollars
+
+```{r ofac-7}
+# Six colors are needed for our six intervals.
+# Colors run from lower values to higher values.
+
+blues <- c(
+  "#6BAED6",
+  "#4292C6",
+  "#2171B5",
+  "#08519C",
+  "#083E7D",
+  "#062B58"
+)
+
+# Change the appearance of the existing atlas.
+# There is no need to repeat atlas() or add_areas().
+#
+# Assigning the result to a new name preserves ofac_map2.
+# By default, this palette applies to all numeric area variables.
+
+ofac_map3 <- set_palette(
+  ofac_map2,
+  colors = blues
+)
+
+# units = "2025 USD" supplies a label.
+# set_number_format() controls how the numbers themselves appear.
+#
+# This displays 150.5 as $150.50 and 0 as $0.00.
+# It does not change the underlying observations.
+
+ofac_map3 <- set_number_format(
+  ofac_map3,
+  style = "currency",
+  currency = "USD",
+  digits = 2
+)
+
+file3 <- file.path(
+  output_dir,
+  "ofac-states-2025-blue.html"
+)
+
+export_html(
+  ofac_map3,
+  file = file3,
+  compress = TRUE,
+  overwrite = TRUE
+)
+```
+
+## 8. Fourth map: distinguish zero and add black boundaries
+
+```{r ofac-8}
+# Exactly zero gets its own gray fill.
+# Positive penalties retain the blue interval colors.
+# Missing observations get a separate white fill.
+#
+# Omitting colors preserves the blue palette already applied.
+
+ofac_map4 <- set_palette(
+  ofac_map3,
+  zero_color = "#E6E6E6",
+  zero_label = "No recorded monetary penalty",
+  missing_color = "#FFFFFF",
+  border_color = "#000000",
+  border_width = 0.6
+)
+
+# Replace the separate legend boxes with adjoining color bands.
+# These bands represent the existing fixed intervals.
+# Their widths are not proportional to numeric distance.
+# Zero and missing observations retain separate small keys.
+
+ofac_map4 <- set_legend(
+  ofac_map4,
+  type = "bar",
+  title = "Penalty amount (2025 USD)"
+)
+
+file4 <- file.path(
+  output_dir,
+  "ofac-states-2025-color-bar.html"
+)
+
+export_html(
+  ofac_map4,
+  file = file4,
+  compress = TRUE,
+  overwrite = TRUE
+)
+
+if (interactive()) {
+  browseURL(normalizePath(file4))
+}
+```
+
+## 9. Configure the selected-state card and image downloads
+
+```{r ofac-9}
+# Selecting one state shows its active value in a card.
+# Available positions are top_right, top_left,
+# bottom_right, and bottom_left.
+#
+# On narrow screens, the card moves below the map.
+
+ofac_map5 <- set_selection_card(
+  ofac_map4,
+  visible = TRUE,
+  position = "bottom_left"
+)
+
+# Supply default headings for SVG and PNG downloads.
+# prompt = TRUE lets readers edit these headings in the browser.
+# Editing a download heading does not change the atlas or its data.
+
+ofac_map5 <- set_export_options(
+  ofac_map5,
+  title = "OFAC penalties by state, 2025",
+  subtitle = "US-based entities; amounts in constant 2025 US dollars",
+  prompt = TRUE
+)
+
+file5 <- file.path(
+  output_dir,
+  "ofac-states-2025-customized.html"
+)
+
+export_html(
+  ofac_map5,
+  file = file5,
+  compress = TRUE,
+  overwrite = TRUE
+)
+
+if (interactive()) {
+  browseURL(normalizePath(file5))
+}
+```
+
+## 10. Other configuration options to try
+
+```{r ofac-10}
+# These create alternate objects without changing ofac_map5.
+# Export any of them with export_html() to inspect the result.
+
+# Return to separate legend boxes.
+# Include the title again because set_legend() resets its own settings.
+
+ofac_boxes <- set_legend(
+  ofac_map5,
+  type = "boxes",
+  title = "Penalty amount (2025 USD)",
+  columns = 2
+)
+
+# Put the color-bar legend above the map.
+
+ofac_legend_above <- set_legend(
+  ofac_map5,
+  type = "bar",
+  title = "Penalty amount (2025 USD)",
+  position = "above"
+)
+
+# Hide the selected-state card.
+
+ofac_without_card <- set_selection_card(
+  ofac_map5,
+  visible = FALSE
+)
+
+# Skip the heading dialog when downloading an image.
+
+ofac_quick_download <- set_export_options(
+  ofac_map5,
+  title = "OFAC penalties by state, 2025",
+  subtitle = "Amounts in constant 2025 US dollars",
+  prompt = FALSE
+)
+
+# Apply a different palette to only the maximum-penalty variable.
+# This illustrates per-variable styling. Using the same palette
+# for both measures remains useful when comparing their magnitudes.
+
+purples <- c(
+  "#BCBDDC",
+  "#9E9AC8",
+  "#807DBA",
+  "#6A51A3",
+  "#54278F",
+  "#3F007D"
+)
+
+ofac_mixed_palettes <- set_palette(
+  ofac_map5,
+  variable = "max_penalty_2025_usd",
+  colors = purples
+)
+```
+
+For example, save the box-legend alternative under its own filename.
+
+```{r export-alternative}
+export_html(
+  ofac_boxes,
+  file.path(output_dir, "ofac-states-2025-boxes.html"),
+  compress = TRUE, overwrite = TRUE
+)
+```
+
+## 11. Optional: make a static figure with ggplot2
+
+```{r ofac-11}
+# Choose one variable for the static figure.
+# The palette, zero/missing colors, boundaries, currency formatting,
+# and color-bar legend carry through to the static area map.
+#
+# The browser's selection card and download-heading dialog do not
+# apply to static figures. Set their headings with ggplot2::labs().
+
+average_figure <- as_ggplot(
+  ofac_map5,
+  variable = "average_penalty_2025_usd"
+)
+
+average_figure <- average_figure +
+  ggplot2::labs(
+    title = "Average OFAC penalty by state, 2025",
+    subtitle = "US-based entities; amounts in constant 2025 US dollars",
+    caption = paste(
+      "Prepared OFAC teaching snapshot; zero means no qualifying penalty recorded.",
+      "BEA GDP deflator via FRED; US Census Bureau 2024 boundaries (public domain).",
+      sep = "\n"
+    )
+  )
+
+print(average_figure)
+
+dir.create(file.path(output_dir, "static"), showWarnings = FALSE)
+
+ggplot2::ggsave(
+  filename = file.path(output_dir, "static", "ofac-average-2025.pdf"),
+  plot = average_figure,
+  width = 11,
+  height = 7,
+  units = "in",
+  bg = "white"
+)
+
+# A PNG preview is useful for slides and web pages.
+ggplot2::ggsave(
+  file.path(output_dir, "static", "ofac-average-2025.png"),
+  plot = average_figure, width = 11, height = 7, dpi = 150, bg = "white"
+)
+```
+
+## 12. Compare the exported examples
+
+```{r ofac-12}
+list.files(
+  output_dir,
+  pattern = "\\.html$"
+)
+
+# Each HTML file is independent and works offline.
+# Changing an R object does not update an existing HTML file.
+# Run export_html() again to save your latest changes.
+```
+
+## What to change for your own data
+
+Replace the table and boundaries, check their identifiers, and choose breaks
+appropriate to your variable. Keep zero separate from unavailable values.
+You only need a fresh `atlas()` and `add_areas()` when rebuilding the area
+layer. Use the appearance setters to restyle an existing map. Assigning a
+new object name preserves the earlier version for comparison.
+
+The HTML files embed the mapped observations and shapes. Share them only
+when those data may also be shared. Currency formatting changes labels, not
+the raw numeric values in CSV or JSON downloads.
+
+## Sources
+
+- Keith A. Preble, prepared state-year aggregates from the OFAC enforcement
+  dataset. See the bundled `OFAC-NOTICE.txt` for inclusion rules and corrections.
+- [BEA GDP implicit price deflator via FRED](https://fred.stlouisfed.org/series/A191RD3A086NBEA).
+- [US Census Bureau 2024 cartographic boundaries](https://www.census.gov/geographies/mapping-files/2024/geo/carto-boundary-file.html), public domain.
+
+For another worked regional example, see the Japan population tutorial.
