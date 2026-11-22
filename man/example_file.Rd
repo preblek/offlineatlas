@@ -12,6 +12,10 @@ example_file(name)
 Assets live in the installed package extdata directory. Examples include
 \itemize{
 \item \file{world_sf.geojson} and \file{europe_sf.geojson} boundaries.
+\item \file{us_states_sf.geojson} (50 states, Census 2024, public domain).
+\item \file{japan_prefectures_sf.geojson} (47 prefectures, geoBoundaries 2017
+snapshot from OpenStreetMap/Wambacher, ODbL 1.0).
+\item \file{OFAC-NOTICE.txt} and \file{JAPAN-NOTICE.txt} tutorial data notices.
 \item The \file{florence.svg} schematic illustration.
 \item \file{WORLD-NOTICE.txt} and \file{FLORENCE-NOTICE.txt} source notices.
 }

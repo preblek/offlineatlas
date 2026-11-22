@@ -11,7 +11,8 @@ example_data(name)
 \details{
 Available tables are aid, aid_nodes, florence_nodes, florence_edges,
 world_paths, worldbank_gdp, fdi_national, fdi_nodes, fdi_bilateral and
-eu_membership. Use names without the .csv extension.
+eu_membership, ofac_state_penalties_2009_2025, and
+japan_prefecture_population_2020_2025. Use names without the .csv extension.
 
 Aid data are fictional. Florence positions are schematic and ties describe
 a teaching subset with marriage and business layers. GDP values describe 2024
@@ -19,6 +20,18 @@ in current US dollars. National FDI contains 1990--2025 inward flows; the
 bilateral fixture is a separate nine-country 2020--2024 sample, not national
 totals. EU membership records supply accession dates for timeline construction.
 Prepared world paths are in the renderer's fixed projection.
+
+OFAC data contain 850 state-year rows for 50 states, 2009--2025, with average
+and maximum recorded monetary penalties in constant 2025 US dollars.
+The prepared US-entity sample excludes individuals and territories. Zero
+means no qualifying monetary penalty recorded, not an average over all firms.
+See OFAC-NOTICE.txt for source coverage and the GDP deflator adjustment.
+
+Japan data contain 47 prefectures, 2020 counts, preliminary 2025 counts,
+absolute change and percentage change. The lowercase prefecture_id is a
+prepared join key, not an official code. Population data are adapted from
+Wikipedia under CC BY-SA 4.0. See JAPAN-NOTICE.txt for the fixed revision,
+source limitations and separate ODbL boundary attribution.
 
 Inspect column names and source metadata before joining. Identifiers join
 exactly; historical economies are not automatically reassigned to successors.

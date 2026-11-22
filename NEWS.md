@@ -1,3 +1,21 @@
+# offlineatlas 0.0.14
+
+* Added a step-by-step OFAC state-map vignette, based on the worked tutorial.
+  It preserves separate stages for average penalties, a two-variable dropdown,
+  currency formatting, palettes, zero/missing colors, boundaries, legends,
+  selection cards, image headings, and static PDF/PNG figures.
+* Added a Japan prefecture-population vignette with a three-variable dropdown
+  for 2020, preliminary 2025, and absolute change. It demonstrates checked
+  joins, comparable year scales, a separate change palette, alternative
+  legends, a geographic inset, and static figures.
+* Bundled both CSV datasets and simplified sf-readable boundaries, with
+  source dates, preparation details, limitations, and reuse notices. Tutorials
+  run from installed package assets without personal paths or data downloads.
+* Added both tutorials to website navigation and the homepage, plus gallery
+  examples, complete R scripts, CSV/boundary downloads and static PDF links.
+  Website builds refresh tutorial scripts and all example exports from the
+  current source. No viewer or public function behavior changed.
+
 # offlineatlas 0.0.13
 
 * Added set_palette() to recolor an existing area atlas without adding its

@@ -3,6 +3,12 @@
 stopifnot(file.exists("DESCRIPTION"), dir.exists("inst/examples"))
 root <- normalizePath(".")
 expected_version <- unname(read.dcf("DESCRIPTION")[1, "Version"])
+source("pkgdown/sync-tutorial-scripts.R", local = TRUE)
+# A versioned README heading must agree with the package metadata.
+heading <- readLines("README.md", n = 1L, warn = FALSE)
+heading_versions <- regmatches(heading, gregexpr("[0-9]+\\.[0-9]+\\.[0-9]+", heading))[[1]]
+if (length(heading_versions) && any(heading_versions != expected_version))
+  stop("README heading has an outdated version; update it or omit the version.")
 work <- tempfile("offlineatlas-website-")
 dir.create(work)
 lib <- file.path(work, "library")
@@ -51,17 +57,24 @@ dest <- file.path(root, "docs")
 dir.create(file.path(dest, "demos"), showWarnings = FALSE)
 dir.create(file.path(dest, "images"), showWarnings = FALSE)
 dir.create(file.path(dest, "examples"), showWarnings = FALSE)
+dir.create(file.path(dest, "data"), showWarnings = FALSE)
 copy_checked <- function(from, to) {
   if (!all(file.copy(from, to, overwrite = TRUE))) stop("Failed to copy website assets.")
 }
 copy_checked(list.files(out, pattern = "\\.html$", full.names = TRUE), file.path(dest, "demos"))
 copy_checked(list.files(file.path(out, "static"), pattern = "\\.(png|pdf|svg)$", full.names = TRUE), file.path(dest, "images"))
 copy_checked(list.files(file.path(root, "inst/examples"), pattern = "\\.R$", full.names = TRUE), file.path(dest, "examples"))
+data_names <- c("ofac_state_penalties_2009_2025.csv", "us_states_sf.geojson",
+  "OFAC-NOTICE.txt", "ofac_metadata.json",
+  "japan_prefecture_population_2020_2025.csv", "japan_prefectures_sf.geojson",
+  "JAPAN-NOTICE.txt", "japan_metadata.json")
+copy_checked(file.path(root, "inst/extdata", data_names), file.path(dest, "data"))
 # Record every freshly generated asset, including static figures that have no
 # visible version badge. The checker rejects missing or mismatched assets.
 asset_paths <- c(file.path("demos", list.files(out, pattern = "\\.html$")),
   file.path("images", list.files(file.path(out, "static"), pattern = "\\.(png|pdf|svg)$")),
-  file.path("examples", paste0(example_names, ".R")))
+  file.path("examples", paste0(example_names, ".R")),
+  file.path("data", data_names))
 manifest <- list(package_version = expected_version, scripts = example_names,
   files = data.frame(path = asset_paths,
     md5 = unname(tools::md5sum(file.path(dest, asset_paths)))))

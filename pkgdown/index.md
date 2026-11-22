@@ -41,6 +41,8 @@ Take note that the data can be read by anyone who receives the file, so export o
 
 ## Choose an example
 
+- **Step-by-step state map** · [OFAC penalties](articles/ofac-states.html), with dollar formatting, alternative palettes, zero values, boundaries, and legends.
+- **Step-by-step prefecture map** · [Japan population](articles/japan-population.html), with a dropdown for 2020, preliminary 2025, and population change.
 - **Maps of variables** · GDP, regional sf boundaries, and national FDI inflows.
 - **Change over time** · EU enlargement waves and FDI timelines.
 - **Networks** · Florence family ties, fictional aid, and bilateral FDI.

@@ -15,6 +15,7 @@ check_site <- function(dest, expected_version = as.character(utils::packageVersi
     stop("Generated example assets are missing or changed since this build.")
   actual <- unlist(lapply(c("demos", "images", "examples"), function(folder)
     file.path(folder, list.files(file.path(dest, folder), pattern = "\\.(html|png|pdf|svg|R)$"))))
+  actual <- c(actual, file.path("data", list.files(file.path(dest, "data"))))
   if (!setequal(actual, files$path))
     stop("Unexpected example assets; remove stale generated files and rebuild.")
   demos <- files$path[startsWith(files$path, "demos/")]
@@ -60,8 +61,13 @@ check_site <- function(dest, expected_version = as.character(utils::packageVersi
   if (length(external_assets)) stop("Unexpected external website assets:\n", paste(external_assets, collapse = "\n"))
   gallery <- xml2::read_html(file.path(dest, "articles/demo-gallery.html"))
   downloads <- xml2::xml_attr(xml2::xml_find_all(gallery, "//a[@download]"), "href")
-  if (length(downloads) != 8L || anyDuplicated(downloads)) stop("Expected eight distinct demo downloads.")
-  message("Validated ", length(pages), " HTML pages, local links, local assets, and eight demo downloads.")
+  if (sum(grepl("\\.html$", downloads)) != 10L || anyDuplicated(downloads))
+    stop("Expected ten distinct HTML demo downloads and no duplicate download links.")
+  for (tutorial in c("ofac-states", "japan-population"))
+    if (!file.exists(file.path(dest, "articles", paste0(tutorial, ".html"))))
+      stop("Missing worked tutorial: ", tutorial)
+  message("Validated ", length(pages), " HTML pages, local links, local assets, and ",
+    length(downloads), " gallery downloads.")
   message("Verified ", length(demos), " HTML example versions and ", nrow(files),
     " freshly built assets for offlineatlas ", expected_version, ".")
   invisible(TRUE)

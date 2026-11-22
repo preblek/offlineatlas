@@ -23,6 +23,10 @@ bundled examples and viewing their exports use local resources.
 \section{Getting started}{
 Read the installed tutorial with
 \code{vignette("getting-started", package = "offlineatlas")}.
+Worked regional tutorials are available with
+\code{vignette("ofac-states", package = "offlineatlas")} and
+\code{vignette("japan-population", package = "offlineatlas")}.
+They use bundled CSV tables and sf boundaries without data downloads.
 It covers a GDP map, Florence marriages, an FDI timeline, presentation
 options, and static figures. \code{\link{example_data}} reads bundled tables;
 \code{\link{example_file}} locates local assets and notices.

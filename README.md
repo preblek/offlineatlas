@@ -8,8 +8,8 @@
 This R package builds independent HTML visualizations from data frames. The
 aid network, Florence network, World Bank GDP map, national FDI map, and
 bilateral FDI sample, and EU enlargement timeline use the same renderer.
-All required data, geometry, JavaScript, CSS, and artwork are embedded directly in the HTML file that is created. The
-You do not need an R installation, server, API key, cache, or internet connection to view the HTML file that is generated (but you do need the internet to share/distribute the file).
+All required data, geometry, JavaScript, CSS, and artwork are embedded. The
+viewer needs no R installation, server, API key, cache, or internet connection.
 
 Install from GitHub with
 
@@ -79,7 +79,16 @@ source attribution, and standalone exports. Open it with
 
 ```r
 vignette("getting-started", package = "offlineatlas")
+vignette("ofac-states", package = "offlineatlas")
+vignette("japan-population", package = "offlineatlas")
 ```
+
+The [OFAC state-map tutorial](https://preblek.github.io/offlineatlas/articles/ofac-states.html)
+and [Japan population tutorial](https://preblek.github.io/offlineatlas/articles/japan-population.html)
+show each step from reading bundled CSV tables and sf boundaries to checking
+joins, comparing alternative styles, and exporting HTML and PDF. Both work
+without data downloads. Complete scripts are installed as
+`examples/ofac_states.R` and `examples/japan_population.R`.
 
 To include the rendered tutorial when installing from this source checkout,
 first install the optional documentation tools knitr and rmarkdown, with
@@ -87,10 +96,10 @@ Pandoc available, then build and install the source archive:
 
 ```sh
 R CMD build .
-R CMD INSTALL offlineatlas_0.0.10.tar.gz
+# Install the versioned .tar.gz file produced by the build command.
 ```
 
-Building the vignette executes all tutorial sections using the required sf
+Building the vignettes executes all tutorial sections using the required sf
 and ggplot2 dependencies. Using the package or installing its built archive
 with dependencies already present does not require the documentation tools.
 Direct `R CMD INSTALL` on the source directory does not build the vignette.

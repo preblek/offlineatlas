@@ -1,0 +1,71 @@
+OFAC penalties by US state and year
+
+File: ofac_state_penalties_2009_2025.csv
+850 rows, covering 50 states and 17 years (2009 through 2025).
+
+Columns
+year: Enforcement year recorded in the source, matching the case date.
+state: Full US state name.
+average_penalty_2025_usd: Arithmetic mean of recorded monetary penalties
+  in that state and year, in constant 2025 US dollars.
+max_penalty_2025_usd: Largest recorded monetary penalty in that state and
+  year, in constant 2025 US dollars. This is not a statutory maximum.
+
+Population and treatment of missing data
+Includes 201 positive monetary penalty/settlement records with an assigned
+US state, Country_Name recorded as USA, and EntityType recorded as 1
+(entity). This follows the existing project's US-entity map definition.
+It does not independently establish ultimate ownership or incorporation
+for each organization, and US-based subsidiaries can be included. A case
+involving several respondents remains one record, with its full amount
+assigned to the state in the source. These are respondent locations, not
+necessarily locations of the underlying conduct.
+
+Excludes individuals, mixed entity/individual respondents, and multinational
+or non-USA country classifications (11 state-coded monetary records total).
+Excludes DC, Puerto Rico, and Guam (four positive monetary records) because
+the requested panel covers the 50 states.
+
+An exact duplicate was removed from the full source before aggregation.
+The existing project's derived-map correction assigns Wells Fargo Bank,
+N.A. (March 30, 2023) to South Dakota. No other missing state was inferred.
+No positive monetary record in the chosen US-entity population is left
+without a state or identified territory after that correction.
+Twelve state-coded findings of violation with no
+recorded monetary amount were excluded from penalty averages.
+
+Zero means no included monetary penalty in that state-year in this source.
+It is a requested plotting convention, not an estimate of an average over
+all businesses, and not proof that enforcement coverage is complete.
+The source's latest recorded case date is December 16, 2025. No missing
+monetary amount was converted into a zero-dollar case.
+
+Inflation adjustment
+Uses the OFAC project's saved annual BEA GDP implicit price deflator from
+FRED, series A191RD3A086NBEA. Snapshot retrieved October 31, 2026; source
+update dated September 30, 2026. Index units are 2017=100; output dollars
+are expressed in 2025 purchasing power.
+
+2025 dollars = nominal penalty * 128.893 / GDP deflator for the case year.
+
+Each penalty is adjusted before averaging or taking its maximum. Final
+values are rounded to cents. No inflation adjustment changes case counts.
+https://fred.stlouisfed.org/series/A191RD3A086NBEA
+https://www.bea.gov/help/faq/513
+
+Source
+OFAC_MasterData_2003_2025_v7.dta in the OFAC Dataset - 2025 Updates project.
+The original dataset and OFAC tool files were read without modification.
+The package includes only the state-year aggregate table, not the underlying
+case-level database. The preparation metadata retain the source hash and
+deflator snapshot without local filesystem paths. Original package code is
+MIT licensed; no ownership of US government source facts is claimed.
+
+Bundled boundaries
+us_states_sf.geojson is a 50-state subset of cb_2024_us_state_20m.shp,
+US Census Bureau 2024 cartographic boundaries, 1:20,000,000, public domain.
+https://www2.census.gov/geo/tiger/GENZ2024/shp/cb_2024_us_state_20m.zip
+Retained NAME and STUSPS, transformed from EPSG:4269 to EPSG:4326, rounded
+coordinates to six decimals. Islands are retained. This is a display dataset,
+not a legal boundary or survey product. The default tutorial view shows the
+contiguous states; all 50 remain in the embedded table and geometry.

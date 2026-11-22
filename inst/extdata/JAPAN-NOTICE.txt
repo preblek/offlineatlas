@@ -1,0 +1,73 @@
+Japanese prefecture population practice dataset
+
+47 prefectures, with population counts as of October 1, 2020 and October 1,
+2025. The 2025 figures are preliminary census counts as identified by the
+source cited in Wikipedia. They have not been independently reconciled to
+the official table.
+
+Columns
+prefecture_id: Lowercase English key created for this file, not an official code.
+prefecture: English name with administrative suffixes and macrons removed.
+prefecture_ja: Japanese name from the same article, useful for joining to
+  official boundary data containing prefecture names such as N03_001.
+population_2020: Number of people, October 1, 2020.
+population_2025: Preliminary number of people, October 1, 2025.
+population_change: 2025 population minus 2020 population. Negative means decline.
+population_change_pct: 100 * change / 2020 population, rounded to four decimals.
+  Values are percentages, not proportions. For example, 1.41 means 1.41%.
+status_2025: Reminder that 2025 values are preliminary.
+
+Suggested variable dropdown
+Population in 2020
+Population in 2025 (preliminary)
+Population change, 2020-2025
+
+Use the same breaks and colors for the two population counts. For change,
+use fixed negative/positive intervals with a contrasting palette and a separate
+zero key. The CSV contains population facts, not geographic shapes.
+
+Source and attribution
+Wikipedia contributors, List of Japanese prefectures by population.
+https://en.wikipedia.org/wiki/List_of_Japanese_prefectures_by_population
+Snapshot retrieved November 22, 2026, revision 1384069728.
+https://en.wikipedia.org/w/index.php?title=List_of_Japanese_prefectures_by_population&oldid=1384069728
+Page content is available under CC BY-SA 4.0.
+https://creativecommons.org/licenses/by-sa/4.0/
+The table has been adapted by normalizing names, adding the derived key,
+selecting the two population years and recalculating changes. Attribution
+and transformation details accompany this copy; the package's MIT code
+license does not replace source-data attribution or licensing.
+
+The article cites this official source for the 2025 preliminary figures.
+https://www.e-stat.go.jp/en/dbview?sid=0004050397
+
+Checks
+All 47 prefectures have unique English keys and Japanese names. No population
+value is missing or negative. The counts reconcile to the national totals in
+the same Wikipedia table (126,146,099 in 2020 and 123,049,524 in 2025).
+Absolute change sums to -3,096,575 and agrees with the table's changes.
+
+Bundled boundaries
+japan_prefectures_sf.geojson contains all 47 prefectures from geoBoundaries
+gbOpen JPN ADM1, boundary ID JPN-ADM1-47310658, source OpenStreetMap/Wambacher.
+Boundary year represented: 2017. geoBoundaries build: December 12, 2023.
+https://www.geoboundaries.org/api/current/gbOpen/JPN/ADM1/
+Pinned source commit: 9469f09.
+https://github.com/wmgeolab/geoBoundaries/tree/9469f09/releaseData/gbOpen/JPN/ADM1
+Uses the provider's simplified GeoJSON; no further geometric simplification.
+Removed the English suffix ' Prefecture', derived a lowercase prefecture_id,
+retained shapeISO and rounded coordinates to six decimals in EPSG:4326.
+All 47 names were checked against the population CSV. The derived key is not
+an official administrative code. Islands in the supplied geometry are retained.
+These older display boundaries are not a reconstruction of each census date,
+and the map is not suitable for cadastral or legal boundary analysis.
+
+Boundary attribution and licensing
+Copyright OpenStreetMap contributors; distributed via Wambacher and geoBoundaries.
+https://www.openstreetmap.org/copyright
+Original and adapted boundary databases are available under ODbL 1.0.
+https://opendatacommons.org/licenses/odbl/1-0/
+Retain attribution and license notices when redistributing. The adapted
+machine-readable boundary database is the bundled japan_prefectures_sf.geojson.
+The package's MIT code license does not replace the data licenses. Population
+and boundary snapshots are supplied separately with their respective notices.

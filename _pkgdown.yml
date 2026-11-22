@@ -16,8 +16,14 @@ navbar:
     right: [search, github]
   components:
     tutorial:
-      text: Tutorial
-      href: articles/getting-started.html
+      text: Tutorials
+      menu:
+      - text: Getting started
+        href: articles/getting-started.html
+      - text: OFAC penalties by US state
+        href: articles/ofac-states.html
+      - text: Japan prefecture population
+        href: articles/japan-population.html
     gallery:
       text: Demo gallery
       href: articles/demo-gallery.html
@@ -25,6 +31,8 @@ articles:
 - title: Learn and explore
   contents:
   - getting-started
+  - ofac-states
+  - japan-population
   - articles/demo-gallery
 reference:
 - title: Build an atlas
