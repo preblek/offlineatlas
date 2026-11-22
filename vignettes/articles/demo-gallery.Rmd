@@ -15,6 +15,22 @@ it more room than an embedded frame.
 ## Maps and change over time
 
 <div class="atlas-gallery">
+<section class="atlas-demo" aria-label="OFAC penalties by US state">
+<a class="atlas-thumb" href="../demos/ofac-states-2025-customized.html" aria-label="Open OFAC penalties by state"><img src="../images/ofac-average-2025.png" alt="Average recorded OFAC penalty by state, with blue positive values and gray zeros" loading="lazy"></a>
+<h3>OFAC penalties by US state</h3>
+<p>Compare average and maximum recorded penalties in 2025. Follow the worked tutorial through different palettes, dollar formatting, boundaries, box and bar legends, and figure exports.</p>
+<p class="atlas-links"><a href="ofac-states.html">Tutorial</a><a href="../demos/ofac-states-2025-customized.html">Open demo</a><a href="../demos/ofac-states-2025-customized.html" download>Download HTML</a><a href="../examples/ofac_states.R">R code</a><a href="../images/ofac-average-2025.pdf" download>Static PDF</a></p>
+<p class="atlas-links"><a href="../data/ofac_state_penalties_2009_2025.csv" download>CSV data</a><a href="../data/us_states_sf.geojson" download>Boundaries</a><a href="../data/OFAC-NOTICE.txt">Source notes</a></p>
+<p class="atlas-note">Keith A. Preble's prepared US-entity sample; constant 2025 USD using the BEA GDP deflator. Zero means no qualifying monetary penalty recorded. Census 2024 boundaries, public domain. Opening view shows contiguous states; all 50 states remain in the data.</p>
+</section>
+<section class="atlas-demo" aria-label="Japan prefecture population">
+<a class="atlas-thumb" href="../demos/japan-population.html" aria-label="Open Japan prefecture population"><img src="../images/japan-population-change.png" alt="Population change across Japan's 47 prefectures, with warm colors for decline and blue for growth" loading="lazy"></a>
+<h3>Japan prefecture population</h3>
+<p>Choose 2020 population, preliminary 2025 population, or the change between them. The tutorial covers joins, comparable year scales, a separate change palette, regional framing, and an island inset.</p>
+<p class="atlas-links"><a href="japan-population.html">Tutorial</a><a href="../demos/japan-population.html">Open demo</a><a href="../demos/japan-population.html" download>Download HTML</a><a href="../examples/japan_population.R">R code</a><a href="../images/japan-population-change.pdf" download>Static PDF</a></p>
+<p class="atlas-links"><a href="../data/japan_prefecture_population_2020_2025.csv" download>CSV data</a><a href="../data/japan_prefectures_sf.geojson" download>Boundaries</a><a href="../data/JAPAN-NOTICE.txt">Source notes</a></p>
+<p class="atlas-note">Wikipedia population snapshot, CC BY-SA 4.0; 2025 figures are preliminary and have not been independently reconciled to the official table. Fixed 2017 boundaries from OpenStreetMap / Wambacher / geoBoundaries, ODbL 1.0. Preview shows absolute change.</p>
+</section>
 <section class="atlas-demo" aria-label="World Bank GDP">
 <a class="atlas-thumb" href="../demos/world-bank-gdp.html" aria-label="Open World Bank GDP"><img src="../images/gdp_2024.png" alt="GDP per capita choropleth with a compact legend" loading="lazy"></a>
 <h3>World Bank GDP</h3>
